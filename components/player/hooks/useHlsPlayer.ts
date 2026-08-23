@@ -4,6 +4,32 @@ import { usePlayerSettings } from './usePlayerSettings';
 import { filterM3u8Ad } from '@/lib/utils/m3u8-utils';
 import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
 
+/**
+ * Detects browsers/embedded WebViews that hijack direct <video src> playback
+ * (Quark, UC, X5 kernel, etc.). These browsers fake
+ * canPlayType('application/vnd.apple.mpegurl') to return truthy so the page
+ * falls back to direct native playback, then take over the video with their own
+ * built-in player, breaking custom players. For them we must force MSE
+ * (blob: URL) playback, which cannot be hijacked.
+ */
+function isHijackProneBrowser(): boolean {
+    if (typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent.toLowerCase();
+    return (
+        ua.includes('quark') ||              // Quark browser
+        ua.includes('ucbrowser') ||          // UC browser
+        ua.includes('ucweb') ||
+        ua.includes('x5') ||                 // X5 kernel (WeChat/QQ & other domestic browsers)
+        ua.includes('qqbrowser') ||          // QQ browser
+        ua.includes('micromessenger') ||     // WeChat
+        ua.includes('baiduboxapp') ||        // Baidu app
+        ua.includes('sogoumobilebrowser') || // Sogou
+        ua.includes('360browser') ||         // 360
+        ua.includes('mibrowser') ||          // Xiaomi browser
+        ua.includes('miuiwebview')           // Xiaomi WebView
+    );
+}
+
 interface UseHlsPlayerProps {
     videoRef: React.RefObject<HTMLVideoElement | null>;
     src: string;
@@ -71,10 +97,13 @@ export function useHlsPlayer({
                 }
             }
 
-            if (!isNativeHlsSupported || isAdFilterEnabled) {
-                // If ad filtering is on, we force Hls.js even on native-supported desktop browsers
-                // Exceptions might exist for iOS where MSE is strictly not available, check Hls.isSupported() result carefully.
-                // Hls.isSupported() is false on iOS Safari usually, so this block won't run there.
+            if (!isNativeHlsSupported || isAdFilterEnabled || isHijackProneBrowser()) {
+                // Force Hls.js (MSE/blob) in the following cases:
+                // 1. Native HLS is unavailable
+                // 2. Ad filtering is enabled (hls.js needs to intercept the manifest)
+                // 3. Hijack-prone browsers (Quark/UC/X5, etc.) — even though they
+                //    claim native m3u8 support, setting video.src directly lets their
+                //    built-in player take over; MSE blob: URLs cannot be hijacked
 
                 const config: any = {
                     // Worker & Performance
