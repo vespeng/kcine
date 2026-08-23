@@ -7,16 +7,16 @@ function ViewerNotice() {
   const session = getSession();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-color)] bg-[image:var(--bg-image)] text-[var(--text-color)]">
-      <div className="w-full max-w-md p-4">
-        <div className="bg-[var(--glass-bg)] backdrop-blur-[25px] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-8 shadow-[var(--shadow-md)] flex flex-col items-center gap-6">
-          <div className="w-16 h-16 rounded-[var(--radius-full)] bg-amber-500/10 flex items-center justify-center text-amber-500 mb-2 shadow-[var(--shadow-sm)] border border-[var(--glass-border)]">
-            <ShieldAlert size={32} />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--bg-color)] bg-[image:var(--bg-image)] text-[var(--text-color)]">
+      <div className="w-full max-w-sm p-4 -translate-y-[7vh]">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-[25px] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-6 shadow-[var(--shadow-md)] flex flex-col items-center gap-4 transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1)">
+          <div className="w-10 h-10 rounded-[var(--radius-full)] bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[var(--shadow-sm)] border border-[var(--glass-border)]">
+            <ShieldAlert size={20} />
           </div>
 
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl font-bold">权限不足</h2>
-            <p className="text-[var(--text-color-secondary)]">仅管理员可修改设置</p>
+          <div className="text-center space-y-1">
+            <h2 className="text-xl font-bold">权限不足</h2>
+            <p className="text-sm text-[var(--text-color-secondary)]">仅管理员可修改设置</p>
           </div>
 
           {session && (
@@ -31,7 +31,7 @@ function ViewerNotice() {
 
           <a
             href={window?.location?.pathname?.includes('/premium') ? '/premium' : '/'}
-            className="w-full py-3 px-4 bg-[var(--accent-color)] text-white font-bold rounded-[var(--radius-2xl)] hover:translate-y-[-2px] hover:brightness-110 shadow-[var(--shadow-sm)] hover:shadow-[0_4px_8px_var(--shadow-color)] active:translate-y-0 active:scale-[0.98] transition-all duration-200 text-center"
+            className="w-full py-2.5 px-4 bg-[var(--accent-color)] text-white font-bold rounded-[var(--radius-2xl)] hover:translate-y-[-2px] hover:brightness-110 shadow-[var(--shadow-sm)] hover:shadow-[0_4px_8px_var(--shadow-color)] active:translate-y-0 active:scale-[0.98] transition-all duration-200 text-center"
           >
             返回首页
           </a>

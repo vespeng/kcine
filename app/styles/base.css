@@ -50,6 +50,19 @@ select:focus-visible {
     outline-offset: 2px;
 }
 
+/* Form controls: suppress the global accent outline on focus.
+   Inputs already have their own subtle focus treatment (border color),
+   so the blue halo/ring around them is removed uniformly. */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+    outline: none;
+    outline-offset: 0;
+}
+
 [class*="rounded-full"]:focus-visible {
     border-radius: var(--radius-full);
 }

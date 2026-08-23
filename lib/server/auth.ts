@@ -104,6 +104,10 @@ function getEffectiveAdminPassword(): string {
     getRuntimeEnvValue('ACCESS_PASSWORD', ACCESS_PASSWORD);
 }
 
+function getPremiumPassword(): string {
+  return getRuntimeEnvValue('PREMIUM_PASSWORD', PREMIUM_PASSWORD);
+}
+
 let cachedRedis: Redis | null | undefined;
 
 export class ManagedAuthStorageError extends Error {
@@ -271,7 +275,7 @@ export async function getPublicAuthConfig(): Promise<PublicAuthConfig> {
 
   return {
     hasAuth: loginMode !== 'none',
-    hasPremiumAuth: !!PREMIUM_PASSWORD,
+    hasPremiumAuth: !!getPremiumPassword(),
     loginMode,
     ...getPublicRuntimeConfig(),
   };
@@ -297,7 +301,7 @@ function resolveSessionSecret(loginMode: LoginMode): string | null {
   }
 
   if (loginMode === 'legacy_password' && isLegacyAuthConfigured()) {
-    return `legacy:${getEffectiveAdminPassword()}:${ACCOUNTS}:${PREMIUM_PASSWORD}`;
+    return `legacy:${getEffectiveAdminPassword()}:${ACCOUNTS}:${getPremiumPassword()}`;
   }
 
   return null;
@@ -489,7 +493,7 @@ export async function validatePremiumAccess(
     return true;
   }
 
-  if (!PREMIUM_PASSWORD) {
+  if (!getPremiumPassword()) {
     return true;
   }
 
@@ -497,7 +501,7 @@ export async function validatePremiumAccess(
     return false;
   }
 
-  if (body.password === PREMIUM_PASSWORD) {
+  if (body.password === getPremiumPassword()) {
     return true;
   }
 

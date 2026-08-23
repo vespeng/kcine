@@ -12,7 +12,10 @@ import { getServerSession } from '@/lib/server/auth';
 
 export const runtime = 'edge';
 
-const redis = Redis.fromEnv();
+const redisConfigured = Boolean(
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+);
+const redis = redisConfigured ? Redis.fromEnv() : null;
 
 function redisKey(profileId: string): string {
   const safe = profileId.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -25,6 +28,10 @@ export async function GET(request: NextRequest) {
 
   if (!profileId) {
     return authenticationRequiredResponse();
+  }
+
+  if (!redis) {
+    return NextResponse.json({ success: true, data: null });
   }
 
   try {
@@ -45,6 +52,10 @@ export async function POST(request: NextRequest) {
 
   if (!profileId) {
     return authenticationRequiredResponse();
+  }
+
+  if (!redis) {
+    return NextResponse.json({ success: true });
   }
 
   try {

@@ -9,6 +9,7 @@ import { Icons } from '@/components/ui/Icon';
 import { useSiteInfo } from '@/components/SiteInfoProvider';
 import { getSession, clearSession, hasPermission, type AuthSession } from '@/lib/store/auth-store';
 import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
+import { PREMIUM_UNLOCK_KEY } from '@/components/PremiumPasswordGate';
 import { LogOut } from 'lucide-react';
 
 interface NavbarProps {
@@ -26,6 +27,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
     const siteInfo = useSiteInfo();
 
     const handleLogout = () => {
+        sessionStorage.removeItem(PREMIUM_UNLOCK_KEY);
         fetch('/api/auth/session', { method: 'DELETE' })
             .catch(() => {
                 // Best effort only.
@@ -83,8 +85,9 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             )}
 
                             {/* User Info */}
-                            {session && (
+                            {(session || isPremiumMode) && (
                                 <div className="flex items-center gap-1 sm:gap-2">
+                                    {session && (
                                     <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-full)] text-xs">
                                         <div className="w-5 h-5 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] font-bold text-[10px] border border-[var(--glass-border)]">
                                             {session.name.charAt(0)}
@@ -96,6 +99,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                                             </span>
                                         )}
                                     </div>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color-secondary)] hover:text-red-500 hover:border-red-500/30 transition-all duration-200 cursor-pointer"

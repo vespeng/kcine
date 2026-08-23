@@ -29,7 +29,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder:text-[var(--text-color-secondary)]
             focus:outline-none
             focus:border-[var(--accent-color)]
-            focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)]
             transition-all
             duration-[var(--transition-fluid)]
             touch-manipulation

@@ -216,12 +216,26 @@ export const settingsStore = {
         }
       });
 
-      // Filter out invalid sources (missing baseUrl etc)
-      const validSources = (Array.isArray(parsed.sources) ? parsed.sources : getDefaultSources())
-        .filter((s: any) => s && s.id && s.name && s.baseUrl);
+      // Filter out invalid sources (missing baseUrl etc) and dedupe by id,
+      // avoiding React list key collisions from duplicates restored in storage
+      const dedupeById = (list: VideoSource[]): VideoSource[] => {
+        const seen = new Set<string>();
+        return list.filter((item) => {
+          if (seen.has(item.id)) return false;
+          seen.add(item.id);
+          return true;
+        });
+      };
 
-      const validPremiumSources = (Array.isArray(parsed.premiumSources) ? parsed.premiumSources : getDefaultPremiumSources())
-        .filter((s: any) => s && s.id && s.name && s.baseUrl);
+      const validSources = dedupeById(
+        (Array.isArray(parsed.sources) ? parsed.sources : getDefaultSources())
+          .filter((s: any) => s && s.id && s.name && s.baseUrl)
+      );
+
+      const validPremiumSources = dedupeById(
+        (Array.isArray(parsed.premiumSources) ? parsed.premiumSources : getDefaultPremiumSources())
+          .filter((s: any) => s && s.id && s.name && s.baseUrl)
+      );
 
       // Validate that parsed data has all required properties
       return {

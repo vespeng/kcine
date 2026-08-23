@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Lock } from 'lucide-react';
 
-const PREMIUM_UNLOCK_KEY = 'kvideo-premium-unlocked';
+export const PREMIUM_UNLOCK_KEY = 'kvideo-premium-unlocked';
 
 export function PremiumPasswordGate({ children }: { children: React.ReactNode }) {
     const [isLocked, setIsLocked] = useState(true);
@@ -110,7 +110,7 @@ export function PremiumPasswordGate({ children }: { children: React.ReactNode })
                                 }}
                                 placeholder="输入高级内容密码..."
                                 className={`w-full px-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border ${error ? 'border-red-500' : 'border-[var(--glass-border)]'
-                                    } focus:outline-none focus:border-amber-500 focus:shadow-[0_0_0_3px_rgba(245,158,11,0.3)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
+                                    } focus:outline-none focus:border-amber-500 transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
                                 autoFocus
                             />
                             {error && (

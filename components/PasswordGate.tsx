@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Lock, User } from 'lucide-react';
 import { clearSession, getSession, setSession, type AuthSession } from '@/lib/store/auth-store';
 import { resolvePasswordGateState } from '@/lib/auth/password-gate-state';
@@ -114,6 +115,10 @@ export function PasswordGate({
 }) {
   useSubscriptionSync();
 
+  const pathname = usePathname();
+  // 高级页面使用独立的 PremiumPasswordGate（高级内容密码），跳过整站普通密码门
+  const isPremiumRoute = typeof pathname === 'string' && pathname.startsWith('/premium');
+
   const [isLocked, setIsLocked] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -127,6 +132,12 @@ export function PasswordGate({
     let mounted = true;
 
     const init = async () => {
+      if (isPremiumRoute) {
+        setIsLocked(false);
+        setIsClient(true);
+        return;
+      }
+
       const mirroredSession = getSession();
 
       try {
@@ -189,7 +200,7 @@ export function PasswordGate({
     return () => {
       mounted = false;
     };
-  }, [initialHasAuth]);
+  }, [initialHasAuth, isPremiumRoute]);
 
   const handleUnlock = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -271,7 +282,7 @@ export function PasswordGate({
                       setError('');
                     }}
                     placeholder="输入用户名..."
-                    className="w-full pl-11 pr-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]"
+                    className="w-full pl-11 pr-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] focus:outline-none focus:border-[var(--accent-color)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]"
                     autoComplete="username"
                     autoFocus
                   />
@@ -288,7 +299,7 @@ export function PasswordGate({
                   setError('');
                 }}
                 placeholder={showManagedFields ? '输入密码...' : '输入密码...'}
-                className={`w-full px-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border ${error ? 'border-red-500' : 'border-[var(--glass-border)]'} focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
+                className={`w-full px-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border ${error ? 'border-red-500' : 'border-[var(--glass-border)]'} focus:outline-none focus:border-[var(--accent-color)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
                 autoFocus={!showManagedFields}
                 autoComplete={showManagedFields ? 'current-password' : 'off'}
               />

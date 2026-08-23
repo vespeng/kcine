@@ -66,7 +66,7 @@ export function LinkImportTab({ onImport }: LinkImportTabProps) {
                         placeholder="https://example.com/sources.json"
                         onKeyDown={(e) => e.key === 'Enter' && handleFetch()}
                         disabled={loading || success}
-                        className="flex-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] px-4 py-3 text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)] focus:outline-none focus:border-[var(--accent-color)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all"
+                        className="flex-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] px-4 py-3 text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)] focus:outline-none focus:border-[var(--accent-color)] transition-all"
                     />
                     <button
                         onClick={handleFetch}
