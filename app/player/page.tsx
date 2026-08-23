@@ -24,7 +24,7 @@ import { retrieveGroupedSources, storeGroupedSources } from '@/lib/utils/grouped
 
 type PlayerViewportMode = 'standard' | 'wide' | 'cinema';
 
-const PLAYER_VIEWPORT_MODE_KEY = 'kvideo-player-viewport-mode';
+const PLAYER_VIEWPORT_MODE_KEY = 'kcine-player-viewport-mode';
 const PLAYER_VIEWPORT_MODE_ORDER: PlayerViewportMode[] = ['standard', 'wide', 'cinema'];
 const PLAYER_VIEWPORT_MODE_LABELS: Record<PlayerViewportMode, string> = {
   standard: '标准',

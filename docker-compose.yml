@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  kvideo-lite:
-    container_name: kvideo-lite
-    image: vespeng/kvideo-lite:latest
+  kcine:
+    container_name: kcine
+    image: vespeng/kcine:latest
     restart: always
     ports:
       - 3000:3000

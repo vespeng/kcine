@@ -22,7 +22,7 @@ import './web-fullscreen.css';
 
 type WebFullscreenSize = 'full' | 'large' | 'focused';
 
-const WEB_FULLSCREEN_SIZE_KEY = 'kvideo-web-fullscreen-size';
+const WEB_FULLSCREEN_SIZE_KEY = 'kcine-web-fullscreen-size';
 const WEB_FULLSCREEN_SIZE_ORDER: WebFullscreenSize[] = ['full', 'large', 'focused'];
 const WEB_FULLSCREEN_SCALE: Record<WebFullscreenSize, number> = {
   full: 1,
@@ -310,11 +310,11 @@ export function DesktopVideoPlayer({
     const stageHeight = shouldForceLandscape ? viewportMetrics.width : viewportMetrics.height;
 
     return {
-      ['--kvideo-viewport-width' as string]: `${viewportMetrics.width}px`,
-      ['--kvideo-viewport-height' as string]: `${viewportMetrics.height}px`,
-      ['--kvideo-stage-viewport-width' as string]: `${stageWidth}px`,
-      ['--kvideo-stage-viewport-height' as string]: `${stageHeight}px`,
-      ['--kvideo-web-scale' as string]: WEB_FULLSCREEN_SCALE[webFullscreenSize].toString(),
+      ['--kcine-viewport-width' as string]: `${viewportMetrics.width}px`,
+      ['--kcine-viewport-height' as string]: `${viewportMetrics.height}px`,
+      ['--kcine-stage-viewport-width' as string]: `${stageWidth}px`,
+      ['--kcine-stage-viewport-height' as string]: `${stageHeight}px`,
+      ['--kcine-web-scale' as string]: WEB_FULLSCREEN_SCALE[webFullscreenSize].toString(),
     };
   }, [data.fullscreenMode, shouldForceLandscape, viewportMetrics, webFullscreenSize]);
 
@@ -331,8 +331,8 @@ export function DesktopVideoPlayer({
   }), [webFullscreenStyle, shouldHideCursor]);
 
   const stageClassName = data.fullscreenMode === 'window'
-    ? 'kvideo-stage kvideo-web-fullscreen-stage'
-    : 'kvideo-stage absolute inset-0';
+    ? 'kcine-stage kcine-web-fullscreen-stage'
+    : 'kcine-stage absolute inset-0';
   const isTopAlignedWebFullscreen = data.fullscreenMode === 'window' && isMobile && !isLandscape && !shouldForceLandscape;
 
   // Mobile double-tap gesture for skip forward/backward
@@ -369,8 +369,8 @@ export function DesktopVideoPlayer({
             videoRef.current.muted = false;
           }
           // Persist volume to localStorage
-          localStorage.setItem('kvideo-volume', volume.toString());
-          localStorage.setItem('kvideo-muted', 'false');
+          localStorage.setItem('kcine-volume', volume.toString());
+          localStorage.setItem('kcine-muted', 'false');
         }
       },
       onBrightnessChange: (value) => {
@@ -419,7 +419,7 @@ export function DesktopVideoPlayer({
   return (
     <div
       ref={containerRef}
-      className={`kvideo-container relative aspect-video bg-black group ${data.fullscreenMode === 'window' ? 'is-web-fullscreen' : ''
+      className={`kcine-container relative aspect-video bg-black group ${data.fullscreenMode === 'window' ? 'is-web-fullscreen' : ''
         } ${shouldForceLandscape ? 'force-landscape' : ''} ${isTopAlignedWebFullscreen ? 'top-align-stage' : ''} overflow-hidden rounded-none sm:rounded-[var(--radius-2xl)]`}
       style={containerStyle}
       onMouseMove={() => { handleMouseMove(); }}

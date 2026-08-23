@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     }
     const response = await fetch(url, {
       headers: {
-        'User-Agent': customUa || 'Mozilla/5.0 (compatible; KVideo/1.0)',
+        'User-Agent': customUa || 'Mozilla/5.0 (compatible; KCine/1.0)',
         ...(customReferer ? { 'Referer': customReferer } : {}),
         'Origin': refererOrigin,
       },

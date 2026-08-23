@@ -72,7 +72,7 @@ export interface AccountInfo {
   updatedAt: number;
 }
 
-const SESSION_COOKIE_NAME = 'kvideo_session';
+const SESSION_COOKIE_NAME = 'kcine_session';
 const MANAGED_ACCOUNTS_KEY = 'auth:accounts:v1';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const ACCESS_PASSWORD = process.env.ACCESS_PASSWORD || '';
@@ -282,7 +282,7 @@ export async function getPublicAuthConfig(): Promise<PublicAuthConfig> {
 }
 
 function buildLegacyProfileIdInput(password: string): ArrayBuffer {
-  const bytes = new TextEncoder().encode(`${password}kvideo-profile-salt-v1`);
+  const bytes = new TextEncoder().encode(`${password}kcine-profile-salt-v1`);
   return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
 }
 

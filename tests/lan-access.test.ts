@@ -26,8 +26,8 @@ test('isLanAccessEnabled only supports the unified ALLOW_LAN_ACCESS env name', (
 
 test('parseLanAllowedDevOrigins accepts hostnames, URLs, ports, and comma lists', () => {
   assert.deepEqual(
-    parseLanAllowedDevOrigins('http://192.168.1.10:3000, local.kvideo.test:8080 *.lan.test'),
-    ['192.168.1.10', 'local.kvideo.test', '*.lan.test']
+    parseLanAllowedDevOrigins('http://192.168.1.10:3000, local.kcine.test:8080 *.lan.test'),
+    ['192.168.1.10', 'local.kcine.test', '*.lan.test']
   );
 });
 

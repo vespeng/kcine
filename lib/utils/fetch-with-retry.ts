@@ -15,7 +15,7 @@ export async function fetchWithRetry({ url, request, headers = {} }: FetchWithRe
     ];
     const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
 
-    // Smart Referer: use video domain instead of kvideo.vercel.app to avoid suspicion
+    // Smart Referer: use video domain instead of kcine.vercel.app to avoid suspicion
     const videoUrl = new URL(url);
     const referer = request.nextUrl.searchParams.get('referer') || `${videoUrl.protocol}//${videoUrl.hostname}`;
 

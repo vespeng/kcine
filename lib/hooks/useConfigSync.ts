@@ -35,7 +35,7 @@ export function useConfigSync() {
 
           // Only merge server data if it's newer or local is default
           const serverTime = serverData.updatedAt || 0;
-          const localStr = localStorage.getItem('kvideo-settings');
+          const localStr = localStorage.getItem('kcine-settings');
           const localTime = localStr
             ? JSON.parse(localStr)?._syncedAt || 0
             : 0;
@@ -60,12 +60,12 @@ export function useConfigSync() {
             settingsStore.saveSettings(merged);
 
             // Update sync timestamp
-            const stored = localStorage.getItem('kvideo-settings');
+            const stored = localStorage.getItem('kcine-settings');
             if (stored) {
               const parsed = JSON.parse(stored);
               parsed._syncedAt = serverTime;
               localStorage.setItem(
-                'kvideo-settings',
+                'kcine-settings',
                 JSON.stringify(parsed)
               );
             }
@@ -105,12 +105,12 @@ export function useConfigSync() {
           });
 
           // Update local sync timestamp
-          const stored = localStorage.getItem('kvideo-settings');
+          const stored = localStorage.getItem('kcine-settings');
           if (stored) {
             const parsed = JSON.parse(stored);
             parsed._syncedAt = Date.now();
             localStorage.setItem(
-              'kvideo-settings',
+              'kcine-settings',
               JSON.stringify(parsed)
             );
           }

@@ -11,7 +11,7 @@ import { Icons } from '@/components/ui/Icon';
 import { SourceBadgeItem } from './SourceBadgeItem';
 import { useKeyboardNavigation } from '@/lib/hooks/useKeyboardNavigation';
 
-const EXPAND_KEY = 'kvideo_source_badges_expanded';
+const EXPAND_KEY = 'kcine_source_badges_expanded';
 
 interface Source {
   id: string;

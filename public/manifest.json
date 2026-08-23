@@ -1,6 +1,6 @@
 {
-    "name": "KVideo Lite - 视频聚合平台",
-    "short_name": "KVideo Lite",
+    "name": "KCine - 视频聚合平台",
+    "short_name": "KCine",
     "description": "多源视频聚合搜索和播放平台",
     "start_url": "/",
     "display": "standalone",
@@ -9,7 +9,9 @@
     "orientation": "any",
     "icons": [
         {
-            "src": "/icon.png",
+            "src": "/logo.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
             "purpose": "any maskable"
         }
     ],

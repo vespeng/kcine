@@ -1,14 +1,12 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { useSiteIcon } from '@/components/SiteIconProvider';
+import { SiteLogo } from '@/components/SiteLogo';
 import { Icons } from '@/components/ui/Icon';
 import { useSiteInfo } from '@/components/SiteInfoProvider';
 
 export function PlayerNavbar({ isPremium }: { isPremium?: boolean }) {
     const router = useRouter();
-    const siteIconSrc = useSiteIcon();
     const siteInfo = useSiteInfo();
 
     return (
@@ -22,14 +20,7 @@ export function PlayerNavbar({ isPremium }: { isPremium?: boolean }) {
                             title={isPremium ? "返回高级主页" : "返回首页"}
                         >
                             <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex items-center justify-center flex-shrink-0">
-                                <Image
-                                    src={siteIconSrc}
-                                    alt={siteInfo.name}
-                                    width={40}
-                                    height={40}
-                                    unoptimized
-                                    className="object-contain"
-                                />
+                                <SiteLogo />
                             </div>
                             <div className="flex flex-col min-w-0">
                                 <h1 className="text-lg sm:text-2xl font-bold text-[var(--text-color)] truncate">{siteInfo.name}</h1>

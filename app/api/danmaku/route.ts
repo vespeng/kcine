@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     const response = await fetch(targetUrl, {
       headers: {
         'Accept': 'application/json',
-        'User-Agent': 'KVideo/1.0',
+        'User-Agent': 'KCine/1.0',
       },
     });
 

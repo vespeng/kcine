@@ -253,7 +253,7 @@ export const useIPTVStore = create<IPTVStore>()(
       setLoading: (loading) => set({ isLoading: loading }),
     }),
     {
-      name: 'kvideo-iptv-store',
+      name: 'kcine-iptv-store',
       partialize: (state) => ({
         sources: state.sources.filter((source) => source.kind !== 'builtin'),
         lastRefreshed: state.lastRefreshed,

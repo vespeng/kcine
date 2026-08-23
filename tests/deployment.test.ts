@@ -22,7 +22,7 @@ test('Vercel deployments enable Vercel Analytics', () => {
 
 test('Cloudflare deployments do not enable Vercel Analytics', () => {
   assert.equal(shouldEnableVercelAnalytics({ CF_PAGES: '1' }), false);
-  assert.equal(shouldEnableVercelAnalytics({ CF_PAGES_URL: 'https://kvideo.pages.dev' }), false);
+  assert.equal(shouldEnableVercelAnalytics({ CF_PAGES_URL: 'https://kcine.pages.dev' }), false);
 });
 
 test('Cloudflare wins when adapter environments expose Vercel-like variables', () => {

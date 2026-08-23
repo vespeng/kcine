@@ -8,7 +8,7 @@ export interface SiteInfo {
 }
 
 const DEFAULT_SITE_INFO: SiteInfo = {
-  name: 'KVideo Lite',
+  name: 'KCine',
   description: '视频聚合平台',
 };
 

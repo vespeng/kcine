@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { useSiteIcon } from '@/components/SiteIconProvider';
+import { SiteLogo } from '@/components/SiteLogo';
 import { Icons } from '@/components/ui/Icon';
 import { useSiteInfo } from '@/components/SiteInfoProvider';
 import { getSession, clearSession, hasPermission, type AuthSession } from '@/lib/store/auth-store';
@@ -23,7 +22,6 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
     const favoritesHref = isPremiumMode ? '/premium/favorites' : '/favorites';
     const [session] = useState<AuthSession | null>(() => getSession());
     const { iptvEnabled } = useRuntimeFeatures();
-    const siteIconSrc = useSiteIcon();
     const siteInfo = useSiteInfo();
 
     const handleLogout = () => {
@@ -55,14 +53,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             data-focusable
                         >
                             <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex items-center justify-center flex-shrink-0">
-                                <Image
-                                    src={siteIconSrc}
-                                    alt={siteInfo.name}
-                                    width={40}
-                                    height={40}
-                                    unoptimized
-                                    className="object-contain"
-                                />
+                                <SiteLogo />
                             </div>
                             <div className="flex flex-col min-w-0">
                                 <h1 className="text-lg sm:text-2xl font-bold text-[var(--text-color)] truncate">{siteInfo.name}</h1>

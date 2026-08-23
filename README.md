@@ -1,37 +1,43 @@
-# KVideo Lite - 视频聚合平台（精简版）
+# KCine - 视频聚合平台
+
+<p align="center">
+  <img src="public/logo.svg" alt="KCine Logo" width="144" height="144">
+</p>
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-基于 [KVideo](https://github.com/KuekHaoYang/KVideo) 二次开发的 **Lite 精简版**视频聚合平台。
+基于 [KVideo](https://github.com/KuekHaoYang/KVideo) **4.9.18** 版本二次开发的 **KCine** 视频聚合平台，在继承原版核心能力的基础上进行了深度重构与优化：
 
-本仓库基于 KVideo **4.9.18** 版本进行二次开发，在保留核心功能的基础上进行了：
+- **视觉统一**：高度统一、简约的设计语言，带来一致清爽的界面体验
+- **性能提升**：多轮加载与渲染优化，访问速度显著提升
+- **Bug 修复**：修复了大量潜在缺陷，整体稳定性大幅增强
+- **功能打磨**：持续优化搜索、播放、IPTV、弹幕等核心功能
+- **精简取舍**：去除部分非必要功能，聚焦核心使用场景，保持轻量专注
 
-- **大量精简**：移除冗余模块，降低部署与维护复杂度；
-- **界面美化**：优化交互与视觉体验，提供更简洁清爽的界面；
-- **功能补充**：针对实际使用场景补充了若干实用功能。
+> ⚠️ **维护说明**：KCine 已脱离原版（KVideo）**独立维护**，不再属于官方精简版本，更新节奏与功能取舍完全以本仓库为准。
 
-> ⚠️ **维护说明**：本精简版仓库后续将**独立维护**，不再与原版（KVideo）进行版本同步，更新节奏与功能取舍以本仓库为准，请知悉。
+> 📖 **文档说明**：本 README 仅保留部署与使用所必要的核心内容，如需了解原项目的完整技术文档，可前往上文所述的原项目仓库查看。
 
-> 📖 **文档说明**：本项目对原技术文档做了大幅精简，**仅保留部署与使用所必要的核心内容**。如需查阅完整、详细的技术文档，请移步 [原项目仓库](https://github.com/KuekHaoYang/KVideo) 查看。
-
-> 💡 **完整功能**：如需使用原项目的全部功能特性，请前往 [原项目仓库](https://github.com/KuekHaoYang/KVideo) 查看与使用。
-
-> 🙏 **特别感谢**：本项目的全部基础功能与核心实现均源自 [KuekHaoYang](https://github.com/KuekHaoYang) 的 [KVideo](https://github.com/KuekHaoYang/KVideo) 原项目，在此对原作者致以诚挚的感谢。
+> 🙏 **特别感谢**：本项目的基础功能与核心实现均源自 [KuekHaoYang](https://github.com/KuekHaoYang) 的 KVideo 原项目，在此对原作者致以诚挚的感谢。
 
 > ⚖️ **资源与免责声明**：本仓库**不包含任何影视资源内容**，所有视频源、IPTV 直播源等资源均需用户自行查找、整理并导入。本项目仅供学习与技术研究之用，若因使用本项目导入或播放的内容涉嫌违规、违法，相关责任由使用者自行承担，与本项目及作者本人无关。
 
 ## 核心功能
 
-- **智能视频播放**：HLS 流媒体支持、播放控制、自动连播、画中画、Chromecast 投屏
-- **多源并行搜索**：聚合多个视频源并行搜索，SSE 实时返回结果
+- **智能视频播放**：HLS 流媒体支持、播放控制、自动连播、跳过片头片尾、画中画、Chromecast 投屏
+- **多源并行搜索**：聚合多个视频源并行搜索，SSE 实时返回结果，自动简繁转换
+- **广告过滤**：智能识别并过滤流媒体广告，支持关键词自定义
+- **源智能优选**：多源延迟检测与排序，播放分辨率自动探测
 - **IPTV 直播**：M3U/JSON 格式支持，HEVC 智能兼容，流媒体代理
 - **弹幕系统**：Canvas 高性能渲染，支持多 API 管理
 - **豆瓣集成**：影视信息获取、推荐系统、标签管理
 - **个性化功能**：收藏管理、观看历史、断点续播
-- **响应式设计**：桌面/移动端/TV 全适配
+- **订阅管理**：订阅源自动同步，自定义视频源，数据一键导入导出
+- **账户与权限**：多账户体系与细粒度角色权限控制
+- **响应式设计**：桌面/移动端/TV 全适配，支持电视遥控器导航
 - **PWA 支持**：可安装为独立应用
 - **跨设备同步**：基于 Redis 的配置同步（可选）
-- **移动端手势**：支持长按倍速播放，屏幕亮度及音量控制
+- **移动端手势**：长按倍速播放、屏幕亮度及音量控制
 
 ## 快速部署
 
@@ -39,7 +45,7 @@
 
 ```bash
 # 最简启动
-docker run -d -p 3000:3000 --name kvideo-lite vespeng/kvideo-lite:latest
+docker run -d -p 3000:3000 --name kcine vespeng/kcine:latest
 
 # 完整配置示例
 docker run -d -p 3000:3000 \
@@ -53,8 +59,8 @@ docker run -d -p 3000:3000 \
 ### Node.js 部署
 
 ```bash
-git clone https://github.com/vespeng/kvideo-lite.git
-cd kvideo-lite
+git clone https://github.com/vespeng/kcine.git
+cd kcine
 npm install
 npm run build
 npm start
@@ -84,8 +90,8 @@ npm start
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| `SITE_NAME` | 站点名称 | `KVideo Lite` |
-| `SITE_TITLE` | 浏览器标题 | `KVideo Lite - 视频聚合平台` |
+| `SITE_NAME` | 站点名称 | `KCine` |
+| `SITE_TITLE` | 浏览器标题 | `KCine - 视频聚合平台` |
 | `SITE_DESCRIPTION` | 站点描述 | `视频聚合平台` |
 | `SITE_ICON_FILE` | Docker 图标文件路径 | - |
 | `SITE_ICON_URL` | Docker 图标 URL | - |
@@ -140,9 +146,9 @@ npm start
 ### Docker
 
 ```bash
-docker stop kvideo-lite && docker rm kvideo-lite
-docker pull vespeng/kvideo-lite:latest
-docker run -d -p 3000:3000 --name kvideo-lite vespeng/kvideo-lite:latest
+docker stop kcine && docker rm kcine
+docker pull vespeng/kcine:latest
+docker run -d -p 3000:3000 --name kcine vespeng/kcine:latest
 ```
 
 ### Node.js

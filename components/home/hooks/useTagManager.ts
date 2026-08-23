@@ -5,7 +5,7 @@ import type { Tag } from '../SortableTag';
 
 const DEFAULT_TAG = { id: 'popular', label: '热门', value: '热门' };
 
-const STORAGE_KEY_PREFIX = 'kvideo_custom_tags_';
+const STORAGE_KEY_PREFIX = 'kcine_custom_tags_';
 
 const ensureDefaultTag = (tags: Tag[]) => {
     if (tags.some((tag) => tag.id === DEFAULT_TAG.id || tag.value === DEFAULT_TAG.value)) {
@@ -22,7 +22,7 @@ const ensureDefaultTag = (tags: Tag[]) => {
 export function useTagManager() {
     const [contentType, setContentType] = useState<'movie' | 'tv'>(() => {
         if (typeof window === 'undefined') return 'movie';
-        const saved = localStorage.getItem('kvideo_default_content_type');
+        const saved = localStorage.getItem('kcine_default_content_type');
         return saved === 'tv' ? 'tv' : 'movie';
     });
     const [selectedTag, setSelectedTag] = useState(DEFAULT_TAG.id);
@@ -35,7 +35,7 @@ export function useTagManager() {
 
     // Persist content type preference
     useEffect(() => {
-        localStorage.setItem('kvideo_default_content_type', contentType);
+        localStorage.setItem('kcine_default_content_type', contentType);
     }, [contentType]);
 
     const storageKey = `${STORAGE_KEY_PREFIX}${contentType}`;

@@ -11,7 +11,7 @@ import { Icons } from '@/components/ui/Icon';
 import { TypeBadgeItem } from './TypeBadgeItem';
 import { useKeyboardNavigation } from '@/lib/hooks/useKeyboardNavigation';
 
-const TYPE_EXPAND_KEY = 'kvideo_type_badges_expanded';
+const TYPE_EXPAND_KEY = 'kcine_type_badges_expanded';
 
 interface TypeBadge {
   type: string;

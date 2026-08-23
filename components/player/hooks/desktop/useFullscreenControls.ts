@@ -134,7 +134,7 @@ export function useFullscreenControls({
     const getAndroidPiPBridge = useCallback((): AndroidPiPBridge | null => {
         if (typeof window === 'undefined') return null;
 
-        const bridge = (window as Window & { KVideoAndroid?: AndroidPiPBridge }).KVideoAndroid;
+        const bridge = (window as Window & { KCineAndroid?: AndroidPiPBridge }).KCineAndroid;
         if (!bridge) return null;
 
         return bridge;
@@ -421,8 +421,8 @@ export function useFullscreenControls({
             }
         };
 
-        window.addEventListener('kvideo-android-pip-change', handleAndroidPiPChange);
-        return () => window.removeEventListener('kvideo-android-pip-change', handleAndroidPiPChange);
+        window.addEventListener('kcine-android-pip-change', handleAndroidPiPChange);
+        return () => window.removeEventListener('kcine-android-pip-change', handleAndroidPiPChange);
     }, [exitWindowFullscreen]);
 
     const togglePictureInPicture = useCallback(async () => {

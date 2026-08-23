@@ -13,7 +13,7 @@ import {
   normalizeSeekStepSeconds,
 } from './settings-store';
 
-const PREMIUM_MODE_SETTINGS_KEY = 'kvideo-premium-mode-settings';
+const PREMIUM_MODE_SETTINGS_KEY = 'kcine-premium-mode-settings';
 
 export interface ModeSettings {
   sortBy: SortOption;

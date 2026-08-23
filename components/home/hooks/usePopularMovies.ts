@@ -10,7 +10,7 @@ interface DoubanMovie {
 }
 
 const PAGE_LIMIT = 20;
-const POPULAR_CACHE_KEY = 'kvideo_popular_cache';
+const POPULAR_CACHE_KEY = 'kcine_popular_cache';
 
 // Daily reset: cache entries are validated against today's date string
 const getTodayKey = (): string => {

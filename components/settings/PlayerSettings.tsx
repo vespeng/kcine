@@ -204,7 +204,7 @@ export function PlayerSettings({
                                     /api/proxy?url=&lt;encoded-video-url&gt;
                                 </code>
                                 <div className="mt-2 text-sm text-[var(--text-color-secondary)]">
-                                    此处不是第三方 HTTP/SOCKS 代理配置。播放器会按上方模式把播放地址交给当前 KVideo 部署的内置代理；该能力只在 Docker 或传统 Node.js 自托管完整模式下启用。
+                                    此处不是第三方 HTTP/SOCKS 代理配置。播放器会按上方模式把播放地址交给当前 KCine 部署的内置代理；该能力只在 Docker 或传统 Node.js 自托管完整模式下启用。
                                 </div>
                             </div>
                         </div>

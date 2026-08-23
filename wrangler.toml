@@ -2,7 +2,7 @@
 # This file provides compatibility settings for Cloudflare Pages deployment.
 # It ensures nodejs_compat is always set, so users don't need to configure it manually.
 
-name = "kvideo-lite"
+name = "kcine"
 compatibility_date = "2026-08-05"
 compatibility_flags = ["nodejs_compat"]
 

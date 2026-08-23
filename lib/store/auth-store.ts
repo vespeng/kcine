@@ -24,7 +24,7 @@ export interface AuthSession {
   mode?: 'managed' | 'legacy';
 }
 
-const SESSION_KEY = 'kvideo-session';
+const SESSION_KEY = 'kcine-session';
 
 function isValidSession(value: unknown): value is AuthSession {
   if (!value || typeof value !== 'object') return false;
@@ -37,7 +37,7 @@ function isValidSession(value: unknown): value is AuthSession {
 
 function notifySessionChange(): void {
   if (typeof window === 'undefined') return;
-  window.dispatchEvent(new Event('kvideo-session-changed'));
+  window.dispatchEvent(new Event('kcine-session-changed'));
 }
 
 export function getSession(): AuthSession | null {
@@ -90,9 +90,9 @@ export function clearSession(): void {
   if (typeof window === 'undefined') return;
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem('kvideo_search_cache');
-  sessionStorage.removeItem('kvideo-unlocked');
-  localStorage.removeItem('kvideo-unlocked');
+  localStorage.removeItem('kcine_search_cache');
+  sessionStorage.removeItem('kcine-unlocked');
+  localStorage.removeItem('kcine-unlocked');
   notifySessionChange();
 }
 

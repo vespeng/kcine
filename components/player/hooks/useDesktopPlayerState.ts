@@ -27,14 +27,14 @@ export function useDesktopPlayerState() {
     const [bufferedTime, setBufferedTime] = useState(0);
     const [volume, setVolume] = useState(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('kvideo-volume');
+            const saved = localStorage.getItem('kcine-volume');
             return saved ? parseFloat(saved) : 1;
         }
         return 1;
     });
     const [isMuted, setIsMuted] = useState(() => {
         if (typeof window !== 'undefined') {
-            return localStorage.getItem('kvideo-muted') === 'true';
+            return localStorage.getItem('kcine-muted') === 'true';
         }
         return false;
     });
@@ -44,7 +44,7 @@ export function useDesktopPlayerState() {
     const [isLoading, setIsLoading] = useState(true);
     const [playbackRate, setPlaybackRate] = useState(() => {
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('kvideo-playback-rate');
+            const saved = localStorage.getItem('kcine-playback-rate');
             return saved ? parseFloat(saved) : 1;
         }
         return 1;

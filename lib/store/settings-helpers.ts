@@ -1,8 +1,8 @@
 import type { AppSettings } from './settings-store';
 import { profiledKey } from '@/lib/utils/profile-storage';
 
-export const SEARCH_HISTORY_KEY = 'kvideo-search-history';
-export const WATCH_HISTORY_KEY = 'kvideo-watch-history';
+export const SEARCH_HISTORY_KEY = 'kcine-search-history';
+export const WATCH_HISTORY_KEY = 'kcine-watch-history';
 
 export const sortOptions = {
     'default': '默认排序',

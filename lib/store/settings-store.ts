@@ -73,7 +73,7 @@ export interface AppSettings {
 
 import { exportSettings, importSettings, SEARCH_HISTORY_KEY, WATCH_HISTORY_KEY } from './settings-helpers';
 
-const SETTINGS_KEY = 'kvideo-settings';
+const SETTINGS_KEY = 'kcine-settings';
 
 export const getDefaultSources = (): VideoSource[] => DEFAULT_SOURCES;
 export const getDefaultPremiumSources = (): VideoSource[] => PREMIUM_SOURCES;

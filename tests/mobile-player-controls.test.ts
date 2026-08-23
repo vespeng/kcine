@@ -31,7 +31,7 @@ test('narrow player controls reserve space for both fullscreen actions', () => {
   assert.match(rightControls, /onClick=\{onToggleWebFullscreen\}/);
   assert.match(rightControls, /onClick=\{onToggleNativeFullscreen\}/);
 
-  assert.match(styles, /\.kvideo-container\s*\{\s*container-type:\s*inline-size;/);
+  assert.match(styles, /\.kcine-container\s*\{\s*container-type:\s*inline-size;/);
   assert.match(styles, /@container \(max-width: 36rem\)[\s\S]*?\.player-volume-control\s*\{\s*display:\s*none;/);
   assert.match(styles, /@container \(max-width: 36rem\)[\s\S]*?\.player-controls-right\s*\{[\s\S]*?flex:\s*0 0 auto;/);
   assert.match(styles, /@container \(max-width: 24rem\)[\s\S]*?\.player-duration-display\s*\{\s*display:\s*none;/);

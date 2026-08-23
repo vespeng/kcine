@@ -9,7 +9,7 @@ import test from 'node:test';
 const execFileAsync = promisify(execFile);
 
 test('client asset transpilation removes modern syntax for Android 9 WebView (Chrome 69)', async () => {
-  const tempDir = await mkdtemp(path.join(tmpdir(), 'kvideo-webview69-'));
+  const tempDir = await mkdtemp(path.join(tmpdir(), 'kcine-webview69-'));
   const assetPath = path.join(tempDir, 'chunk.js');
 
   await writeFile(
@@ -22,7 +22,7 @@ test('client asset transpilation removes modern syntax for Android 9 WebView (Ch
       'count ??= 1;',
       'fallback ||= 2;',
       'enabled &&= false;',
-      'globalThis.__kvideoWebView69Result = { count, fallback, enabled, nested };',
+      'globalThis.__kcineWebView69Result = { count, fallback, enabled, nested };',
     ].join('\n')
   );
 

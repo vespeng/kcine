@@ -15,7 +15,7 @@ export interface SiteConfig {
  * Note: This module is for server-side use only (e.g., generateMetadata); clients should get site info via SiteInfoProvider
  */
 export const siteConfig: SiteConfig = {
-  title: process.env.SITE_TITLE || "KVideo Lite - 视频聚合平台",
+  title: process.env.SITE_TITLE || "KCine - 视频聚合平台",
   description: process.env.SITE_DESCRIPTION || "视频聚合平台",
-  name: process.env.SITE_NAME || "KVideo Lite",
+  name: process.env.SITE_NAME || "KCine",
 };

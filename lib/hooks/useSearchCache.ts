@@ -7,7 +7,7 @@ interface SearchCache {
   timestamp: number;
 }
 
-const CACHE_KEY = 'kvideo_search_cache';
+const CACHE_KEY = 'kcine_search_cache';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 const MAX_CACHED_RESULTS = 300;
