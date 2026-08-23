@@ -99,7 +99,6 @@ npm start
 | `DANMAKU_API_URL` | 弹幕 API 地址 | - |
 | `AD_KEYWORDS` | 广告过滤关键词 | - |
 | `MERGE_SOURCES` | 合并同名源（`true`/`1`） | - |
-| `VIDEOTOGETHER_ENABLED` | 启用一起看功能 | `true` |
 
 ### 网络配置
 

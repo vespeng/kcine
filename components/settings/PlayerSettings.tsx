@@ -7,7 +7,6 @@
 
 import { Icons } from '@/components/ui/Icon';
 import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
-import { Switch } from '@/components/ui/Switch';
 import {
     type ProxyMode,
     DEFAULT_SEEK_STEP_SECONDS,
@@ -22,8 +21,6 @@ interface PlayerSettingsProps {
     onProxyModeChange: (mode: ProxyMode) => void;
     seekStepSeconds: number;
     onSeekStepSecondsChange: (value: number) => void;
-    videoTogetherEnabled?: boolean;
-    onVideoTogetherEnabledChange?: (enabled: boolean) => void;
     danmakuApiUrl: string;
     onDanmakuApiUrlChange: (url: string) => void;
     danmakuOpacity: number;
@@ -51,8 +48,6 @@ export function PlayerSettings({
     onProxyModeChange,
     seekStepSeconds,
     onSeekStepSecondsChange,
-    videoTogetherEnabled,
-    onVideoTogetherEnabledChange,
     danmakuApiUrl,
     onDanmakuApiUrlChange,
     danmakuOpacity,
@@ -227,31 +222,6 @@ export function PlayerSettings({
                 </div>
 
                 <div className="border-t border-[var(--glass-border)]" />
-
-                {typeof videoTogetherEnabled === 'boolean' && onVideoTogetherEnabledChange ? (
-                    <>
-                        <div>
-                            <div className="flex items-center justify-between gap-4">
-                                <div>
-                                    <h3 className="font-medium text-[var(--text-color)] mb-2 inline-flex items-center gap-2">
-                                        <Icons.Users size={18} className="text-[var(--accent-color)]" />
-                                        一起看 (VideoTogether)
-                                    </h3>
-                                    <p className="text-sm text-[var(--text-color-secondary)]">
-                                        关闭后不显示一起看悬浮入口；开启后仅在播放器和 IPTV 页面显示，且默认折叠为小图标，用户可自行展开。
-                                    </p>
-                                </div>
-                                <Switch
-                                    checked={videoTogetherEnabled}
-                                    onChange={onVideoTogetherEnabledChange}
-                                    ariaLabel="一起看开关"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="border-t border-[var(--glass-border)]" />
-                    </>
-                ) : null}
 
                 {/* Danmaku Settings */}
                 <div>

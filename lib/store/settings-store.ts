@@ -61,7 +61,6 @@ export interface AppSettings {
   proxyMode: ProxyMode; // Proxy behavior: 'retry' | 'none' | 'always'
   rememberScrollPosition: boolean; // Remember scroll position when navigating back or refreshing
   personalizedRecommendations: boolean; // Show personalized recommendations based on watch history
-  videoTogetherEnabled: boolean; // Show VideoTogether entry on supported player pages
   // Danmaku settings
   danmakuEnabled: boolean; // Show danmaku overlay on video
   danmakuApiUrl: string; // Self-hosted danmaku API endpoint
@@ -144,7 +143,6 @@ function getDefaultAppSettings(): AppSettings {
     proxyMode: 'retry',
     rememberScrollPosition: true,
     personalizedRecommendations: true,
-    videoTogetherEnabled: false,
     danmakuEnabled: false,
     danmakuApiUrl: process.env.DANMAKU_API_URL || '',
     danmakuOpacity: 0.7,
@@ -262,7 +260,6 @@ export const settingsStore = {
         proxyMode: (parsed.proxyMode === 'retry' || parsed.proxyMode === 'none' || parsed.proxyMode === 'always') ? parsed.proxyMode : 'retry',
         rememberScrollPosition: parsed.rememberScrollPosition !== undefined ? parsed.rememberScrollPosition : true,
         personalizedRecommendations: parsed.personalizedRecommendations !== undefined ? parsed.personalizedRecommendations : true,
-        videoTogetherEnabled: parsed.videoTogetherEnabled !== undefined ? parsed.videoTogetherEnabled : false,
         danmakuEnabled: parsed.danmakuEnabled !== undefined ? parsed.danmakuEnabled : false,
         danmakuApiUrl: typeof parsed.danmakuApiUrl === 'string' ? (parsed.danmakuApiUrl || process.env.DANMAKU_API_URL || '') : (process.env.DANMAKU_API_URL || ''),
         danmakuOpacity: typeof parsed.danmakuOpacity === 'number' ? parsed.danmakuOpacity : 0.7,

@@ -36,7 +36,6 @@ export function useSettingsPage() {
     const [seekStepSeconds, setSeekStepSeconds] = useState(DEFAULT_SEEK_STEP_SECONDS);
     const [rememberScrollPosition, setRememberScrollPosition] = useState(true);
     const [locale, setLocale] = useState<LocaleOption>('zh-CN');
-    const [videoTogetherEnabled, setVideoTogetherEnabled] = useState(false);
 
     // Danmaku settings
     const [danmakuApiUrl, setDanmakuApiUrl] = useState('');
@@ -60,7 +59,6 @@ export function useSettingsPage() {
             setSeekStepSeconds(settings.seekStepSeconds);
             setRememberScrollPosition(settings.rememberScrollPosition);
             setLocale(settings.locale);
-            setVideoTogetherEnabled(settings.videoTogetherEnabled);
             setDanmakuApiUrl(settings.danmakuApiUrl);
             setDanmakuOpacity(settings.danmakuOpacity);
             setDanmakuFontSize(settings.danmakuFontSize);
@@ -290,15 +288,6 @@ export function useSettingsPage() {
         });
     };
 
-    const handleVideoTogetherEnabledChange = (enabled: boolean) => {
-        setVideoTogetherEnabled(enabled);
-        const currentSettings = settingsStore.getSettings();
-        settingsStore.saveSettings({
-            ...currentSettings,
-            videoTogetherEnabled: enabled,
-        });
-    };
-
     const handleLocaleChange = (newLocale: LocaleOption) => {
         setLocale(newLocale);
         const currentSettings = settingsStore.getSettings();
@@ -408,8 +397,6 @@ export function useSettingsPage() {
         handleRememberScrollPositionChange,
         locale,
         handleLocaleChange,
-        videoTogetherEnabled,
-        handleVideoTogetherEnabledChange,
         danmakuApiUrl,
         handleDanmakuApiUrlChange,
         danmakuOpacity,

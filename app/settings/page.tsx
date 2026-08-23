@@ -57,9 +57,7 @@ export default function SettingsPage() {
     handleProxyModeChange,
     handleSeekStepSecondsChange,
     rememberScrollPosition,
-    videoTogetherEnabled,
     handleRememberScrollPositionChange,
-    handleVideoTogetherEnabledChange,
     locale,
     handleLocaleChange,
     danmakuApiUrl,
@@ -92,8 +90,6 @@ export default function SettingsPage() {
             onProxyModeChange={handleProxyModeChange}
             seekStepSeconds={seekStepSeconds}
             onSeekStepSecondsChange={handleSeekStepSecondsChange}
-            videoTogetherEnabled={videoTogetherEnabled}
-            onVideoTogetherEnabledChange={handleVideoTogetherEnabledChange}
             danmakuApiUrl={danmakuApiUrl}
             onDanmakuApiUrlChange={handleDanmakuApiUrlChange}
             danmakuOpacity={danmakuOpacity}

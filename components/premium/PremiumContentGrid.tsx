@@ -76,15 +76,10 @@ export function PremiumContentGrid({
                                     </div>
                                 )}
                             </div>
-                            <div className="p-3">
-                                <h3 className="font-semibold text-sm text-[var(--text-color)] line-clamp-2 group-hover:text-[var(--accent-color)] transition-colors">
+                            <div className="pt-1.5 px-1 pb-1">
+                                <h3 className="font-semibold text-sm text-left text-[var(--text-color)] line-clamp-1 leading-snug group-hover:text-[var(--accent-color)] transition-colors">
                                     {video.vod_name}
                                 </h3>
-                                {video.type_name && (
-                                    <p className="text-xs text-[var(--text-color-secondary)] mt-1">
-                                        {video.type_name}
-                                    </p>
-                                )}
                             </div>
                         </Card>
                     </Link>
