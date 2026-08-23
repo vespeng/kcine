@@ -241,24 +241,24 @@ export function PasswordGate({
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--bg-color)] bg-[image:var(--bg-image)] text-[var(--text-color)]">
-      <div className="w-full max-w-md p-4">
+      <div className="w-full max-w-sm p-4 -translate-y-[7vh]">
         <form
           id="password-form"
           onSubmit={handleUnlock}
-          className="bg-[var(--glass-bg)] backdrop-blur-[25px] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-8 shadow-[var(--shadow-md)] flex flex-col items-center gap-6 transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1)"
+          className="bg-[var(--glass-bg)] backdrop-blur-[25px] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-6 shadow-[var(--shadow-md)] flex flex-col items-center gap-4 transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1)"
         >
-          <div className="w-16 h-16 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] mb-2 shadow-[var(--shadow-sm)] border border-[var(--glass-border)]">
-            <Lock size={32} />
+          <div className="w-10 h-10 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] shadow-[var(--shadow-sm)] border border-[var(--glass-border)]">
+            <Lock size={20} />
           </div>
 
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl font-bold">访问受限</h2>
-            <p className="text-[var(--text-color-secondary)]">
+          <div className="text-center space-y-1">
+            <h2 className="text-xl font-bold">访问受限</h2>
+            <p className="text-sm text-[var(--text-color-secondary)]">
               {showManagedFields ? '请输入用户名和密码以继续' : '请输入访问密码以继续'}
             </p>
           </div>
 
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-3">
             {showManagedFields && (
               <div className="space-y-2">
                 <div className="relative">
@@ -271,7 +271,7 @@ export function PasswordGate({
                       setError('');
                     }}
                     placeholder="输入用户名..."
-                    className="w-full pl-11 pr-4 py-3 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]"
+                    className="w-full pl-11 pr-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]"
                     autoComplete="username"
                     autoFocus
                   />
@@ -288,7 +288,7 @@ export function PasswordGate({
                   setError('');
                 }}
                 placeholder={showManagedFields ? '输入密码...' : '输入密码...'}
-                className={`w-full px-4 py-3 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border ${error ? 'border-red-500' : 'border-[var(--glass-border)]'} focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
+                className={`w-full px-4 py-2.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border ${error ? 'border-red-500' : 'border-[var(--glass-border)]'} focus:outline-none focus:border-[var(--accent-color)] focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) text-[var(--text-color)] placeholder-[var(--text-color-secondary)]`}
                 autoFocus={!showManagedFields}
                 autoComplete={showManagedFields ? 'current-password' : 'off'}
               />
@@ -302,7 +302,7 @@ export function PasswordGate({
             <button
               type="submit"
               disabled={isValidating}
-              className="w-full py-3 px-4 bg-[var(--accent-color)] text-white font-bold rounded-[var(--radius-2xl)] hover:translate-y-[-2px] hover:brightness-110 shadow-[var(--shadow-sm)] hover:shadow-[0_4px_8px_var(--shadow-color)] active:translate-y-0 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 px-4 bg-[var(--accent-color)] text-white font-bold rounded-[var(--radius-2xl)] hover:translate-y-[-2px] hover:brightness-110 shadow-[var(--shadow-sm)] hover:shadow-[0_4px_8px_var(--shadow-color)] active:translate-y-0 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isValidating ? '验证中...' : '登录'}
             </button>

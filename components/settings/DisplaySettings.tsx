@@ -51,8 +51,8 @@ export function DisplaySettings({
         onBlockedCategoriesChange(blockedCategories.filter(c => c !== cat));
     };
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-6 mb-6">
-            <h2 className="text-xl font-semibold text-[var(--text-color)] mb-4">显示设置</h2>
+        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5 mb-4">
+            <h2 className="text-lg font-semibold text-[var(--text-color)] mb-3">显示设置</h2>
 
             {/* Remember Scroll Position Toggle */}
             <div className="mb-6">
@@ -151,7 +151,7 @@ export function DisplaySettings({
             <div className="mt-6">
                 <h3 className="font-medium text-[var(--text-color)] mb-2">内容类目过滤</h3>
                 <p className="text-sm text-[var(--text-color-secondary)] mb-4">
-                    添加要从搜索结果中隐藏的类目关键词（如"伦理"），匹配的视频将不会显示
+                    添加要从搜索结果中隐藏的类目关键词（如&ldquo;伦理&rdquo;），匹配的视频将不会显示
                 </p>
                 <div className="flex gap-2 mb-3">
                     <input

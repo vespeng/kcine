@@ -1,13 +1,9 @@
 'use client';
 
 import { Suspense } from 'react';
-import { SearchForm } from '@/components/search/SearchForm';
-import { NoResults } from '@/components/search/NoResults';
-import { Navbar } from '@/components/layout/Navbar';
-import { SearchResults } from '@/components/home/SearchResults';
+import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { usePremiumHomePage } from '@/lib/hooks/usePremiumHomePage';
 import { PremiumContent } from '@/components/premium/PremiumContent';
-import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 import { PremiumPasswordGate } from '@/components/PremiumPasswordGate';
 
 function PremiumHomePage() {
@@ -25,67 +21,21 @@ function PremiumHomePage() {
     } = usePremiumHomePage();
 
     return (
-        <div className="min-h-screen">
-            {/* Glass Navbar */}
-            <Navbar onReset={handleReset} isPremiumMode={true} />
-
-            {/* Search Form - Separate from navbar */}
-            <div className="max-w-[1240px] mx-auto px-4 mt-6 mb-8 relative" style={{
-                transform: 'translate3d(0, 0, 0)',
-                zIndex: 1000
-            }}>
-                <SearchForm
-                    onSearch={handleSearch}
-                    onClear={handleReset}
-                    onCancelSearch={handleCancelSearch}
-                    isLoading={loading}
-                    initialQuery={query}
-                    currentSource=""
-                    checkedSources={completedSources}
-                    totalSources={totalSources}
-                    placeholder="输入关键词开始搜索..."
-                    isPremium={true}
-                />
-            </div>
-
-            {/* Main Content */}
-            <main className="max-w-[1240px] mx-auto px-4 pb-20">
-                {/* Results Section */}
-                {(results.length >= 1 || (!loading && results.length > 0)) && (
-                    <SearchResults
-                        results={results}
-                        availableSources={availableSources}
-                        loading={loading}
-                        isPremium={true}
-                    />
-                )}
-
-                {/* Searching - no results yet */}
-                {loading && hasSearched && results.length === 0 && (
-                    <div className="flex justify-center py-20">
-                        <div className="flex flex-col items-center gap-3">
-                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-[var(--accent-color)] border-t-transparent"></div>
-                            <p className="text-sm text-[var(--text-color-secondary)]">加载中...</p>
-                        </div>
-                    </div>
-                )}
-
-                {/* No Results */}
-                {!loading && hasSearched && results.length === 0 && (
-                    <NoResults onReset={handleReset} />
-                )}
-
-                {/* Premium Content - Trending and Latest */}
-                {!loading && !hasSearched && (
-                    <>
-                        <PremiumContent onSearch={handleSearch} />
-                    </>
-                )}
-            </main>
-
-            {/* Favorites Sidebar - Left */}
-            <FavoritesSidebar isPremium={true} />
-        </div>
+        <SearchPageLayout
+            query={query}
+            hasSearched={hasSearched}
+            loading={loading}
+            results={results}
+            availableSources={availableSources}
+            completedSources={completedSources}
+            totalSources={totalSources}
+            isPremium
+            placeholder="输入关键词开始搜索..."
+            onSearch={handleSearch}
+            onReset={handleReset}
+            onCancelSearch={handleCancelSearch}
+            featured={<PremiumContent onSearch={handleSearch} />}
+        />
     );
 }
 

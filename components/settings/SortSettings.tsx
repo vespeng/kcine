@@ -8,8 +8,8 @@ interface SortSettingsProps {
 
 export function SortSettings({ sortBy, onSortChange }: SortSettingsProps) {
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-6 mb-6">
-            <h2 className="text-xl font-semibold text-[var(--text-color)] mb-4">搜索结果排序</h2>
+        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5 mb-4">
+            <h2 className="text-lg font-semibold text-[var(--text-color)] mb-3">搜索结果排序</h2>
             <p className="text-sm text-[var(--text-color-secondary)] mb-4">
                 选择搜索结果的默认排序方式
             </p>

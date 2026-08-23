@@ -76,7 +76,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-color)] bg-[image:var(--bg-image)] bg-fixed">
-      <div className="container mx-auto px-4 py-8 max-w-4xl space-y-8">
+      <div className="container mx-auto px-4 py-6 max-w-4xl space-y-6">
         {/* Header */}
         <SettingsHeader />
 

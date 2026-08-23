@@ -12,7 +12,7 @@ export function FavoritesEmptyState() {
                 size={64}
                 className="text-[var(--text-color-secondary)] opacity-50 mb-4"
             />
-            <p className="text-[var(--text-color-secondary)] text-lg">
+            <p className="text-[var(--text-color-secondary)]">
                 暂无收藏
             </p>
             <p className="text-[var(--text-color-secondary)] text-sm mt-2 opacity-70">

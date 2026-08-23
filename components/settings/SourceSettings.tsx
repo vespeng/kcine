@@ -58,9 +58,9 @@ export function SourceSettings({
     };
 
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-[var(--text-color)]">视频源管理</h2>
+        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5 mb-4">
+            <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold text-[var(--text-color)]">视频源管理</h2>
                 <div className="flex gap-2 flex-wrap">
                     <button
                         onClick={onRestoreDefaults}
@@ -76,7 +76,7 @@ export function SourceSettings({
                     </button>
                 </div>
             </div>
-            <p className="text-sm text-[var(--text-color-secondary)] mb-6">
+            <p className="text-sm text-[var(--text-color-secondary)] mb-4">
                 管理视频来源，调整优先级和启用状态
             </p>
 

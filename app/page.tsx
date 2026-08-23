@@ -1,13 +1,9 @@
 'use client';
 
 import { Suspense, useMemo, useState } from 'react';
-import { SearchForm } from '@/components/search/SearchForm';
-import { NoResults } from '@/components/search/NoResults';
 import { PopularFeatures } from '@/components/home/PopularFeatures';
-import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
-import { Navbar } from '@/components/layout/Navbar';
-import { SearchResults } from '@/components/home/SearchResults';
+import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { useHomePage } from '@/lib/hooks/useHomePage';
 import { useLatencyPing } from '@/lib/hooks/useLatencyPing';
 
@@ -40,72 +36,28 @@ function HomePage() {
   });
 
   return (
-    <div className="min-h-screen">
-      {/* Glass Navbar */}
-      <Navbar onReset={handleReset} onOpenHistory={() => setIsHistoryOpen(true)} />
-
-      {/* Search Form - Separate from navbar */}
-      <div className="max-w-[1240px] mx-auto px-4 mt-6 mb-8 relative" style={{
-        transform: 'translate3d(0, 0, 0)',
-        zIndex: 1000
-      }}>
-        <SearchForm
-          onSearch={handleSearch}
-          onClear={handleReset}
-          onCancelSearch={handleCancelSearch}
-          isLoading={loading}
-          initialQuery={query}
-          currentSource=""
-          checkedSources={completedSources}
-          totalSources={totalSources}
+    <SearchPageLayout
+      query={query}
+      hasSearched={hasSearched}
+      loading={loading}
+      results={results}
+      availableSources={availableSources}
+      completedSources={completedSources}
+      totalSources={totalSources}
+      latencies={latencies}
+      onSearch={handleSearch}
+      onReset={handleReset}
+      onCancelSearch={handleCancelSearch}
+      onOpenHistory={() => setIsHistoryOpen(true)}
+      featured={<PopularFeatures onSearch={handleSearch} />}
+      sidebars={
+        <WatchHistorySidebar
+          isOpen={isHistoryOpen}
+          onOpen={() => setIsHistoryOpen(true)}
+          onClose={() => setIsHistoryOpen(false)}
         />
-      </div>
-
-      {/* Main Content */}
-      <main className="max-w-[1240px] mx-auto px-4 pb-20">
-        {/* Results Section */}
-        {(results.length >= 1 || (!loading && results.length > 0)) && (
-          <SearchResults
-            results={results}
-            availableSources={availableSources}
-            loading={loading}
-            latencies={latencies}
-          />
-        )}
-
-        {/* Searching - no results yet */}
-        {loading && hasSearched && results.length === 0 && (
-          <div className="flex justify-center py-20">
-            <div className="flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-[var(--accent-color)] border-t-transparent"></div>
-              <p className="text-sm text-[var(--text-color-secondary)]">加载中...</p>
-            </div>
-          </div>
-        )}
-
-        {/* Popular Features - Homepage */}
-        {!loading && !hasSearched && (
-          <>
-            <PopularFeatures onSearch={handleSearch} />
-          </>
-        )}
-
-        {/* No Results */}
-        {!loading && hasSearched && results.length === 0 && (
-          <NoResults onReset={handleReset} />
-        )}
-      </main>
-
-      {/* Favorites Sidebar - Left */}
-      <FavoritesSidebar />
-
-      {/* Watch History Sidebar - Right */}
-      <WatchHistorySidebar
-        isOpen={isHistoryOpen}
-        onOpen={() => setIsHistoryOpen(true)}
-        onClose={() => setIsHistoryOpen(false)}
-      />
-    </div>
+      }
+    />
   );
 }
 

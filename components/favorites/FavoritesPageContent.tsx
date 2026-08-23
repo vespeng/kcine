@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Navbar } from '@/components/layout/Navbar';
+import { AppShell } from '@/components/layout/AppShell';
+import { PageContainer } from '@/components/layout/PageContainer';
 import { FavoritesPageHeader } from '@/components/favorites/FavoritesPageHeader';
 import { FavoritesGrid } from '@/components/favorites/FavoritesGrid';
 import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
@@ -32,14 +33,13 @@ export function FavoritesPageContent({
   }, [favorites, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[var(--bg-color)] bg-[image:var(--bg-image)] bg-fixed">
-      <Navbar
-        onReset={() => router.push(isPremium ? '/premium' : '/')}
-        isPremiumMode={isPremium}
-        onOpenHistory={() => setIsHistoryOpen(true)}
-      />
-
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <AppShell
+      isPremium={isPremium}
+      onReset={() => router.push(isPremium ? '/premium' : '/')}
+      onOpenHistory={() => setIsHistoryOpen(true)}
+      className="bg-[var(--bg-color)] bg-[image:var(--bg-image)] bg-fixed"
+    >
+      <PageContainer className="py-8 space-y-8">
         <FavoritesPageHeader
           count={favorites.length}
           sortBy={sortBy}
@@ -48,7 +48,7 @@ export function FavoritesPageContent({
         />
 
         <FavoritesGrid favorites={sortedFavorites} isPremium={isPremium} />
-      </main>
+      </PageContainer>
 
       <FavoritesSidebar isPremium={isPremium} />
       <WatchHistorySidebar
@@ -71,7 +71,7 @@ export function FavoritesPageContent({
         onCancel={() => setIsClearDialogOpen(false)}
         dangerous
       />
-    </div>
+    </AppShell>
   );
 }
 

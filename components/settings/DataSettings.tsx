@@ -6,8 +6,8 @@ interface DataSettingsProps {
 
 export function DataSettings({ onExport, onImport, onReset }: DataSettingsProps) {
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-6">
-            <h2 className="text-xl font-semibold text-[var(--text-color)] mb-4">数据管理</h2>
+        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5">
+            <h2 className="text-lg font-semibold text-[var(--text-color)] mb-3">数据管理</h2>
             <div className="space-y-3">
                 <button
                     onClick={onExport}
