@@ -438,9 +438,6 @@ export function DesktopVideoPlayer({
               x-webkit-airplay="allow"
               playsInline={true} // Crucial for iOS custom fullscreen to work without native player taking over
               controls={false} // Explicitly disable native controls
-              x5-video-player-type="h5" // Force H5 player on X5-kernel browsers to avoid native player takeover
-              x5-playsinline="" // Inline playback on X5 kernel
-              disableRemotePlayback // Disable remote playback/cast takeover (a hijack trigger in some browsers)
               onPlay={handlePlay}
               onPause={handlePause}
               onTimeUpdate={handleTimeUpdateEvent}

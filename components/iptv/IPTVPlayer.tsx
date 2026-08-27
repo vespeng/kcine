@@ -804,9 +804,6 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
           className="w-full h-full object-contain bg-black"
           playsInline
           autoPlay
-          x5-video-player-type="h5"
-          x5-playsinline=""
-          disableRemotePlayback
         />
 
         {/* Loading */}
