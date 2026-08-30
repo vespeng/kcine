@@ -4,10 +4,15 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 
+// A forced theme overrides the user/system theme until it is cleared.
+// Used by premium mode to keep those pages dark while leaving normal mode's theme untouched.
+type ForcedTheme = 'light' | 'dark' | null;
+
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   actualTheme: 'light' | 'dark';
+  setForcedTheme: (forced: ForcedTheme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -15,6 +20,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('system');
   const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('dark');
+  const [forcedTheme, setForcedTheme] = useState<ForcedTheme>(null);
   const [mounted, setMounted] = useState(false);
   const transitionRef = React.useRef<any>(null);
 
@@ -31,7 +37,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (!mounted) return;
 
     const applyTheme = (newTheme?: 'light' | 'dark') => {
-      const themeToApply = newTheme || (theme === 'system' 
+      // Forced theme (premium mode) takes precedence over user/system theme
+      const themeToApply = forcedTheme || newTheme || (theme === 'system' 
         ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
         : theme);
       
@@ -72,6 +79,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                 // Silently handle transition errors (visibility changes, etc.)
                 transitionRef.current = null;
               });
+            // Suppress the ready promise rejection ("Transition was skipped")
+            // raised by skipTransition(), which otherwise surfaces as an
+            // unhandled runtime rejection.
+            transitionRef.current.ready.catch(() => {});
           }
         } catch (error) {
           // Fallback if transition fails to start
@@ -121,10 +132,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
       }
     };
-  }, [theme, mounted]);
+  }, [theme, mounted, forcedTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, actualTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, actualTheme, setForcedTheme }}>
       {children}
     </ThemeContext.Provider>
   );

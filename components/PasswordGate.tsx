@@ -116,7 +116,7 @@ export function PasswordGate({
   useSubscriptionSync();
 
   const pathname = usePathname();
-  // 高级页面使用独立的 PremiumPasswordGate（高级内容密码），跳过整站普通密码门
+  // Premium routes (/premium) still need to pass the site-wide password gate first; the premium content password is handled by PremiumPasswordGate
   const isPremiumRoute = typeof pathname === 'string' && pathname.startsWith('/premium');
 
   const [isLocked, setIsLocked] = useState(true);
@@ -128,16 +128,19 @@ export function PasswordGate({
   const [isValidating, setIsValidating] = useState(false);
   const [loginMode, setLoginMode] = useState<LoginMode>('none');
 
+  // Accessing /premium without a normal login is blocked and redirected back to the normal page login
+  useEffect(() => {
+    if (!isClient || !isLocked || !isPremiumRoute) return;
+    const timer = setTimeout(() => {
+      window.location.href = '/';
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isClient, isLocked, isPremiumRoute]);
+
   useEffect(() => {
     let mounted = true;
 
     const init = async () => {
-      if (isPremiumRoute) {
-        setIsLocked(false);
-        setIsClient(true);
-        return;
-      }
-
       const mirroredSession = getSession();
 
       try {
@@ -246,6 +249,38 @@ export function PasswordGate({
 
   if (!isLocked) {
     return <>{children}</>;
+  }
+
+  // Direct access to premium routes without login: show an interception notice and auto-redirect to the normal page login
+  if (isPremiumRoute) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[var(--bg-color)] bg-[image:var(--bg-image)] text-[var(--text-color)]">
+        <div className="w-full max-w-sm p-4 -translate-y-[7vh]">
+          <div className="bg-[var(--glass-bg)] backdrop-blur-[25px] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-6 shadow-[var(--shadow-md)] flex flex-col items-center gap-4 transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1)">
+            <div className="w-10 h-10 rounded-[var(--radius-full)] bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[var(--shadow-sm)] border border-[var(--glass-border)]">
+              <Lock size={20} />
+            </div>
+
+            <div className="text-center space-y-1">
+              <h2 className="text-xl font-bold">无法访问</h2>
+              <p className="text-sm text-[var(--text-color-secondary)]">
+                高级内容需在普通模式下登录后访问
+              </p>
+              <p className="text-xs text-[var(--text-color-secondary)]">
+                即将跳转到普通模式...
+              </p>
+            </div>
+
+            <a
+              href="/"
+              className="w-full py-2.5 px-4 bg-[var(--accent-color)] text-white font-bold rounded-[var(--radius-2xl)] hover:translate-y-[-2px] hover:brightness-110 shadow-[var(--shadow-sm)] hover:shadow-[0_4px_8px_var(--shadow-color)] active:translate-y-0 active:scale-[0.98] transition-all duration-200 text-center"
+            >
+              前往普通模式登录
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const showManagedFields = loginMode === 'managed';

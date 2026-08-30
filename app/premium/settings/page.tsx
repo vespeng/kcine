@@ -8,9 +8,11 @@ import { PlayerSettings } from '@/components/settings/PlayerSettings';
 import { AccountSettings } from '@/components/settings/AccountSettings';
 import { AdminGate } from '@/components/AdminGate';
 import { usePremiumSettingsPage } from './hooks/usePremiumSettingsPage';
+import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
 import Link from 'next/link';
 
 export default function PremiumSettingsPage() {
+    usePremiumTheme(true);
     const {
         premiumSources,
         isAddModalOpen,

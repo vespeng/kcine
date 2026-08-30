@@ -21,6 +21,7 @@ import { premiumModeSettingsStore } from '@/lib/store/premium-mode-settings';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { getSourceName } from '@/lib/utils/source-names';
 import { retrieveGroupedSources, storeGroupedSources } from '@/lib/utils/grouped-sources-cache';
+import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
 
 type PlayerViewportMode = 'standard' | 'wide' | 'cinema';
 
@@ -36,6 +37,8 @@ function PlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isPremium = searchParams.get('premium') === '1';
+  // Keep the premium player in dark theme; normal player follows the global theme
+  usePremiumTheme(isPremium);
   const { addToHistory } = useHistory(isPremium);
 
   const videoId = searchParams.get('id');

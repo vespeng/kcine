@@ -5,6 +5,7 @@ import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { usePremiumHomePage } from '@/lib/hooks/usePremiumHomePage';
 import { PremiumContent } from '@/components/premium/PremiumContent';
 import { PremiumPasswordGate } from '@/components/PremiumPasswordGate';
+import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
 
 function PremiumHomePage() {
     const {
@@ -40,6 +41,7 @@ function PremiumHomePage() {
 }
 
 export default function PremiumPage() {
+    usePremiumTheme(true);
     return (
         <Suspense fallback={
             <div className="min-h-screen flex items-center justify-center">
