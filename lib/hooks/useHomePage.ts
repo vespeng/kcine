@@ -2,9 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSearchCache } from '@/lib/hooks/useSearchCache';
 import { useParallelSearch } from '@/lib/hooks/useParallelSearch';
-import { useSubscriptionSync } from '@/lib/hooks/useSubscriptionSync';
+import { useSubscriptionSync, retrySubscriptionSync, useSubscriptionSyncStatus } from '@/lib/hooks/useSubscriptionSync';
 import { settingsStore, type SortOption } from '@/lib/store/settings-store';
 import { userSourcesStore } from '@/lib/store/user-sources-store';
+
+export type SourceIssueKind = 'syncing' | 'failed' | null;
 
 export function useHomePage() {
     useSubscriptionSync();
@@ -42,6 +44,35 @@ export function useHomePage() {
         saveToCache,
         onUrlUpdate
     );
+
+    // Reactive subscription sync state (only meaningful in the browser).
+    const subscriptionSyncStatus = useSubscriptionSyncStatus();
+
+    const handleRetrySources = useCallback(() => {
+        void retrySubscriptionSync();
+    }, []);
+
+    // When a search yields nothing because no video source is usable yet,
+    // explain why (and offer a manual retry when the last sync failed).
+    const sourceIssue: SourceIssueKind = (() => {
+        if (typeof window === 'undefined') return null;
+        const settings = settingsStore.getSettings();
+        const enabledSources =
+            settings.sources.filter((source) => source.enabled).length +
+            userSourcesStore.getSources().filter((source) => source.enabled !== false).length;
+        if (enabledSources > 0) return null;
+
+        // No subscriptions configured at all — the generic "no results" view is
+        // the right message here, there is nothing to retry.
+        const hasSubscriptions = settings.subscriptions.some(
+            (subscription) => subscription.autoRefresh !== false
+        );
+        if (!hasSubscriptions) return null;
+
+        if (subscriptionSyncStatus.phase === 'syncing') return 'syncing';
+        if (subscriptionSyncStatus.phase === 'error') return 'failed';
+        return null;
+    })();
 
     // Core search execution function - extracted to eliminate duplication
     const executeSearch = useCallback((searchQuery: string) => {
@@ -174,5 +205,7 @@ export function useHomePage() {
         loadMore,
         hasMore,
         loadingMore,
+        sourceIssue,
+        handleRetrySources,
     };
 }

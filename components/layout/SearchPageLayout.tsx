@@ -24,6 +24,13 @@ interface SearchPageLayoutProps {
   onReset: () => void;
   onCancelSearch?: () => void;
   onOpenHistory?: () => void;
+  /**
+   * Non-null when the current search has no usable video sources yet because
+   * subscriptions are still syncing ('syncing') or the last sync failed
+   * ('failed'). Rendered instead of the generic "no results" view.
+   */
+  sourceIssue?: 'syncing' | 'failed' | null;
+  onRetrySources?: () => void;
   /** Shown below results when not searching (e.g. PopularFeatures / PremiumContent) */
   featured?: ReactNode;
   /** Extra sidebars (e.g. WatchHistorySidebar) */
@@ -49,6 +56,8 @@ export function SearchPageLayout({
   onReset,
   onCancelSearch,
   onOpenHistory,
+  sourceIssue,
+  onRetrySources,
   featured,
   sidebars,
 }: SearchPageLayoutProps) {
@@ -99,9 +108,44 @@ export function SearchPageLayout({
         {/* Featured content - shown when not searching */}
         {!loading && !hasSearched && featured}
 
-        {/* No Results */}
+        {/* Empty results: explain missing sources, otherwise generic no-results */}
         {!loading && hasSearched && results.length === 0 && (
-          <NoResults onReset={onReset} />
+          sourceIssue ? (
+            <div className="flex justify-center py-16">
+              <div className="w-full max-w-md p-6 rounded-[var(--radius-2xl)] border border-[var(--glass-border)] bg-[var(--glass-bg)] text-center space-y-4">
+                {sourceIssue === 'syncing' ? (
+                  <>
+                    <div className="flex justify-center">
+                      <div className="animate-spin rounded-full h-10 w-10 border-4 border-[var(--accent-color)] border-t-transparent"></div>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-medium text-[var(--text-color)]">正在同步视频源…</p>
+                      <p className="text-sm text-[var(--text-color-secondary)]">
+                        同步完成后将自动重新搜索，请稍候。
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-1">
+                      <p className="font-medium text-[var(--text-color)]">视频源同步失败，无法搜索</p>
+                      <p className="text-sm text-[var(--text-color-secondary)]">
+                        可能是订阅地址暂时不可用。同步已自动重试，也可手动重试。
+                      </p>
+                    </div>
+                    <button
+                      onClick={onRetrySources}
+                      className="px-5 py-2.5 bg-[var(--accent-color)] text-white text-sm font-bold rounded-[var(--radius-full)] hover:brightness-110 active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                    >
+                      重试同步
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            <NoResults onReset={onReset} />
+          )
         )}
       </PageContainer>
 

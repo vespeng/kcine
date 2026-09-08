@@ -91,7 +91,6 @@ export function clearSession(): void {
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem('kcine_search_cache');
-  localStorage.removeItem('kcine_search_cache_v2');
   sessionStorage.removeItem('kcine-unlocked');
   localStorage.removeItem('kcine-unlocked');
   notifySessionChange();

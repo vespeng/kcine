@@ -102,7 +102,10 @@ export function parseSourcesFromJson(jsonString: string): ImportResult {
 /**
  * Fetch and parse sources from a URL
  */
-export async function fetchSourcesFromUrl(url: string): Promise<ImportResult> {
+export async function fetchSourcesFromUrl(
+  url: string,
+  init?: { signal?: AbortSignal }
+): Promise<ImportResult> {
     const headers = {
         'Accept': 'application/json',
     };
@@ -111,7 +114,7 @@ export async function fetchSourcesFromUrl(url: string): Promise<ImportResult> {
     let response: Response;
 
     try {
-        response = await fetch(url, { headers });
+        response = await fetch(url, { headers, signal: init?.signal });
     } catch (directError) {
         if (!isExternal) {
             throw directError;
@@ -119,6 +122,7 @@ export async function fetchSourcesFromUrl(url: string): Promise<ImportResult> {
 
         response = await fetch(`/api/proxy?url=${encodeURIComponent(url)}`, {
             headers,
+            signal: init?.signal,
         });
     }
 

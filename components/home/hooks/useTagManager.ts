@@ -5,10 +5,7 @@ import type { Tag } from '../SortableTag';
 
 const DEFAULT_TAG = { id: 'popular', label: '热门', value: '热门' };
 
-// v2: older builds cached an empty result (only the default tag) when the
-// Douban request failed, which permanently left the home page with a single
-// tag. The version bump invalidates those poisoned caches.
-const STORAGE_KEY_PREFIX = 'kcine_custom_tags_v2_';
+const STORAGE_KEY_PREFIX = 'kcine_custom_tags_';
 
 const ensureDefaultTag = (tags: Tag[]) => {
     if (tags.some((tag) => tag.id === DEFAULT_TAG.id || tag.value === DEFAULT_TAG.value)) {

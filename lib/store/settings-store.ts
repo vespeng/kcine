@@ -347,7 +347,6 @@ export const settingsStore = {
 
       // Caches that used to survive a reset and keep stale/broken state
       localStorage.removeItem('kcine_search_cache');
-      localStorage.removeItem('kcine_search_cache_v2');
       localStorage.removeItem('kcine_popular_cache');
       localStorage.removeItem('kcine-config-synced-at');
       localStorage.removeItem('kcine-subscription-sync-version');

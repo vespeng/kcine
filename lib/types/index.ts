@@ -22,6 +22,12 @@ export interface SourceSubscription {
   url: string;
   lastUpdated: number; // timestamp
   autoRefresh: boolean;
+  /**
+   * Snapshot of the source ids this subscription offered at last successful
+   * sync. Used to reconcile/prune sources that the upstream removed, so stale
+   * (dead) entries don't accumulate in the local source list forever.
+   */
+  sourceIds?: string[];
 }
 
 // Video Search Result

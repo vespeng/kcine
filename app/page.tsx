@@ -20,6 +20,8 @@ function HomePage() {
     handleSearch,
     handleReset,
     handleCancelSearch,
+    sourceIssue,
+    handleRetrySources,
   } = useHomePage();
 
   // Real-time latency pinging
@@ -48,6 +50,8 @@ function HomePage() {
       onSearch={handleSearch}
       onReset={handleReset}
       onCancelSearch={handleCancelSearch}
+      sourceIssue={sourceIssue}
+      onRetrySources={handleRetrySources}
       onOpenHistory={() => setIsHistoryOpen(true)}
       featured={<PopularFeatures onSearch={handleSearch} />}
       sidebars={
