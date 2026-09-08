@@ -7,7 +7,10 @@ interface SearchCache {
   timestamp: number;
 }
 
-const CACHE_KEY = 'kcine_search_cache';
+// v2: old entries were cached together with a stale/polluted source list
+// (availableSources), which kept rendering broken source badges on the home
+// page after restore. The bump invalidates them.
+const CACHE_KEY = 'kcine_search_cache_v2';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 const MAX_CACHED_RESULTS = 300;

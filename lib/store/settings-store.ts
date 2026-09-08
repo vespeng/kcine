@@ -345,6 +345,18 @@ export const settingsStore = {
       localStorage.removeItem(SEARCH_HISTORY_KEY);
       localStorage.removeItem(WATCH_HISTORY_KEY);
 
+      // Caches that used to survive a reset and keep stale/broken state
+      localStorage.removeItem('kcine_search_cache');
+      localStorage.removeItem('kcine_search_cache_v2');
+      localStorage.removeItem('kcine_popular_cache');
+      localStorage.removeItem('kcine-config-synced-at');
+      localStorage.removeItem('kcine-subscription-sync-version');
+      for (const key of Object.keys(localStorage)) {
+        if (key.startsWith('kcine_custom_tags_')) {
+          localStorage.removeItem(key);
+        }
+      }
+
       // Clear all cookies
       document.cookie.split(";").forEach((c) => {
         document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");

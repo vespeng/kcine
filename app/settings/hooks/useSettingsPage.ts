@@ -345,7 +345,14 @@ export function useSettingsPage() {
 
     const handleRestoreDefaults = () => {
         const defaults = getDefaultSources();
-        handleSourcesChange(defaults);
+
+        // The predefined source list is empty — sources are provided by
+        // subscriptions / env config. Wiping `sources` here would leave the
+        // site with nothing to search until the next subscription sync.
+        if (defaults.length > 0) {
+            handleSourcesChange(defaults);
+        }
+
         setIsRestoreDefaultsDialogOpen(false);
     };
 

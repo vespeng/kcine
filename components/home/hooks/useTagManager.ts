@@ -5,7 +5,10 @@ import type { Tag } from '../SortableTag';
 
 const DEFAULT_TAG = { id: 'popular', label: '热门', value: '热门' };
 
-const STORAGE_KEY_PREFIX = 'kcine_custom_tags_';
+// v2: older builds cached an empty result (only the default tag) when the
+// Douban request failed, which permanently left the home page with a single
+// tag. The version bump invalidates those poisoned caches.
+const STORAGE_KEY_PREFIX = 'kcine_custom_tags_v2_';
 
 const ensureDefaultTag = (tags: Tag[]) => {
     if (tags.some((tag) => tag.id === DEFAULT_TAG.id || tag.value === DEFAULT_TAG.value)) {
@@ -62,9 +65,17 @@ export function useTagManager() {
             }
             try {
                 const response = await fetch(`/api/douban/tags?type=${contentType}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch tags: ${response.status}`);
+                }
+
                 const data = await response.json();
-                if (data.tags && Array.isArray(data.tags)) {
-                    const mappedTags = data.tags.map((label: string) => ({
+                const labels: string[] = Array.isArray(data.tags) ? data.tags : [];
+
+                // Only cache a real tag list — caching a failed/empty response
+                // would permanently hide every tag on the home page.
+                if (labels.length > 0) {
+                    const mappedTags = labels.map((label: string) => ({
                         id: label === '热门' ? 'popular' : `tag_${label}`,
                         label,
                         value: label,
@@ -75,11 +86,11 @@ export function useTagManager() {
                     // Cache to localStorage so subsequent content type switches are instant
                     localStorage.setItem(storageKey, JSON.stringify(finalTags));
                 } else {
-                    setTags([DEFAULT_TAG]);
+                    setTags(prev => (prev.length > 0 ? prev : [DEFAULT_TAG]));
                 }
             } catch (error) {
                 console.error('Fetch tags error:', error);
-                setTags([DEFAULT_TAG]);
+                setTags(prev => (prev.length > 0 ? prev : [DEFAULT_TAG]));
             } finally {
                 setIsLoadingTags(false);
             }
@@ -122,9 +133,15 @@ export function useTagManager() {
         setIsLoadingTags(true);
         try {
             const response = await fetch(`/api/douban/tags?type=${contentType}`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch tags: ${response.status}`);
+            }
+
             const data = await response.json();
-            if (data.tags && Array.isArray(data.tags)) {
-                const mappedTags = data.tags.map((label: string) => ({
+            const labels: string[] = Array.isArray(data.tags) ? data.tags : [];
+
+            if (labels.length > 0) {
+                const mappedTags = labels.map((label: string) => ({
                     id: label === '热门' ? 'popular' : `tag_${label}`,
                     label,
                     value: label,

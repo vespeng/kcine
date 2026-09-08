@@ -51,7 +51,7 @@ docker run -d -p 3000:3000 --name kcine vespeng/kcine:latest
 docker run -d -p 3000:3000 \
   -e ADMIN_PASSWORD="admin123" \
   -e PREMIUM_PASSWORD="premium456" \
-  -e ACCOUNTS="user1:用户一:admin,user2:用户二:viewer" \
+  -e ACCOUNTS="user1:pass1:用户一:viewer,user2:pass2:用户二:admin" \
   -e SITE_NAME="我的视频" \
   --name video vespeng/video:latest
 ```
