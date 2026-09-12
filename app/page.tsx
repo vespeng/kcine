@@ -5,6 +5,7 @@ import { PopularFeatures } from '@/components/home/PopularFeatures';
 import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
 import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { useHomePage } from '@/lib/hooks/useHomePage';
+import { useDirectPlay } from '@/lib/hooks/useDirectPlay';
 import { useLatencyPing } from '@/lib/hooks/useLatencyPing';
 
 function HomePage() {
@@ -23,6 +24,7 @@ function HomePage() {
     sourceIssue,
     handleRetrySources,
   } = useHomePage();
+  const { status: directPlayStatus, handleDirectPlay, resetDirectPlay } = useDirectPlay();
 
   // Real-time latency pinging
   const sourceUrls = useMemo(() =>
@@ -53,7 +55,7 @@ function HomePage() {
       sourceIssue={sourceIssue}
       onRetrySources={handleRetrySources}
       onOpenHistory={() => setIsHistoryOpen(true)}
-      featured={<PopularFeatures onSearch={handleSearch} />}
+      featured={<PopularFeatures onMovieClick={handleDirectPlay} directPlayStatus={directPlayStatus} onResetDirectPlay={resetDirectPlay} />}
       sidebars={
         <WatchHistorySidebar
           isOpen={isHistoryOpen}

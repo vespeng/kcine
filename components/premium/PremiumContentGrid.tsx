@@ -11,7 +11,6 @@ interface PremiumContentGridProps {
     videos: Video[];
     loading: boolean;
     hasMore: boolean;
-    onVideoClick?: (video: Video) => void;
     prefetchRef: React.RefObject<HTMLDivElement | null>;
     loadMoreRef: React.RefObject<HTMLDivElement | null>;
 }
@@ -20,7 +19,6 @@ export function PremiumContentGrid({
     videos,
     loading,
     hasMore,
-    onVideoClick,
     prefetchRef,
     loadMoreRef,
 }: PremiumContentGridProps) {
@@ -31,52 +29,54 @@ export function PremiumContentGrid({
     return (
         <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-3 md:gap-4 lg:gap-6 max-w-page mx-auto">
-                {videos.map((video) => (
-                    <Link
-                        key={`${video.source}-${video.vod_id}`}
-                        href={`/premium?q=${encodeURIComponent(video.vod_name)}`}
-                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                            // Allow default behavior for modifier keys (new tab, etc.)
-                            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                {videos.map((video) => {
+                    const videoUrl = `/player?${new URLSearchParams({
+                        id: String(video.vod_id),
+                        source: video.source,
+                        title: video.vod_name,
+                        premium: '1',
+                    }).toString()}`;
 
-                            e.preventDefault();
-                            onVideoClick?.(video);
-                        }}
-                        className="group relative z-1 hover:z-100 content-visibility-auto cursor-pointer hover:-translate-y-0.5 transition-transform duration-200 ease-out"
-                    >
-                        <Card hover={false} padded={false} className="h-full p-6">
-                            <div className="relative aspect-poster bg-surface overflow-hidden rounded-2xl">
-                                {video.vod_pic ? (
-                                    <Image
-                                        src={video.vod_pic}
-                                        alt={video.vod_name}
-                                        fill
-                                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                        loading="eager"
-                                        unoptimized
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-text-secondary">
-                                        无封面
-                                    </div>
-                                )}
-                                {video.vod_remarks && (
-                                    <div className="absolute top-2 right-2 bg-black/80 px-2.5 py-1.5 flex items-center gap-1.5 rounded-full">
-                                        <span className="text-xs font-bold text-white">
-                                            {video.vod_remarks}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="pt-1.5 px-1 pb-1">
-                                <h3 className="font-semibold text-sm text-left text-text line-clamp-1 leading-snug group-hover:text-primary transition-colors">
-                                    {video.vod_name}
-                                </h3>
-                            </div>
-                        </Card>
-                    </Link>
-                ))}
+                    return (
+                        <Link
+                            key={`${video.source}-${video.vod_id}`}
+                            href={videoUrl}
+                            className="group relative z-1 hover:z-100 content-visibility-auto cursor-pointer hover:-translate-y-0.5 transition-transform duration-200 ease-out"
+                        >
+                            <Card hover={false} padded={false} className="h-full p-6">
+                                <div className="relative aspect-poster bg-surface overflow-hidden rounded-2xl">
+                                    {video.vod_pic ? (
+                                        <Image
+                                            src={video.vod_pic}
+                                            alt={video.vod_name}
+                                            fill
+                                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                            loading="eager"
+                                            unoptimized
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-text-secondary">
+                                            无封面
+                                        </div>
+                                    )}
+                                    {video.vod_remarks && (
+                                        <div className="absolute top-2 right-2 bg-black/80 px-2.5 py-1.5 flex items-center gap-1.5 rounded-full">
+                                            <span className="text-xs font-bold text-white">
+                                                {video.vod_remarks}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="pt-1.5 px-1 pb-1">
+                                    <h3 className="font-semibold text-sm text-left text-text line-clamp-1 leading-snug group-hover:text-primary transition-colors">
+                                        {video.vod_name}
+                                    </h3>
+                                </div>
+                            </Card>
+                        </Link>
+                    );
+                })}
             </div>
 
             {/* Prefetch Trigger - Earlier */}

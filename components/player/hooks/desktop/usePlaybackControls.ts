@@ -144,7 +144,10 @@ export function usePlaybackControls({
             const playPromise = videoRef.current.play();
             if (playPromise !== undefined) {
                 playPromise.catch((err: Error) => {
-                    console.warn('Force autoplay was prevented:', err);
+                    // Ignore AbortError: the play() request was interrupted by a new load request.
+                    if (err.name !== 'AbortError') {
+                        console.warn('Force autoplay was prevented:', err);
+                    }
                 });
             }
         }

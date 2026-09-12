@@ -35,7 +35,7 @@ function PremiumHomePage() {
             onSearch={handleSearch}
             onReset={handleReset}
             onCancelSearch={handleCancelSearch}
-            featured={<PremiumContent onSearch={handleSearch} />}
+            featured={<PremiumContent />}
         />
     );
 }

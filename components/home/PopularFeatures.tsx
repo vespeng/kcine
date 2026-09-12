@@ -9,9 +9,11 @@
 import { useState } from 'react';
 import { TagManager } from './TagManager';
 import { MovieGrid } from './MovieGrid';
+import { NoResults } from '@/components/search/NoResults';
 import { useTagManager } from './hooks/useTagManager';
 import { usePopularMovies } from './hooks/usePopularMovies';
 import { usePersonalizedRecommendations } from './hooks/usePersonalizedRecommendations';
+import type { DirectPlayStatus } from '@/lib/hooks/useDirectPlay';
 
 interface DoubanMovie {
   id: string;
@@ -22,10 +24,16 @@ interface DoubanMovie {
 }
 
 interface PopularFeaturesProps {
-  onSearch?: (query: string) => void;
+  onMovieClick?: (movie: DoubanMovie) => void;
+  directPlayStatus?: DirectPlayStatus;
+  onResetDirectPlay?: () => void;
 }
 
-export function PopularFeatures({ onSearch }: PopularFeaturesProps) {
+export function PopularFeatures({
+  onMovieClick,
+  directPlayStatus = 'idle',
+  onResetDirectPlay,
+}: PopularFeaturesProps) {
   const {
     tags,
     selectedTag,
@@ -73,8 +81,8 @@ export function PopularFeatures({ onSearch }: PopularFeaturesProps) {
   );
 
   const handleMovieClick = (movie: DoubanMovie) => {
-    if (onSearch) {
-      onSearch(movie.title);
+    if (onMovieClick) {
+      onMovieClick(movie);
     }
   };
 
@@ -100,6 +108,21 @@ export function PopularFeatures({ onSearch }: PopularFeaturesProps) {
     setIsRecommendSelected(false);
     setContentType(type);
   };
+
+  if (directPlayStatus === 'loading') {
+    return (
+      <div className="flex justify-center py-20">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+          <p className="text-sm text-text-secondary">加载中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (directPlayStatus === 'notfound') {
+    return <NoResults onReset={onResetDirectPlay || (() => {})} />;
+  }
 
   return (
     <div className="animate-fade-in">

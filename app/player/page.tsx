@@ -21,6 +21,8 @@ import { premiumModeSettingsStore } from '@/lib/store/premium-mode-settings';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { getSourceName } from '@/lib/utils/source-names';
 import { retrieveGroupedSources, storeGroupedSources } from '@/lib/utils/grouped-sources-cache';
+import { traditionalToSimplified } from '@/lib/utils/chinese-convert';
+import { parseVideoTitle } from '@/lib/utils/video';
 import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
 
 type PlayerViewportMode = 'standard' | 'wide' | 'cinema';
@@ -196,9 +198,8 @@ function PlayerContent() {
   }, [discoveredSources, handleSourceUnavailable, pendingFallback]);
 
   // Background fetch alternative sources when none provided or when existing ones lack full info
-  const fetchedSourcesRef = useRef(false);
   useEffect(() => {
-    if (fetchedSourcesRef.current || !title) return;
+    if (!title) return;
 
     // Check if existing grouped sources already have full info (pic + latency)
     let existingSources: SourceInfo[] = [];
@@ -212,8 +213,6 @@ function PlayerContent() {
     const hasFullInfo = !pendingFallback && existingSources.length > 1 &&
       existingSources.every(s => s.pic || s.latency !== undefined);
     if (hasFullInfo) return;
-
-    fetchedSourcesRef.current = true;
 
     const settings = settingsStore.getSettings();
     const sourcesForMode = isPremium ? settings.premiumSources : settings.sources;
@@ -238,7 +237,7 @@ function PlayerContent() {
         const decoder = new TextDecoder();
         let buffer = '';
         const found: SourceInfo[] = [];
-        const normalizedTitle = title.toLowerCase().trim();
+        const normalizedTitle = traditionalToSimplified(title).toLowerCase().replace(/\s+/g, '');
 
         while (true) {
           const { done, value } = await reader.read();
@@ -252,7 +251,7 @@ function PlayerContent() {
             try {
               const data = JSON.parse(line.slice(6));
               if (data.type === 'videos' && data.videos) {
-                // Find exact or close title match
+                // Find exact title match (same normalization as direct play)
                 const match = data.videos.find((v: {
                   vod_name?: string;
                   vod_id: string | number;
@@ -262,9 +261,11 @@ function PlayerContent() {
                   vod_pic?: string;
                   type_name?: string;
                   vod_remarks?: string;
-                }) =>
-                  v.vod_name?.toLowerCase().trim() === normalizedTitle
-                );
+                }) => {
+                  const rawName = traditionalToSimplified(v.vod_name || '').toLowerCase().replace(/\s+/g, '');
+                  const cleanName = traditionalToSimplified(parseVideoTitle(v.vod_name || '').cleanTitle).toLowerCase().replace(/\s+/g, '');
+                  return rawName === normalizedTitle || cleanName === normalizedTitle;
+                });
                 if (match) {
                   found.push({
                     id: match.vod_id,
@@ -411,9 +412,11 @@ function PlayerContent() {
 
       <main className="max-w-content mx-auto px-4 pb-20 pt-2">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
-            <p className="text-text-secondary">正在加载视频详情...</p>
+          <div className="flex justify-center py-20">
+            <div className="flex flex-col items-center gap-3">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+              <p className="text-sm text-text-secondary">正在加载视频详情...</p>
+            </div>
           </div>
         ) : videoError && !videoData ? (
           <PlayerError

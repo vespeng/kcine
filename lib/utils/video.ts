@@ -74,3 +74,28 @@ export function extractPlaybackQualityLabel(
 export function extractQualityLabel(remarks?: string, quality?: string): { label: string; color: string } | null {
     return extractNumericResolutionLabel(remarks, quality);
 }
+
+/**
+ * Keywords that mark a search result as a derivative (commentary, trailer,
+ * behind-the-scenes clip, etc.) rather than the normal film / show itself.
+ */
+const NON_NORMAL_RESOURCE_KEYWORDS = [
+    '解说', '预告', '花絮', '片段', '混剪', '解读', '采访', '幕后', '片花', '特辑',
+];
+
+/**
+ * Returns true when a search result is the normal playable film / show
+ * resource, as opposed to a commentary, trailer or clip version.
+ */
+export function isNormalVideoResource(video: {
+    type_name?: string;
+    vod_remarks?: string;
+    vod_name?: string;
+}): boolean {
+    const haystack = [video.type_name, video.vod_remarks, video.vod_name]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+    return !NON_NORMAL_RESOURCE_KEYWORDS.some((keyword) => haystack.includes(keyword));
+}
