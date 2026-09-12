@@ -54,10 +54,10 @@ export function SortableTag({
                     type="button"
                     onClick={() => onTagSelect(tag.id)}
                     className={`
-            px-4 py-1.5 text-xs font-medium transition-all whitespace-nowrap rounded-[var(--radius-full)] cursor-pointer select-none
+            px-4 py-1.5 text-xs font-medium transition-all whitespace-nowrap rounded-full cursor-pointer select-none
             ${selectedTag === tag.id
-                            ? 'bg-[var(--accent-color)] text-white shadow-md scale-105'
-                            : 'bg-[var(--glass-bg)] backdrop-blur-xl text-[var(--text-color)] border border-[var(--glass-border)] hover:border-[var(--accent-color)] hover:scale-105'
+                            ? 'bg-primary text-white shadow-md scale-105'
+                            : 'bg-surface backdrop-blur-xl text-text border border-border hover:border-primary hover:scale-105'
                         }
           `}
                 >
@@ -70,7 +70,7 @@ export function SortableTag({
                             e.stopPropagation();
                             onTagDelete(tag.id);
                         }}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors rounded-[var(--radius-full)] cursor-pointer z-20 shadow-sm"
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-danger text-white flex items-center justify-center hover:bg-danger-dark transition-colors rounded-full cursor-pointer z-20 shadow-sm"
                     >
                         <Icons.X size={14} />
                     </button>

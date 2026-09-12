@@ -37,14 +37,9 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
     };
 
     return (
-        <nav className="sticky top-0 z-[2000] pt-3 pb-1.5" style={{
-            transform: 'translate3d(0, 0, 0)',
-            willChange: 'transform'
-        }}>
+        <nav className="sticky top-0 z-nav pt-3 pb-1.5 transform-gpu will-change-transform">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="bg-[var(--glass-bg)] backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)] border border-[var(--glass-border)] shadow-[var(--shadow-sm)] px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-[var(--radius-2xl)]" style={{
-                    transform: 'translate3d(0, 0, 0)'
-                }}>
+                <div className="bg-surface backdrop-blur-glass backdrop-saturate-glass border border-border shadow-card px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-2xl transform-gpu">
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
                         <Link
                             href={isPremiumMode ? '/premium' : '/'}
@@ -56,8 +51,8 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                                 <SiteLogo />
                             </div>
                             <div className="flex flex-col min-w-0">
-                                <h1 className="text-lg sm:text-2xl font-bold text-[var(--text-color)] truncate">{siteInfo.name}</h1>
-                                <p className="text-xs text-[var(--text-color-secondary)] hidden sm:block truncate">{siteInfo.description}</p>
+                                <h1 className="text-lg sm:text-2xl font-bold text-text truncate">{siteInfo.name}</h1>
+                                <p className="text-xs text-text-secondary hidden sm:block truncate">{siteInfo.description}</p>
                             </div>
                         </Link>
 
@@ -66,7 +61,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             {iptvEnabled && hasPermission('iptv_access') && (
                             <Link
                                 href="/iptv"
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="直播"
                                 title="直播"
                                 data-focusable
@@ -79,13 +74,13 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             {(session || isPremiumMode) && (
                                 <div className="flex items-center gap-1 sm:gap-2">
                                     {session && (
-                                    <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-full)] text-xs">
-                                        <div className="w-5 h-5 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] font-bold text-[10px] border border-[var(--glass-border)]">
+                                    <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-surface border border-border rounded-full text-xs">
+                                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xs border border-border">
                                             {session.name.charAt(0)}
                                         </div>
-                                        <span className="text-[var(--text-color)] max-w-[60px] truncate">{session.name}</span>
+                                        <span className="text-text max-w-15 truncate">{session.name}</span>
                                         {(session.role === 'admin' || session.role === 'super_admin') && (
-                                            <span className="px-1 py-0.5 bg-[var(--accent-color)]/10 text-[var(--accent-color)] rounded text-[10px] font-medium">
+                                            <span className="px-1 py-0.5 bg-primary/10 text-primary rounded text-2xs font-medium">
                                                 {session.role === 'super_admin' ? '超管' : '管理'}
                                             </span>
                                         )}
@@ -93,7 +88,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                                     )}
                                     <button
                                         onClick={handleLogout}
-                                        className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color-secondary)] hover:text-red-500 hover:border-red-500/30 transition-all duration-200 cursor-pointer"
+                                        className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text-secondary hover:text-danger hover:border-danger/30 transition-all duration-200 cursor-pointer"
                                         aria-label="退出登录"
                                         title="退出登录"
                                     >
@@ -103,7 +98,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             )}
                             <Link
                                 href={favoritesHref}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="我的收藏"
                                 data-focusable
                             >
@@ -112,7 +107,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             {onOpenHistory && (
                             <button
                                 onClick={onOpenHistory}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="观看历史"
                                 title="观看历史"
                                 data-focusable
@@ -122,7 +117,7 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             )}
                             <Link
                                 href={settingsHref}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="设置"
                                 data-focusable
                             >

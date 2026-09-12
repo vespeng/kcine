@@ -6,12 +6,10 @@ import Image from 'next/image';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Icons } from '@/components/ui/Icon';
-import { LatencyBadge } from '@/components/ui/LatencyBadge';
 import { FavoriteButton } from '@/components/favorites/FavoriteButton';
 
 import { Video } from '@/lib/types';
 import { parseVideoTitle } from '@/lib/utils/video';
-import type { ResolutionInfo } from '@/lib/hooks/useResolutionProbe';
 
 interface VideoCardProps {
     video: Video;
@@ -20,9 +18,6 @@ interface VideoCardProps {
     isActive: boolean;
     onCardClick: (e: React.MouseEvent, cardId: string, videoUrl: string) => void;
     isPremium?: boolean;
-    latencies?: Record<string, number>;
-    resolution?: ResolutionInfo | null;
-    isProbing?: boolean;
 }
 
 export const VideoCard = memo<VideoCardProps>(({
@@ -32,20 +27,9 @@ export const VideoCard = memo<VideoCardProps>(({
     isActive,
     onCardClick,
     isPremium = false,
-    latencies = {},
-    resolution,
-    isProbing = false,
 }) => {
-    const displayLatency = latencies[video.source] ?? video.latency;
     return (
-        <div
-            style={{
-                position: 'relative',
-                zIndex: 1,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.zIndex = '100')}
-            onMouseLeave={(e) => (e.currentTarget.style.zIndex = '1')}
-        >
+        <div className="relative z-1 hover:z-100">
             <Link
                 key={cardId}
                 href={videoUrl}
@@ -54,23 +38,21 @@ export const VideoCard = memo<VideoCardProps>(({
                 aria-label={`${video.vod_name}${video.vod_remarks ? ` - ${video.vod_remarks}` : ''}`}
                 prefetch={false}
                 data-focusable
-                className="group cursor-pointer hover:translate-y-[-2px] transition-transform duration-200 ease-out block h-full"
+                className="group cursor-pointer hover:-translate-y-0.5 transition-transform duration-200 ease-out block h-full"
             >
                 <Card
-                    className="p-0 flex flex-col h-full hover:shadow-[0_8px_24px_-8px_var(--shadow-color)] transition-shadow"
+                    className="flex flex-col h-full p-6 hover:shadow-card-hover transition-shadow backface-hidden"
                     hover={false}
-                    style={{
-                        backfaceVisibility: 'hidden',
-                    }}
+                    padded={false}
                 >
                     {/* Poster */}
-                    <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] rounded-[var(--radius-2xl)] overflow-hidden">
+                    <div className="relative aspect-poster bg-surface overflow-hidden rounded-2xl">
                         {video.vod_pic ? (
                             <Image
                                 src={video.vod_pic}
                                 alt={video.vod_name}
                                 fill
-                                className="object-cover rounded-[var(--radius-2xl)]"
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
                                 sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
                                 loading="eager"
                                 unoptimized
@@ -90,7 +72,7 @@ export const VideoCard = memo<VideoCardProps>(({
                                 src="/placeholder-poster.svg"
                                 alt={video.vod_name}
                                 fill
-                                className="object-cover rounded-[var(--radius-2xl)]"
+                                className="object-cover"
                                 sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
                                 unoptimized
                             />
@@ -98,15 +80,15 @@ export const VideoCard = memo<VideoCardProps>(({
 
                         {/* Fallback Icon - visible when image fails completely */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center -z-10 gap-2">
-                            <Icons.Film size={48} className="text-[var(--text-color-secondary)] opacity-40" />
-                            <span className="text-xs text-[var(--text-color-secondary)] opacity-60 px-2 text-center line-clamp-2">{video.vod_name}</span>
+                            <Icons.Film size={48} className="text-text-secondary opacity-40" />
+                            <span className="text-xs text-text-secondary opacity-60 px-2 text-center line-clamp-2">{video.vod_name}</span>
                         </div>
 
                         {/* Badge Container */}
                         <div className="absolute top-2 left-2 right-2 z-10 flex items-center justify-between gap-1">
                             <div className="flex items-center gap-1 min-w-0">
                                 {video.sourceName && (
-                                    <Badge variant="primary" className="bg-[var(--accent-color)] flex-shrink-0 max-w-[100%] truncate">
+                                    <Badge variant="primary" className="bg-primary flex-shrink-0 max-w-full truncate">
                                         {video.sourceName}
                                     </Badge>
                                 )}
@@ -135,9 +117,6 @@ export const VideoCard = memo<VideoCardProps>(({
                         <div
                             className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${isActive ? 'opacity-100 lg:opacity-0 lg:group-hover:opacity-100' : 'opacity-0 lg:group-hover:opacity-100'
                                 }`}
-                            style={{
-                                willChange: 'opacity',
-                            }}
                         >
                             <div className="absolute bottom-0 left-0 right-0 p-3">
                                 {isActive && (
@@ -161,37 +140,10 @@ export const VideoCard = memo<VideoCardProps>(({
                     </div>
 
                     {/* Info */}
-                    <div className="px-2 pt-0.5 pb-1 flex flex-col">
-                        {(() => {
-                            const { cleanTitle } = parseVideoTitle(video.vod_name);
-
-                            return (
-                                <>
-                                    <h4 className="font-semibold text-sm text-[var(--text-color)] line-clamp-2 min-h-[2em] leading-snug">
-                                        {cleanTitle}
-                                    </h4>
-                                    <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
-                                        {resolution ? (
-                                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold text-white ${resolution.color}`}>
-                                                {resolution.label}
-                                            </span>
-                                        ) : isProbing ? (
-                                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold text-white/50 bg-gray-500/50 animate-pulse">
-                                                ...
-                                            </span>
-                                        ) : null}
-                                        {displayLatency !== undefined && (
-                                            <LatencyBadge latency={displayLatency} className="flex-shrink-0" />
-                                        )}
-                                    </div>
-                                    {video.vod_lang && (
-                                        <p className="text-xs text-[var(--text-color-secondary)] mt-0.5 leading-tight">
-                                            {video.vod_lang}
-                                        </p>
-                                    )}
-                                </>
-                            );
-                        })()}
+                    <div className="pt-1.5 px-1 pb-1">
+                        <h3 className="font-semibold text-sm text-left text-text line-clamp-1 leading-snug group-hover:text-primary transition-colors">
+                            {parseVideoTitle(video.vod_name).cleanTitle}
+                        </h3>
                     </div>
                 </Card>
             </Link>

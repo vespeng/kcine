@@ -5,27 +5,28 @@ interface CardProps {
   className?: string;
   hover?: boolean;
   blur?: boolean;
+  padded?: boolean;
   onClick?: () => void;
   style?: React.CSSProperties;
 }
 
-export function Card({ children, className = '', hover = true, blur = true, onClick, style }: CardProps) {
+export function Card({ children, className = '', hover = true, blur = true, padded = true, onClick, style }: CardProps) {
   const hoverStyles = hover
-    ? "hover:translate-y-[-2px] hover:shadow-[0_8px_24px_var(--shadow-color)] cursor-pointer transition-transform duration-200 ease-out"
+    ? "hover:-translate-y-0.5 hover:shadow-card-hover cursor-pointer transition-transform duration-200 ease-out"
     : "";
 
   // Conditionally apply glass classes (Apple-style translucent surface)
   const blurClasses = blur
-    ? "bg-[var(--glass-bg)] backdrop-blur-md [-webkit-backdrop-filter:blur(16px)_saturate(180%)]"
-    : "bg-[var(--bg-color)]/90"; // More opaque fallback
+    ? "bg-surface backdrop-blur-md backdrop-saturate-glass"
+    : "bg-bg/90"; // More opaque fallback
 
   const baseClasses = `
     ${blurClasses}
-    rounded-[var(--radius-2xl)]
+    rounded-2xl
     shadow-none
     border
-    border-[var(--glass-border)]
-    p-4 md:p-6
+    border-border
+    ${padded ? 'p-4 md:p-6' : ''}
     relative
     ${hoverStyles}
     ${className}
@@ -52,5 +53,3 @@ export function Card({ children, className = '', hover = true, blur = true, onCl
     </div>
   );
 }
-
-

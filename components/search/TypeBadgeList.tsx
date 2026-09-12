@@ -94,7 +94,7 @@ export function TypeBadgeList({ badges, selectedTypes, onToggleType }: TypeBadge
         role="group"
         aria-label="类型筛选"
       >
-        <div className={`relative transition-[max-height] duration-300 z-10 ${!isExpanded ? 'max-h-[50px] overflow-hidden' : 'overflow-visible'
+        <div className={`relative transition-max-height duration-300 z-10 ${!isExpanded ? 'max-h-13 overflow-hidden' : 'overflow-visible'
           }`}>
           <div
             ref={badgeContainerRef}
@@ -118,7 +118,7 @@ export function TypeBadgeList({ badges, selectedTypes, onToggleType }: TypeBadge
           <button
             type="button"
             onClick={toggleExpanded}
-            className="mt-2 text-xs text-[var(--text-color-secondary)] hover:text-[var(--accent-color)]
+            className="mt-2 text-xs text-text-secondary hover:text-primary
                      flex items-center gap-1 transition-colors self-start cursor-pointer"
           >
             <span>{isExpanded ? '收起' : '展开更多'}</span>

@@ -435,6 +435,11 @@ export function useFullscreenControls({
             } else if (video.webkitPresentationMode === 'picture-in-picture') {
                 video.webkitSetPresentationMode?.('inline');
             } else if (video.requestPictureInPicture && fullscreenDocument.pictureInPictureEnabled) {
+                if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
+                    await new Promise<void>((resolve) => {
+                        video.addEventListener('loadedmetadata', () => resolve(), { once: true });
+                    });
+                }
                 await video.requestPictureInPicture();
             } else if (await requestAndroidPictureInPicture()) {
                 return;

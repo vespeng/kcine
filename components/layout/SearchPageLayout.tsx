@@ -65,8 +65,7 @@ export function SearchPageLayout({
     <AppShell isPremium={isPremium} onReset={onReset} onOpenHistory={onOpenHistory}>
       {/* Search Form - Separate from navbar */}
       <div
-        className="max-w-[1240px] mx-auto px-4 mt-6 mb-8 relative"
-        style={{ transform: 'translate3d(0, 0, 0)', zIndex: 1000 }}
+        className="max-w-content mx-auto px-4 mt-6 mb-8 relative transform-gpu z-page-nav"
       >
         <SearchForm
           onSearch={onSearch}
@@ -99,8 +98,8 @@ export function SearchPageLayout({
         {loading && hasSearched && results.length === 0 && (
           <div className="flex justify-center py-20">
             <div className="flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-[var(--accent-color)] border-t-transparent"></div>
-              <p className="text-sm text-[var(--text-color-secondary)]">加载中...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+              <p className="text-sm text-text-secondary">加载中...</p>
             </div>
           </div>
         )}
@@ -112,15 +111,15 @@ export function SearchPageLayout({
         {!loading && hasSearched && results.length === 0 && (
           sourceIssue ? (
             <div className="flex justify-center py-16">
-              <div className="w-full max-w-md p-6 rounded-[var(--radius-2xl)] border border-[var(--glass-border)] bg-[var(--glass-bg)] text-center space-y-4">
+              <div className="w-full max-w-md p-6 rounded-2xl border border-border bg-surface text-center space-y-4">
                 {sourceIssue === 'syncing' ? (
                   <>
                     <div className="flex justify-center">
-                      <div className="animate-spin rounded-full h-10 w-10 border-4 border-[var(--accent-color)] border-t-transparent"></div>
+                      <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent"></div>
                     </div>
                     <div className="space-y-1">
-                      <p className="font-medium text-[var(--text-color)]">正在同步视频源…</p>
-                      <p className="text-sm text-[var(--text-color-secondary)]">
+                      <p className="font-medium text-text">正在同步视频源…</p>
+                      <p className="text-sm text-text-secondary">
                         同步完成后将自动重新搜索，请稍候。
                       </p>
                     </div>
@@ -128,14 +127,14 @@ export function SearchPageLayout({
                 ) : (
                   <>
                     <div className="space-y-1">
-                      <p className="font-medium text-[var(--text-color)]">视频源同步失败，无法搜索</p>
-                      <p className="text-sm text-[var(--text-color-secondary)]">
+                      <p className="font-medium text-text">视频源同步失败，无法搜索</p>
+                      <p className="text-sm text-text-secondary">
                         可能是订阅地址暂时不可用。同步已自动重试，也可手动重试。
                       </p>
                     </div>
                     <button
                       onClick={onRetrySources}
-                      className="px-5 py-2.5 bg-[var(--accent-color)] text-white text-sm font-bold rounded-[var(--radius-full)] hover:brightness-110 active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                      className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-full hover:brightness-110 active:scale-98 transition-all duration-200 cursor-pointer"
                     >
                       重试同步
                     </button>

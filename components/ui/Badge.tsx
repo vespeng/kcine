@@ -16,20 +16,14 @@ const BadgeComponent = memo(function Badge({
   iconPosition = 'left'
 }: BadgeProps) {
   const variants = {
-    primary: "bg-[var(--accent-color)] text-white shadow-[var(--shadow-sm)]",
-    secondary: "bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)]",
+    primary: "bg-primary text-white shadow-card",
+    secondary: "bg-surface border border-border text-text",
   };
 
   const iconElement = icon && (
     <span
-      className={`inline-flex items-center justify-center ${iconPosition === 'left' ? 'mr-1' : 'ml-1'
+      className={`inline-flex items-center justify-center transform-gpu w-3.5 h-3.5 ${iconPosition === 'left' ? 'mr-1' : 'ml-1'
         }`}
-      style={{
-        width: '0.875em',
-        height: '0.875em',
-        transform: 'translateZ(0)',
-        willChange: 'auto',
-      }}
     >
       {icon}
     </span>
@@ -40,15 +34,12 @@ const BadgeComponent = memo(function Badge({
       className={`
         inline-flex items-center justify-center
         px-1.5 py-0.5
-        rounded-[var(--radius-full)]
-        text-[10px] font-semibold
+        rounded-full
+        text-2xs font-semibold
+        transform-gpu
         ${variants[variant]}
         ${className}
       `}
-      style={{
-        transform: 'translateZ(0)',
-        willChange: 'auto',
-      }}
     >
       {icon && iconPosition === 'left' && iconElement}
       {children}

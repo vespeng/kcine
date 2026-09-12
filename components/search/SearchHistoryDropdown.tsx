@@ -7,9 +7,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Icons } from '@/components/ui/Icon';
 import type { SearchHistoryItem } from '@/lib/store/search-history-store';
-import { SearchHistoryEmptyState } from './SearchHistoryEmptyState';
 import { SearchHistoryHeader } from './SearchHistoryHeader';
 import { SearchHistoryListItem } from './SearchHistoryListItem';
 
@@ -57,7 +55,7 @@ export function SearchHistoryDropdown({
   return (
     <div
       ref={dropdownRef}
-      className="search-history-dropdown absolute top-full left-0 right-0 mt-2 z-[9999]"
+      className="search-history-dropdown absolute top-full left-0 right-0 mt-2 z-modal max-h-panel overflow-y-auto overscroll-contain bg-bg/95 backdrop-blur-glass backdrop-saturate-glass rounded-2xl shadow-card border border-border p-4 origin-top select-none will-change-transform animate-dropdown-in"
       role="listbox"
       aria-label="搜索历史"
       onMouseDown={(e) => {
@@ -69,10 +67,10 @@ export function SearchHistoryDropdown({
       <SearchHistoryHeader onClearAll={onClearAll} />
 
       {/* Divider */}
-      <div className="search-history-divider" />
+      <div className="h-px w-full bg-border my-2" />
 
       {/* History items */}
-      <div className="search-history-list">
+      <div className="flex flex-col gap-1">
         {searchHistory.map((item, index) => (
           <SearchHistoryListItem
             key={`${item.query}-${item.timestamp}`}

@@ -62,25 +62,25 @@ export function UserDanmakuSettings() {
               placeholder="API 名称"
               value={name}
               onChange={(e) => { setName(e.target.value); setError(''); }}
-              className="flex-1 px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)]"
+              className="flex-1 px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary"
             />
             <input
               type="text"
               placeholder="API URL (https://...)"
               value={url}
               onChange={(e) => { setUrl(e.target.value); setError(''); }}
-              className="flex-[2] px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)]"
+              className="flex-2 px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[var(--accent-color)] text-white rounded-[var(--radius-2xl)] text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center gap-1"
+              className="px-4 py-2 bg-primary text-white rounded-2xl text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center gap-1"
             >
               <Icons.Plus size={14} />
               添加
             </button>
           </div>
           {error && (
-            <p className="text-xs text-red-500">{error}</p>
+            <p className="text-xs text-danger">{error}</p>
           )}
         </form>
 
@@ -89,45 +89,45 @@ export function UserDanmakuSettings() {
           {/* System default option */}
           <button
             onClick={() => userSourcesStore.setActiveDanmakuApi(null)}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 bg-[var(--glass-bg)] border rounded-[var(--radius-2xl)] text-left transition-all cursor-pointer ${activeId === null ? 'border-[var(--accent-color)] bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)]' : 'border-[var(--glass-border)]'
+            className={`w-full flex items-center gap-3 px-4 py-2.5 bg-surface border rounded-2xl text-left transition-all cursor-pointer ${activeId === null ? 'border-primary bg-primary/5' : 'border-border'
               }`}
           >
-            <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === null ? 'border-[var(--accent-color)]' : 'border-[var(--glass-border)]'
+            <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === null ? 'border-primary' : 'border-border'
               }`}>
-              {activeId === null && <span className="w-2 h-2 rounded-full bg-[var(--accent-color)]" />}
+              {activeId === null && <span className="w-2 h-2 rounded-full bg-primary" />}
             </span>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-[var(--text-color)]">使用系统默认</p>
+              <p className="text-sm font-medium text-text">使用系统默认</p>
               {systemApiUrl && (
-                <p className="text-[10px] text-[var(--text-color-secondary)] truncate">
+                <p className="text-2xs text-text-secondary truncate">
                   {hasPermission('danmaku_api') ? systemApiUrl : '内置 API'}
                 </p>
               )}
               {!systemApiUrl && (
-                <p className="text-[10px] text-[var(--text-color-secondary)]">未配置系统弹幕 API</p>
+                <p className="text-2xs text-text-secondary">未配置系统弹幕 API</p>
               )}
             </div>
           </button>
 
           {apis.map(api => (
-            <div key={api.id} className={`flex items-center gap-3 px-4 py-2.5 bg-[var(--glass-bg)] border rounded-[var(--radius-2xl)] ${activeId === api.id ? 'border-[var(--accent-color)] bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)]' : 'border-[var(--glass-border)]'
+            <div key={api.id} className={`flex items-center gap-3 px-4 py-2.5 bg-surface border rounded-2xl ${activeId === api.id ? 'border-primary bg-primary/5' : 'border-border'
               }`}>
               <button
                 onClick={() => userSourcesStore.setActiveDanmakuApi(api.id)}
                 className="flex items-center gap-3 flex-1 min-w-0 text-left cursor-pointer"
               >
-                <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === api.id ? 'border-[var(--accent-color)]' : 'border-[var(--glass-border)]'
+                <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === api.id ? 'border-primary' : 'border-border'
                   }`}>
-                  {activeId === api.id && <span className="w-2 h-2 rounded-full bg-[var(--accent-color)]" />}
+                  {activeId === api.id && <span className="w-2 h-2 rounded-full bg-primary" />}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-[var(--text-color)] truncate">{api.name}</p>
-                  <p className="text-[10px] text-[var(--text-color-secondary)] truncate">{api.url}</p>
+                  <p className="text-sm font-medium text-text truncate">{api.name}</p>
+                  <p className="text-2xs text-text-secondary truncate">{api.url}</p>
                 </div>
               </button>
               <button
                 onClick={() => userSourcesStore.removeDanmakuApi(api.id)}
-                className="p-1 text-[var(--text-color-secondary)] hover:text-red-500 transition-colors cursor-pointer flex-shrink-0"
+                className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer flex-shrink-0"
               >
                 <Icons.Trash size={14} />
               </button>

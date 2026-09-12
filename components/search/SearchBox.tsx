@@ -66,7 +66,7 @@ export function SearchBox({ onSearch, onClear, initialQuery = '', placeholder = 
     });
 
     return (
-        <form onSubmit={handleSubmit} className="relative group" style={{ isolation: 'isolate' }}>
+        <form onSubmit={handleSubmit} className="relative group isolate">
             <Input
                 ref={inputRef}
                 type="text"
@@ -89,7 +89,7 @@ export function SearchBox({ onSearch, onClear, initialQuery = '', placeholder = 
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="p-1.5 text-[var(--text-color)] opacity-70 hover:opacity-100 transition-opacity touch-manipulation cursor-pointer"
+                        className="p-1.5 text-text opacity-70 hover:opacity-100 transition-opacity touch-manipulation cursor-pointer"
                         aria-label="清除搜索"
                     >
                         <Icons.X size={18} />
@@ -100,9 +100,9 @@ export function SearchBox({ onSearch, onClear, initialQuery = '', placeholder = 
                     disabled={!query.trim()}
                     aria-label="搜索"
                     title="搜索"
-                    className="h-9 sm:h-10 pl-3 pr-4 flex items-center justify-center gap-1.5 rounded-full bg-[var(--accent-color)] text-white shadow-[0_2px_8px_color-mix(in_srgb,var(--shadow-color)_50%,transparent)] hover:brightness-110 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation cursor-pointer flex-shrink-0"
+                    className="h-9 sm:h-10 pl-3 pr-4 flex items-center justify-center gap-1.5 rounded-full bg-primary text-white shadow-soft hover:brightness-110 active:scale-98 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation cursor-pointer flex-shrink-0"
                 >
-                    <Icons.Search size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <Icons.Search size={16} className="sm:w-icon sm:h-icon" />
                     <span className="text-sm sm:text-base font-medium leading-none">搜索</span>
                 </button>
             </div>

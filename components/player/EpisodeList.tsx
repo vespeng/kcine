@@ -319,15 +319,15 @@ export function EpisodeList({
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-3">
             <div className="flex items-center gap-2 min-w-0">
-              <Icons.Layers size={18} className="text-[var(--text-color)]" />
-              <span className="text-base sm:text-lg font-semibold text-[var(--text-color)]">
+              <Icons.Layers size={18} className="text-text" />
+              <span className="text-base sm:text-lg font-semibold text-text">
                 源列表
               </span>
               <Badge variant="primary">{sources!.length}</Badge>
             </div>
             <button
               onClick={() => onSourceSectionCollapseChange?.(!sourceSectionCollapsed)}
-              className="ml-auto p-1.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] text-[var(--text-color-secondary)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)] transition-all duration-200 cursor-pointer"
+              className="ml-auto p-1.5 rounded-2xl bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
               aria-label={sourceSectionCollapsed ? '展开源列表' : '折叠源列表'}
               title={sourceSectionCollapsed ? '展开源列表' : '折叠源列表'}
             >
@@ -338,7 +338,7 @@ export function EpisodeList({
             </button>
           </div>
 
-          <div className="p-3 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)]">
+          <div className="p-3 rounded-2xl bg-surface border border-border">
             <div className="flex items-start gap-3">
               <button
                 onClick={() => {
@@ -349,11 +349,11 @@ export function EpisodeList({
                 className={`flex-1 min-w-0 flex items-center justify-between gap-3 text-left ${sourceSectionCollapsed ? 'cursor-default' : 'cursor-pointer'}`}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-sm font-medium text-[var(--text-color)] truncate">
+                  <span className="text-sm font-medium text-text truncate">
                     {currentSourceInfo?.sourceName || currentSourceInfo?.source || '当前来源'}
                   </span>
                   {currentResolution && (
-                    <span className={`inline-flex items-center px-1 py-0 rounded text-[9px] font-bold text-white ${currentResolution.color} flex-shrink-0`}>
+                    <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${currentResolution.color} flex-shrink-0`}>
                       {currentResolution.label}
                     </span>
                   )}
@@ -361,7 +361,7 @@ export function EpisodeList({
                 {!sourceSectionCollapsed && (
                   <Icons.ChevronDown
                     size={16}
-                    className={`flex-shrink-0 text-[var(--text-color-secondary)] transition-transform duration-200 ${isSourceListOpen ? 'rotate-180' : 'rotate-0'}`}
+                    className={`flex-shrink-0 text-text-secondary transition-transform duration-200 ${isSourceListOpen ? 'rotate-180' : 'rotate-0'}`}
                   />
                 )}
               </button>
@@ -374,7 +374,7 @@ export function EpisodeList({
                     refreshLatencies();
                   }}
                   disabled={isLoadingLatency}
-                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 min-h-[36px] md:px-3 md:py-1.5 md:text-sm"
+                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 min-h-9 md:px-3 md:py-1.5 md:text-sm"
                 >
                   <Icons.RefreshCw size={12} className={isLoadingLatency ? 'animate-spin' : ''} />
                   刷新延迟
@@ -382,7 +382,7 @@ export function EpisodeList({
               )}
             </div>
 
-            <div className="mt-2 flex items-center gap-2 text-xs text-[var(--text-color-secondary)]">
+            <div className="mt-2 flex items-center gap-2 text-xs text-text-secondary">
               <span className="truncate">
                 当前线路：{currentSourceInfo?.sourceName || currentSourceInfo?.source || '未知来源'}
               </span>
@@ -409,12 +409,12 @@ export function EpisodeList({
 
                 return (
                   <>
-                    <div className="space-y-1.5 max-h-[300px] overflow-y-auto">
+                    <div className="space-y-1.5 max-h-list overflow-y-auto">
                       {hasTypeGroups ? (
                         Array.from(groupedByType.entries()).map(([typeName, typeSources]) => (
                           <div key={typeName || '__default'}>
                             {typeName && (
-                              <div className="text-[10px] font-medium text-[var(--text-color-secondary)] uppercase tracking-wider px-2 pt-2 pb-1">
+                              <div className="text-2xs font-medium text-text-secondary uppercase tracking-wider px-2 pt-2 pb-1">
                                 {typeName}
                               </div>
                             )}
@@ -435,16 +435,16 @@ export function EpisodeList({
                                     }
                                   }}
                                   className={`
-                                    w-full p-2.5 rounded-[var(--radius-2xl)] text-left transition-all duration-200
+                                    w-full p-2.5 rounded-2xl text-left transition-all duration-200
                                     flex items-center gap-2.5
                                     ${isCurrent
-                                      ? 'bg-[var(--accent-color)] text-white'
-                                      : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)] cursor-pointer'
+                                      ? 'bg-primary text-white'
+                                      : 'bg-surface hover:bg-surface-hover text-text border border-border cursor-pointer'
                                     }
                                   `}
                                   aria-current={isCurrent ? 'true' : undefined}
                                 >
-                                  <div className="w-10 h-14 rounded-[var(--radius-2xl)] overflow-hidden flex-shrink-0 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)]">
+                                  <div className="w-10 h-14 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
                                     <Image
                                       src={source.pic || '/placeholder-poster.svg'}
                                       alt=""
@@ -465,13 +465,13 @@ export function EpisodeList({
                                     <div className="font-medium text-sm truncate flex items-center gap-1.5">
                                       {source.sourceName || source.source}
                                       {badge ? (
-                                        <span className={`inline-flex items-center px-1 py-0 rounded text-[9px] font-bold text-white ${badge.color}`}>
+                                        <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${badge.color}`}>
                                           {badge.label}
                                         </span>
                                       ) : null}
                                     </div>
                                     {source.remarks && !badge && (
-                                      <div className="text-[10px] text-[var(--text-color-secondary)] truncate mt-0.5">{source.remarks}</div>
+                                      <div className="text-2xs text-text-secondary truncate mt-0.5">{source.remarks}</div>
                                     )}
                                     {latency !== undefined && (
                                       <div className="mt-0.5">
@@ -485,9 +485,9 @@ export function EpisodeList({
                                   {!isCurrent && globalIndex < 3 && (
                                     <Badge
                                       variant="secondary"
-                                      className={`flex-shrink-0 ${globalIndex === 0 ? 'bg-yellow-500/20 text-yellow-600 border-yellow-500' :
-                                        globalIndex === 1 ? 'bg-gray-400/20 text-gray-600 border-gray-400' :
-                                          'bg-orange-400/20 text-orange-600 border-orange-400'
+                                      className={`flex-shrink-0 ${globalIndex === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                        globalIndex === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
+                                          'bg-warning/20 text-warning border-warning'
                                       }`}
                                     >
                                       #{globalIndex + 1}
@@ -515,16 +515,16 @@ export function EpisodeList({
                                 }
                               }}
                               className={`
-                                w-full p-2.5 rounded-[var(--radius-2xl)] text-left transition-all duration-200
+                                w-full p-2.5 rounded-2xl text-left transition-all duration-200
                                 flex items-center gap-2.5
                                 ${isCurrent
-                                  ? 'bg-[var(--accent-color)] text-white'
-                                  : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)] cursor-pointer'
+                                  ? 'bg-primary text-white'
+                                  : 'bg-surface hover:bg-surface-hover text-text border border-border cursor-pointer'
                                 }
                               `}
                               aria-current={isCurrent ? 'true' : undefined}
                             >
-                              <div className="w-10 h-14 rounded-[var(--radius-2xl)] overflow-hidden flex-shrink-0 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)]">
+                              <div className="w-10 h-14 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
                                 <Image
                                   src={source.pic || '/placeholder-poster.svg'}
                                   alt=""
@@ -545,13 +545,13 @@ export function EpisodeList({
                                 <div className="font-medium text-sm truncate flex items-center gap-1.5">
                                   {source.sourceName || source.source}
                                   {badge ? (
-                                    <span className={`inline-flex items-center px-1 py-0 rounded text-[9px] font-bold text-white ${badge.color}`}>
+                                    <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${badge.color}`}>
                                       {badge.label}
                                     </span>
                                   ) : null}
                                 </div>
                                 {source.remarks && !badge && (
-                                  <div className="text-[10px] text-[var(--text-color-secondary)] truncate mt-0.5">{source.remarks}</div>
+                                  <div className="text-2xs text-text-secondary truncate mt-0.5">{source.remarks}</div>
                                 )}
                                 {latency !== undefined && (
                                   <div className="mt-0.5">
@@ -565,9 +565,9 @@ export function EpisodeList({
                               {!isCurrent && index < 3 && (
                                 <Badge
                                   variant="secondary"
-                                  className={`flex-shrink-0 ${index === 0 ? 'bg-yellow-500/20 text-yellow-600 border-yellow-500' :
-                                    index === 1 ? 'bg-gray-400/20 text-gray-600 border-gray-400' :
-                                      'bg-orange-400/20 text-orange-600 border-orange-400'
+                                  className={`flex-shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                    index === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
+                                      'bg-warning/20 text-warning border-warning'
                                   }`}
                                 >
                                   #{index + 1}
@@ -581,7 +581,7 @@ export function EpisodeList({
                     {hasMoreSources && (
                       <button
                         onClick={() => setShowAllSources((current) => !current)}
-                        className="w-full mt-1.5 py-1.5 text-xs text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                        className="w-full mt-1.5 py-1.5 text-xs text-text-secondary hover:text-primary flex items-center justify-center gap-1 transition-colors cursor-pointer"
                       >
                         {showAllVisibleSources ? (
                           <>收起 <Icons.ChevronDown size={12} className="rotate-180" /></>
@@ -598,7 +598,7 @@ export function EpisodeList({
         </div>
       )}
 
-      <div className="text-lg sm:text-xl font-bold text-[var(--text-color)] mb-4 flex items-center gap-2 flex-wrap">
+      <div className="text-lg sm:text-xl font-bold text-text mb-4 flex items-center gap-2 flex-wrap">
         <Icons.List size={20} className="sm:w-6 sm:h-6" />
         <span>选集</span>
         {episodes && (
@@ -610,10 +610,10 @@ export function EpisodeList({
             <button
               onClick={() => setEpisodeLayout((current) => (current === 'grid' ? 'list' : 'grid'))}
               className={`
-                p-1.5 rounded-[var(--radius-2xl)] transition-all duration-200 cursor-pointer
+                p-1.5 rounded-2xl transition-all duration-200 cursor-pointer
                 ${episodeLayout === 'grid'
-                  ? 'bg-[var(--accent-color)] text-white'
-                  : 'bg-[var(--glass-bg)] text-[var(--text-color-secondary)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)]'
+                  ? 'bg-primary text-white'
+                  : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
                 }
               `}
               aria-label={episodeLayout === 'grid' ? '切换为列表' : '切换为网格'}
@@ -627,10 +627,10 @@ export function EpisodeList({
             <button
               onClick={() => onToggleReverse?.(!isReversed)}
               className={`
-                p-1.5 rounded-[var(--radius-2xl)] transition-all duration-200 cursor-pointer
+                p-1.5 rounded-2xl transition-all duration-200 cursor-pointer
                 ${isReversed
-                  ? 'bg-[var(--accent-color)] text-white'
-                  : 'bg-[var(--glass-bg)] text-[var(--text-color-secondary)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)]'
+                  ? 'bg-primary text-white'
+                  : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
                 }
               `}
               aria-label={isReversed ? '恢复正序' : '倒序排列'}
@@ -641,7 +641,7 @@ export function EpisodeList({
           )}
           <button
             onClick={() => onEpisodeSectionCollapseChange?.(!episodeSectionCollapsed)}
-            className="p-1.5 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] text-[var(--text-color-secondary)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)] transition-all duration-200 cursor-pointer"
+            className="p-1.5 rounded-2xl bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
             aria-label={episodeSectionCollapsed ? '展开选集列表' : '折叠选集列表'}
             title={episodeSectionCollapsed ? '展开选集列表' : '折叠选集列表'}
           >
@@ -654,10 +654,10 @@ export function EpisodeList({
       </div>
 
       {episodeSectionCollapsed ? (
-        <div className="rounded-[var(--radius-2xl)] border border-[var(--glass-border)] bg-[var(--glass-bg)] p-3">
+        <div className="rounded-2xl border border-border bg-surface p-3">
           <div className="flex items-center justify-between gap-3 text-sm">
-            <span className="text-[var(--text-color-secondary)]">当前选集</span>
-            <span className="font-medium text-[var(--text-color)] truncate">
+            <span className="text-text-secondary">当前选集</span>
+            <span className="font-medium text-text truncate">
               {currentEpisodeLabel}
             </span>
           </div>
@@ -672,10 +672,10 @@ export function EpisodeList({
                   key={label}
                   onClick={() => setEpisodePage(page)}
                   className={`
-                    px-2.5 py-1 rounded-[var(--radius-2xl)] text-xs font-medium transition-all duration-200 cursor-pointer
+                    px-2.5 py-1 rounded-2xl text-xs font-medium transition-all duration-200 cursor-pointer
                     ${episodePage === page
-                      ? 'bg-[var(--accent-color)] text-white'
-                      : 'bg-[var(--glass-bg)] text-[var(--text-color-secondary)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)]'
+                      ? 'bg-primary text-white'
+                      : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
                     }
                   `}
                   aria-current={episodePage === page ? 'true' : undefined}
@@ -688,7 +688,7 @@ export function EpisodeList({
 
           <div
             ref={listRef}
-            className={`max-h-[400px] sm:max-h-[600px] overflow-y-auto pr-1 ${
+            className={`max-h-panel sm:max-h-panel-lg overflow-y-auto pr-1 ${
               episodeLayout === 'grid'
                 ? 'grid grid-cols-3 sm:grid-cols-4 gap-2'
                 : 'space-y-2'
@@ -719,16 +719,16 @@ export function EpisodeList({
                     aria-current={isCurrentEpisode ? 'true' : undefined}
                     aria-label={`${episode.name || `第 ${originalIndex + 1} 集`}${isCurrentEpisode ? '，当前播放' : ''}`}
                     className={`
-                      rounded-[var(--radius-2xl)] transition-[var(--transition-fluid)] cursor-pointer
+                      rounded-2xl transition-all duration-300 cursor-pointer
                       ${isGrid
                         ? 'px-2 py-2.5 text-center'
                         : 'w-full px-3 py-2 sm:px-4 sm:py-3 text-left'
                       }
                       ${isCurrentEpisode
-                        ? 'bg-[var(--accent-color)] text-white'
-                        : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)]'
+                        ? 'bg-primary text-white'
+                        : 'bg-surface hover:bg-surface-hover text-text border border-border'
                       }
-                      focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] focus-visible:ring-offset-2
+                      focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
                     `}
                   >
                     <div className={`flex items-center ${isGrid ? 'justify-center gap-1' : 'justify-between'}`}>
@@ -743,8 +743,8 @@ export function EpisodeList({
                 );
               })
             ) : (
-              <div className="text-center py-8 text-[var(--text-secondary)] col-span-full">
-                <Icons.Inbox size={48} className="text-[var(--text-color-secondary)] mx-auto mb-2" />
+              <div className="text-center py-8 text-text-secondary col-span-full">
+                <Icons.Inbox size={48} className="text-text-secondary mx-auto mb-2" />
                 <p>暂无剧集信息</p>
               </div>
             )}

@@ -59,25 +59,25 @@ export function UserSourceSettings() {
               placeholder="源名称"
               value={name}
               onChange={(e) => { setName(e.target.value); setError(''); }}
-              className="flex-1 px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)]"
+              className="flex-1 px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary"
             />
             <input
               type="text"
               placeholder="接口地址 (https://...)"
               value={baseUrl}
               onChange={(e) => { setBaseUrl(e.target.value); setError(''); }}
-              className="flex-[2] px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)]"
+              className="flex-2 px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[var(--accent-color)] text-white rounded-[var(--radius-2xl)] text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center gap-1"
+              className="px-4 py-2 bg-primary text-white rounded-2xl text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center gap-1"
             >
               <Icons.Plus size={14} />
               添加
             </button>
           </div>
           {error && (
-            <p className="text-xs text-red-500">{error}</p>
+            <p className="text-xs text-danger">{error}</p>
           )}
         </form>
 
@@ -87,25 +87,25 @@ export function UserSourceSettings() {
             {sources.map(source => (
               <div
                 key={source.id}
-                className="flex items-center justify-between px-4 py-2.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]"
+                className="flex items-center justify-between px-4 py-2.5 bg-surface border border-border rounded-2xl"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => userSourcesStore.toggleSource(source.id)}
-                    className={`w-8 h-5 rounded-full transition-colors cursor-pointer relative flex-shrink-0 ${source.enabled !== false ? 'bg-[var(--accent-color)]' : 'bg-[var(--glass-border)]'
+                    className={`w-8 h-5 rounded-full transition-colors cursor-pointer relative flex-shrink-0 ${source.enabled !== false ? 'bg-primary' : 'bg-border'
                       }`}
                   >
                     <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${source.enabled !== false ? 'left-3.5' : 'left-0.5'
                       }`} />
                   </button>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-[var(--text-color)] truncate">{source.name}</p>
-                    <p className="text-[10px] text-[var(--text-color-secondary)] truncate">{source.baseUrl}</p>
+                    <p className="text-sm font-medium text-text truncate">{source.name}</p>
+                    <p className="text-2xs text-text-secondary truncate">{source.baseUrl}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => userSourcesStore.removeSource(source.id)}
-                  className="p-1 text-[var(--text-color-secondary)] hover:text-red-500 transition-colors cursor-pointer flex-shrink-0"
+                  className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer flex-shrink-0"
                 >
                   <Icons.Trash size={14} />
                 </button>
@@ -115,7 +115,7 @@ export function UserSourceSettings() {
         )}
 
         {sources.length === 0 && (
-          <p className="text-xs text-[var(--text-color-secondary)] text-center py-4">
+          <p className="text-xs text-text-secondary text-center py-4">
             还没有个人视频源，添加一个试试吧。
           </p>
         )}

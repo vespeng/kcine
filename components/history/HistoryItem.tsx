@@ -60,7 +60,7 @@ export function HistoryItem({ item, onRemove, isPremium = false }: HistoryItemPr
     : '';
 
   return (
-    <div className="group bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] rounded-[var(--radius-2xl)] p-3 hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all border border-transparent hover:border-[var(--glass-border)]">
+    <div className="group bg-surface/50 rounded-2xl p-3 hover:bg-primary/10 transition-all border border-transparent hover:border-border">
       <a
         href={getVideoUrl()}
         onClick={(e) => {
@@ -79,15 +79,15 @@ export function HistoryItem({ item, onRemove, isPremium = false }: HistoryItemPr
 
           {/* Info */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-medium text-[var(--text-color)] truncate group-hover:text-[var(--accent-color)] transition-colors mb-1">
+            <h3 className="text-sm font-medium text-text truncate group-hover:text-primary transition-colors mb-1">
               {item.title}
             </h3>
             {episodeText && (
-              <p className="text-xs text-[var(--text-color-secondary)] mb-1">
+              <p className="text-xs text-text-secondary mb-1">
                 {episodeText}
               </p>
             )}
-            <div className="flex items-center justify-between text-xs text-[var(--text-color-secondary)]">
+            <div className="flex items-center justify-between text-xs text-text-secondary">
               <span>{formatTime(item.playbackPosition)} / {formatTime(item.duration)}</span>
               <span>{formatDate(item.timestamp)}</span>
             </div>
@@ -104,7 +104,7 @@ export function HistoryItem({ item, onRemove, isPremium = false }: HistoryItemPr
               remarks={episodeText}
               sourceMap={item.sourceMap}
               size={14}
-              className="!p-1.5 !bg-transparent !border-0 !shadow-none hover:!bg-[var(--glass-bg)]"
+              className="!p-1.5 !bg-transparent !border-0 !shadow-none hover:!bg-surface"
               showTooltip={false}
               isPremium={isPremium}
             />
@@ -116,10 +116,10 @@ export function HistoryItem({ item, onRemove, isPremium = false }: HistoryItemPr
                 e.stopPropagation();
                 onRemove();
               }}
-              className="p-1.5 hover:bg-[var(--glass-bg)] rounded-full cursor-pointer"
+              className="p-1.5 hover:bg-surface rounded-full cursor-pointer"
               aria-label="删除"
             >
-              <Icons.Trash size={14} className="text-[var(--text-color-secondary)]" />
+              <Icons.Trash size={14} className="text-text-secondary" />
             </button>
           </div>
         </div>

@@ -39,7 +39,7 @@ export function SourceManager({
       {sources.map((source, index) => (
         <div
           key={source.id}
-          className="bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-[var(--radius-2xl)] p-4 transition-all duration-300"
+          className="bg-surface backdrop-blur-xl border border-border rounded-2xl p-4 transition-all duration-300"
         >
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -50,23 +50,23 @@ export function SourceManager({
                 aria-label={`切换 ${source.name} 状态`}
               >
                 <span
-                  className={`absolute inset-0 rounded-[var(--radius-full)] transition-all duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) ${source.enabled
-                    ? 'bg-[var(--accent-color)]'
-                    : 'bg-[color-mix(in_srgb,var(--text-color)_20%,transparent)]'
+                  className={`absolute inset-0 rounded-full transition-all duration-400 ease-fluid ${source.enabled
+                    ? 'bg-primary'
+                    : 'bg-text/20'
                     }`}
                 />
                 <span
-                  className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-[var(--radius-full)] shadow-sm transition-transform duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) ${source.enabled ? 'translate-x-5' : 'translate-x-0'
+                  className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-sm transition-transform duration-400 ease-fluid ${source.enabled ? 'translate-x-5' : 'translate-x-0'
                     }`}
                 />
               </button>
 
               {/* Source Info */}
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-[var(--text-color)] truncate">
+                <div className="font-semibold text-text truncate">
                   {source.name}
                 </div>
-                <div className="text-sm text-[var(--text-color-secondary)] truncate">
+                <div className="text-sm text-text-secondary truncate">
                   {source.baseUrl}
                 </div>
               </div>
@@ -78,7 +78,7 @@ export function SourceManager({
               <button
                 onClick={() => handlePriorityChange(source.id, 'up')}
                 disabled={index === 0}
-                className="w-8 h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                 aria-label="上移"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -89,7 +89,7 @@ export function SourceManager({
               <button
                 onClick={() => handlePriorityChange(source.id, 'down')}
                 disabled={index === sources.length - 1}
-                className="w-8 h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                 aria-label="下移"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -101,7 +101,7 @@ export function SourceManager({
               {onEdit && !defaultIds.includes(source.id) && (
                 <button
                   onClick={() => onEdit(source)}
-                  className="w-8 h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                   aria-label="编辑视频源"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -114,7 +114,7 @@ export function SourceManager({
               {/* Delete Button */}
               <button
                 onClick={() => handleDelete(source.id)}
-                className="w-8 h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-danger hover:bg-danger/8 dark:hover:bg-danger/20 transition-all duration-200 cursor-pointer"
                 aria-label="删除视频源"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

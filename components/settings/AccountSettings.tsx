@@ -339,25 +339,25 @@ export function AccountSettings() {
     <SettingsSection title="账户管理" description="查看当前登录用户，并根据部署模式管理访问账户。">
       <div className="space-y-6">
         {session && (
-          <div className="flex items-center justify-between gap-4 p-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]">
+          <div className="flex items-center justify-between gap-4 p-4 bg-surface border border-border rounded-2xl">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] font-bold text-lg border border-[var(--glass-border)]">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg border border-border">
                 {session.name.charAt(0)}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-medium text-[var(--text-color)] truncate">{session.name}</p>
+                <p className="text-sm font-medium text-text truncate">{session.name}</p>
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <Shield size={12} className={session.role === 'super_admin' || session.role === 'admin' ? 'text-[var(--accent-color)]' : 'text-[var(--text-color-secondary)]'} />
-                  <span className="text-xs text-[var(--text-color-secondary)]">
+                  <Shield size={12} className={session.role === 'super_admin' || session.role === 'admin' ? 'text-primary' : 'text-text-secondary'} />
+                  <span className="text-xs text-text-secondary">
                     {session.role === 'super_admin' ? '超级管理员' : session.role === 'admin' ? '管理员' : '观众'}
                   </span>
                   {session.username && (
-                    <span className="text-xs text-[var(--text-color-secondary)]">
+                    <span className="text-xs text-text-secondary">
                       @{session.username}
                     </span>
                   )}
                   {session.mode && (
-                    <span className="text-xs text-[var(--text-color-secondary)]">
+                    <span className="text-xs text-text-secondary">
                       {session.mode === 'managed' ? '托管账户模式' : '环境变量模式'}
                     </span>
                   )}
@@ -367,7 +367,7 @@ export function AccountSettings() {
 
             <button
               onClick={logoutAndReload}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-full)] text-[var(--text-color-secondary)] hover:text-red-500 hover:border-red-500/30 transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-2 px-3 py-1.5 text-sm bg-surface border border-border rounded-full text-text-secondary hover:text-danger hover:border-danger/30 transition-all duration-200 cursor-pointer"
             >
               <LogOut size={14} />
               退出登录
@@ -375,22 +375,22 @@ export function AccountSettings() {
           </div>
         )}
 
-        <div className="flex items-start gap-3 p-4 bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]">
-          <Info className="text-[var(--text-color-secondary)] shrink-0 mt-0.5" size={16} />
+        <div className="flex items-start gap-3 p-4 bg-primary/5 border border-border rounded-2xl">
+          <Info className="text-text-secondary shrink-0 mt-0.5" size={16} />
           <div className="space-y-1">
-            <p className="text-xs text-[var(--text-color-secondary)]">
+            <p className="text-xs text-text-secondary">
               当前登录模式：
-              <span className="text-[var(--text-color)] ml-1">
+              <span className="text-text ml-1">
                 {isManagedMode ? 'Redis 托管账户' : loginMode === 'legacy_password' ? '环境变量密码登录' : '未启用'}
               </span>
             </p>
             {isManagedMode ? (
-              <p className="text-xs text-[var(--text-color-secondary)]">
+              <p className="text-xs text-text-secondary">
                 托管模式下由超级管理员直接在此页面管理账户，修改会立即写入服务端存储。
               </p>
             ) : (
-              <p className="text-xs text-[var(--text-color-secondary)]">
-                环境变量模式下可继续使用 <code className="px-1 py-0.5 bg-[var(--glass-bg)] rounded text-[10px]">ADMIN_PASSWORD</code> 与 <code className="px-1 py-0.5 bg-[var(--glass-bg)] rounded text-[10px]">ACCOUNTS</code> 配置访问控制。
+              <p className="text-xs text-text-secondary">
+                环境变量模式下可继续使用 <code className="px-1 py-0.5 bg-surface rounded text-2xs">ADMIN_PASSWORD</code> 与 <code className="px-1 py-0.5 bg-surface rounded text-2xs">ACCOUNTS</code> 配置访问控制。
               </p>
             )}
           </div>
@@ -401,11 +401,11 @@ export function AccountSettings() {
             <div className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-sm font-medium text-[var(--text-color)] flex items-center gap-2">
-                    <Icons.Users size={16} className="text-[var(--accent-color)]" />
+                  <h3 className="text-sm font-medium text-text flex items-center gap-2">
+                    <Icons.Users size={16} className="text-primary" />
                     账户列表
                   </h3>
-                  <p className="text-xs text-[var(--text-color-secondary)] mt-1">
+                  <p className="text-xs text-text-secondary mt-1">
                     支持新增、改权限、重置密码和删除账户。只有点击保存才会提交修改。
                   </p>
                 </div>
@@ -413,14 +413,14 @@ export function AccountSettings() {
                   <button
                     onClick={restoreDrafts}
                     disabled={!isDirty || isSaving}
-                    className="px-3 py-1.5 text-xs bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-full)] text-[var(--text-color-secondary)] disabled:opacity-50 cursor-pointer"
+                    className="px-3 py-1.5 text-xs bg-surface border border-border rounded-full text-text-secondary disabled:opacity-50 cursor-pointer"
                   >
                     取消修改
                   </button>
                   <button
                     onClick={saveManagedAccounts}
                     disabled={!isDirty || isSaving}
-                    className="px-3 py-1.5 text-xs bg-[var(--accent-color)] text-white rounded-[var(--radius-full)] disabled:opacity-50 cursor-pointer"
+                    className="px-3 py-1.5 text-xs bg-primary text-white rounded-full disabled:opacity-50 cursor-pointer"
                   >
                     {isSaving ? '保存中...' : '保存修改'}
                   </button>
@@ -428,19 +428,19 @@ export function AccountSettings() {
               </div>
 
               {saveError && (
-                <div className="p-3 rounded-[var(--radius-2xl)] border border-red-500/20 bg-red-500/10 text-sm text-red-400">
+                <div className="p-3 rounded-2xl border border-danger/20 bg-danger/10 text-sm text-danger-light">
                   {saveError}
                 </div>
               )}
 
               {saveSuccess && (
-                <div className="p-3 rounded-[var(--radius-2xl)] border border-emerald-500/20 bg-emerald-500/10 text-sm text-emerald-400">
+                <div className="p-3 rounded-2xl border border-success/20 bg-success/10 text-sm text-success-light">
                   {saveSuccess}
                 </div>
               )}
 
               {loadingAccounts ? (
-                <div className="p-4 rounded-[var(--radius-2xl)] border border-[var(--glass-border)] bg-[var(--glass-bg)] text-sm text-[var(--text-color-secondary)]">
+                <div className="p-4 rounded-2xl border border-border bg-surface text-sm text-text-secondary">
                   正在加载账户...
                 </div>
               ) : (
@@ -452,18 +452,18 @@ export function AccountSettings() {
                     return (
                       <div
                         key={account.id || `new-${index}`}
-                        className="p-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] space-y-3"
+                        className="p-4 bg-surface border border-border rounded-2xl space-y-3"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm font-medium text-[var(--text-color)]">
+                            <span className="text-sm font-medium text-text">
                               {account.isNew ? '新账户' : account.name || account.username || '未命名账户'}
                             </span>
-                            <span className="text-xs px-2 py-0.5 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 text-[var(--accent-color)]">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                               {account.role === 'super_admin' ? '超级管理员' : account.role === 'admin' ? '管理员' : '观众'}
                             </span>
                             {isCurrentAccount && (
-                              <span className="text-xs px-2 py-0.5 rounded-[var(--radius-full)] border border-[var(--glass-border)] text-[var(--text-color-secondary)]">
+                              <span className="text-xs px-2 py-0.5 rounded-full border border-border text-text-secondary">
                                 当前账户
                               </span>
                             )}
@@ -471,7 +471,7 @@ export function AccountSettings() {
                           <button
                             onClick={() => removeDraftAccount(index)}
                             disabled={isCurrentAccount}
-                            className="p-1 text-[var(--text-color-secondary)] hover:text-red-500 disabled:opacity-50 transition-colors cursor-pointer"
+                            className="p-1 text-text-secondary hover:text-danger disabled:opacity-50 transition-colors cursor-pointer"
                             title={isCurrentAccount ? '不能删除当前登录账户' : '删除账户'}
                           >
                             <Icons.Trash size={14} />
@@ -480,31 +480,31 @@ export function AccountSettings() {
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           <label className="space-y-1">
-                            <span className="text-xs text-[var(--text-color-secondary)]">用户名</span>
+                            <span className="text-xs text-text-secondary">用户名</span>
                             <input
                               type="text"
                               value={account.username}
                               disabled={!account.isNew}
                               onChange={(event) => updateDraftAccount(index, { username: event.target.value.toLowerCase() })}
-                              className="w-full px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] disabled:opacity-60 focus:outline-none focus:border-[var(--accent-color)]"
+                              className="w-full px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text disabled:opacity-60 focus:outline-none focus:border-primary"
                             />
                           </label>
                           <label className="space-y-1">
-                            <span className="text-xs text-[var(--text-color-secondary)]">显示名称</span>
+                            <span className="text-xs text-text-secondary">显示名称</span>
                             <input
                               type="text"
                               value={account.name}
                               onChange={(event) => updateDraftAccount(index, { name: event.target.value })}
-                              className="w-full px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                              className="w-full px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text focus:outline-none focus:border-primary"
                             />
                           </label>
                           <label className="space-y-1">
-                            <span className="text-xs text-[var(--text-color-secondary)]">角色</span>
+                            <span className="text-xs text-text-secondary">角色</span>
                             <select
                               value={account.role}
                               disabled={isCurrentAccount}
                               onChange={(event) => updateDraftAccount(index, { role: event.target.value as Role })}
-                              className="w-full px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] disabled:opacity-60 focus:outline-none focus:border-[var(--accent-color)]"
+                              className="w-full px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text disabled:opacity-60 focus:outline-none focus:border-primary"
                             >
                               <option value="viewer">观众</option>
                               <option value="admin">管理员</option>
@@ -514,33 +514,33 @@ export function AccountSettings() {
                         </div>
 
                         <label className="space-y-1 block">
-                          <span className="text-xs text-[var(--text-color-secondary)]">
+                          <span className="text-xs text-text-secondary">
                             {account.isNew ? '登录密码' : '重置密码（留空表示不修改）'}
                           </span>
                           <input
                             type="password"
                             value={account.password}
                             onChange={(event) => updateDraftAccount(index, { password: event.target.value })}
-                            className="w-full px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                            className="w-full px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text focus:outline-none focus:border-primary"
                           />
                         </label>
 
                         {extraPermissions.length > 0 && (
                           <div className="space-y-2">
-                            <span className="text-xs text-[var(--text-color-secondary)]">额外权限</span>
+                            <span className="text-xs text-text-secondary">额外权限</span>
                             <div className="flex flex-wrap gap-2">
                               {extraPermissions.map((permission) => {
                                 const checked = account.customPermissions.includes(permission);
                                 return (
                                   <label
                                     key={permission}
-                                    className="flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-xs text-[var(--text-color-secondary)] cursor-pointer"
+                                    className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface border border-border text-xs text-text-secondary cursor-pointer"
                                   >
                                     <input
                                       type="checkbox"
                                       checked={checked}
                                       onChange={() => toggleDraftPermission(index, permission)}
-                                      className="w-3.5 h-3.5 rounded accent-[var(--accent-color)]"
+                                      className="w-3.5 h-3.5 rounded accent-primary"
                                     />
                                     {PERMISSION_LABELS[permission]}
                                   </label>
@@ -555,7 +555,7 @@ export function AccountSettings() {
 
                   <button
                     onClick={addDraftAccount}
-                    className="flex items-center gap-1.5 px-3 py-2 text-sm bg-[var(--glass-bg)] border border-dashed border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] hover:border-[var(--accent-color)]/30 transition-all w-full justify-center cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-2 text-sm bg-surface border border-dashed border-border rounded-2xl text-text-secondary hover:text-primary hover:border-primary/30 transition-all w-full justify-center cursor-pointer"
                   >
                     <Icons.Plus size={14} />
                     添加账户
@@ -564,7 +564,7 @@ export function AccountSettings() {
               )}
             </div>
           ) : (
-            <div className="p-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color-secondary)]">
+            <div className="p-4 bg-surface border border-border rounded-2xl text-sm text-text-secondary">
               当前模式已启用托管账户，但只有超级管理员可以查看和修改账户列表。
             </div>
           )
@@ -573,17 +573,17 @@ export function AccountSettings() {
             <div className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-sm font-medium text-[var(--text-color)] flex items-center gap-2">
-                    <Icons.Settings size={16} className="text-[var(--accent-color)]" />
+                  <h3 className="text-sm font-medium text-text flex items-center gap-2">
+                    <Icons.Settings size={16} className="text-primary" />
                     环境变量账户配置
                   </h3>
-                  <p className="text-xs text-[var(--text-color-secondary)] mt-1">
-                    兼容旧部署模式。新增或修改后，把生成的 <code className="px-1 py-0.5 bg-[var(--glass-bg)] rounded text-[10px]">ACCOUNTS</code> 值同步到部署环境。
+                  <p className="text-xs text-text-secondary mt-1">
+                    兼容旧部署模式。新增或修改后，把生成的 <code className="px-1 py-0.5 bg-surface rounded text-2xs">ACCOUNTS</code> 值同步到部署环境。
                   </p>
                 </div>
                 <button
                   onClick={() => setShowLegacyConfig((current) => !current)}
-                  className="text-xs text-[var(--accent-color)] hover:underline cursor-pointer"
+                  className="text-xs text-primary hover:underline cursor-pointer"
                 >
                   {showLegacyConfig ? '收起' : '展开'}
                 </button>
@@ -594,18 +594,18 @@ export function AccountSettings() {
                   {accounts.map((account) => (
                     <div
                       key={account.id}
-                      className="flex items-center justify-between px-4 py-2.5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]"
+                      className="flex items-center justify-between px-4 py-2.5 bg-surface border border-border rounded-2xl"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[var(--radius-full)] bg-[var(--accent-color)]/10 flex items-center justify-center text-[var(--accent-color)] font-bold text-sm border border-[var(--glass-border)]">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm border border-border">
                           {account.name.charAt(0)}
                         </div>
                         <div>
-                          <span className="text-sm text-[var(--text-color)]">{account.name}</span>
-                          <p className="text-xs text-[var(--text-color-secondary)]">@{account.username}</p>
+                          <span className="text-sm text-text">{account.name}</span>
+                          <p className="text-xs text-text-secondary">@{account.username}</p>
                         </div>
                       </div>
-                      <span className="text-xs px-2 py-0.5 rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color-secondary)]">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-surface border border-border text-text-secondary">
                         {account.role === 'super_admin' ? '超级管理员' : account.role === 'admin' ? '管理员' : '观众'}
                       </span>
                     </div>
@@ -614,7 +614,7 @@ export function AccountSettings() {
               )}
 
               {showLegacyConfig && (
-                <div className="space-y-4 p-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]">
+                <div className="space-y-4 p-4 bg-surface border border-border rounded-2xl">
                   {legacyEntries.map((entry, index) => {
                     const extraPermissions = ALL_PERMISSIONS.filter((permission) => !ROLE_PERMISSIONS[entry.role].includes(permission));
 
@@ -627,19 +627,19 @@ export function AccountSettings() {
                               placeholder="密码"
                               value={entry.password}
                               onChange={(event) => updateLegacyEntry(index, { password: event.target.value })}
-                              className="px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                              className="px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text focus:outline-none focus:border-primary"
                             />
                             <input
                               type="text"
                               placeholder="名称"
                               value={entry.name}
                               onChange={(event) => updateLegacyEntry(index, { name: event.target.value })}
-                              className="px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                              className="px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text focus:outline-none focus:border-primary"
                             />
                             <select
                               value={entry.role}
                               onChange={(event) => updateLegacyEntry(index, { role: event.target.value as Role })}
-                              className="px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                              className="px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text focus:outline-none focus:border-primary"
                             >
                               <option value="viewer">观众</option>
                               <option value="admin">管理员</option>
@@ -651,13 +651,13 @@ export function AccountSettings() {
                               {extraPermissions.map((permission) => (
                                 <label
                                   key={permission}
-                                  className="flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-xs text-[var(--text-color-secondary)] cursor-pointer"
+                                  className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface border border-border text-xs text-text-secondary cursor-pointer"
                                 >
                                   <input
                                     type="checkbox"
                                     checked={entry.customPermissions.includes(permission)}
                                     onChange={() => toggleLegacyPermission(index, permission)}
-                                    className="w-3.5 h-3.5 rounded accent-[var(--accent-color)]"
+                                    className="w-3.5 h-3.5 rounded accent-primary"
                                   />
                                   {PERMISSION_LABELS[permission]}
                                 </label>
@@ -667,7 +667,7 @@ export function AccountSettings() {
                         </div>
                         <button
                           onClick={() => removeLegacyEntry(index)}
-                          className="p-1.5 text-[var(--text-color-secondary)] hover:text-red-500 transition-colors cursor-pointer mt-1"
+                          className="p-1.5 text-text-secondary hover:text-danger transition-colors cursor-pointer mt-1"
                         >
                           <Icons.Trash size={14} />
                         </button>
@@ -677,7 +677,7 @@ export function AccountSettings() {
 
                   <button
                     onClick={addLegacyEntry}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-[var(--glass-bg)] border border-[var(--glass-border)] border-dashed rounded-[var(--radius-2xl)] text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] hover:border-[var(--accent-color)]/30 transition-all w-full justify-center cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-surface border border-border border-dashed rounded-2xl text-text-secondary hover:text-primary hover:border-primary/30 transition-all w-full justify-center cursor-pointer"
                   >
                     <Icons.Plus size={12} />
                     添加账户
@@ -685,16 +685,16 @@ export function AccountSettings() {
 
                   {generatedLegacyAccounts && (
                     <div className="space-y-2">
-                      <label className="text-xs font-medium text-[var(--text-color)]">
+                      <label className="text-xs font-medium text-text">
                         生成的 ACCOUNTS 值
                       </label>
                       <div className="flex gap-2 flex-wrap">
-                        <code className="flex-1 px-3 py-2 bg-black/20 border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-xs text-[var(--text-color)] break-all select-all">
+                        <code className="flex-1 px-3 py-2 bg-black/20 border border-border rounded-2xl text-xs text-text break-all select-all">
                           {generatedLegacyAccounts}
                         </code>
                         <button
                           onClick={() => navigator.clipboard.writeText(generatedLegacyAccounts)}
-                          className="px-3 py-2 bg-[var(--accent-color)] text-white rounded-[var(--radius-2xl)] text-xs hover:opacity-90 transition-all cursor-pointer flex items-center gap-1 flex-shrink-0"
+                          className="px-3 py-2 bg-primary text-white rounded-2xl text-xs hover:opacity-90 transition-all cursor-pointer flex items-center gap-1 flex-shrink-0"
                         >
                           <Icons.Copy size={12} />
                           复制

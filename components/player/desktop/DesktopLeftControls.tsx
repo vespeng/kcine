@@ -36,7 +36,7 @@ export function DesktopLeftControls({
             {/* Play/Pause */}
             <button
                 onClick={onTogglePlay}
-                className="btn-icon shrink-0"
+                className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
             >
                 {isPlaying ? <Icons.Pause size={20} /> : <Icons.Play size={20} />}

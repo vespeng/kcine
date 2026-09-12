@@ -54,12 +54,8 @@ export function DesktopControls(props: DesktopControlsProps) {
 
     return (
         <div
-            className={`absolute bottom-0 left-0 right-0 z-30 transition-all duration-300 ${showControls ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+            className={`absolute bottom-0 left-0 right-0 z-30 transition-all duration-300 ${showControls ? 'opacity-100 translate-y-0 pointer-events-auto visible' : 'opacity-0 translate-y-2 pointer-events-none invisible'
                 }`}
-            style={{
-                pointerEvents: showControls ? 'auto' : 'none',
-                visibility: showControls ? 'visible' : 'hidden',
-            }}
         >
             {/* Progress Bar */}
             <DesktopProgressBar

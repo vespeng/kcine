@@ -35,7 +35,7 @@ export function DesktopRightControls({
                 isPiPSupported && (
                     <button
                         onClick={onTogglePictureInPicture}
-                        className="btn-icon shrink-0"
+                        className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                         aria-label="画中画"
                         title="画中画"
                     >
@@ -49,7 +49,7 @@ export function DesktopRightControls({
                 isAirPlaySupported && (
                     <button
                         onClick={onShowAirPlayMenu}
-                        className="btn-icon shrink-0"
+                        className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                         aria-label="隔空播放"
                         title="隔空播放"
                     >
@@ -63,7 +63,7 @@ export function DesktopRightControls({
                 isCastAvailable && (
                     <button
                         onClick={onShowCastMenu}
-                        className="btn-icon shrink-0"
+                        className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                         aria-label="投屏"
                         title="投屏"
                     >
@@ -75,19 +75,19 @@ export function DesktopRightControls({
             {/* Web Fullscreen */}
             <button
                 onClick={onToggleWebFullscreen}
-                className="btn-icon shrink-0"
+                className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                 aria-label={isWebFullscreen ? '退出网页全屏' : '网页全屏'}
                 title={isWebFullscreen ? '退出网页全屏 (W)' : '网页全屏 (W)'}
             >
                 {isWebFullscreen
-                    ? <Icons.WebFullscreenExit size={20} className="text-[var(--accent-color)]" />
+                    ? <Icons.WebFullscreenExit size={20} className="text-primary" />
                     : <Icons.WebFullscreen size={20} />}
             </button>
 
             {/* Native Fullscreen */}
             <button
                 onClick={onToggleNativeFullscreen}
-                className="btn-icon shrink-0"
+                className="relative z-50 flex items-center justify-center min-w-10 h-10 bg-white/10 border border-white/20 rounded-2xl text-white transition-all duration-200 select-none touch-manipulation hover:bg-white/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/50 shrink-0"
                 aria-label={isNativeFullscreen ? '退出系统全屏' : '系统全屏'}
                 title={isNativeFullscreen ? '退出系统全屏 (F)' : '系统全屏 (F)'}
             >

@@ -47,14 +47,14 @@ export function SegmentedControl<T extends string>({
         <div
             ref={containerRef}
             className={`
-                relative flex p-1 bg-[var(--glass-bg)] backdrop-blur-xl 
-                border border-[var(--glass-border)] rounded-[var(--radius-2xl)] 
-                shadow-[var(--shadow-sm)] ${className}
+                relative flex p-1 bg-surface backdrop-blur-xl 
+                border border-border rounded-2xl 
+                shadow-card ${className}
             `}
         >
             {/* Sliding Indicator */}
             <div
-                className="absolute top-1 bottom-1 bg-[var(--accent-color)] rounded-[calc(var(--radius-2xl)-4px)] shadow-[0_2px_8px_color-mix(in_srgb,var(--accent-color)_30%,transparent)] transition-all duration-300 cubic-bezier(0.2, 0.8, 0.2, 1)"
+                className="absolute top-1 bottom-1 bg-primary rounded-2xl-inset shadow-primary-glow-sm transition-all duration-300 ease-fluid"
                 style={{
                     left: `${indicatorStyle.left}px`,
                     width: `${indicatorStyle.width}px`,
@@ -69,7 +69,7 @@ export function SegmentedControl<T extends string>({
                     onClick={() => onChange(option.value)}
                     className={`
                         relative z-10 flex-1 py-2 px-4 text-sm font-semibold transition-colors duration-200
-                        ${value === option.value ? 'text-white' : 'text-[var(--text-color-secondary)] hover:text-[var(--text-color)]'}
+                        ${value === option.value ? 'text-white' : 'text-text-secondary hover:text-text'}
                     `}
                 >
                     {option.label}

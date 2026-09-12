@@ -395,25 +395,25 @@ function PlayerContent() {
   }, [playerViewportMode, isSourceSectionCollapsed, isEpisodeSectionCollapsed]);
 
   const playerGridClass = effectivePlayerViewportMode === 'cinema'
-    ? 'xl:grid-cols-[minmax(0,1.9fr)_minmax(280px,0.55fr)]'
+    ? 'xl:grid-cols-player-cinema'
     : effectivePlayerViewportMode === 'wide'
-      ? 'xl:grid-cols-[minmax(0,1.65fr)_minmax(300px,0.72fr)]'
-      : 'xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.9fr)]';
+      ? 'xl:grid-cols-player-wide'
+      : 'xl:grid-cols-player-standard';
 
   if (missingRequiredParams) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-color)]">
+    <div className="min-h-screen bg-bg">
       {/* Glass Navbar */}
       <PlayerNavbar isPremium={isPremium} />
 
-      <main className="max-w-[1240px] mx-auto px-4 pb-20 pt-2">
+      <main className="max-w-content mx-auto px-4 pb-20 pt-2">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-[var(--accent-color)] border-t-transparent mb-4"></div>
-            <p className="text-[var(--text-color-secondary)]">正在加载视频详情...</p>
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
+            <p className="text-text-secondary">正在加载视频详情...</p>
           </div>
         ) : videoError && !videoData ? (
           <PlayerError
@@ -424,12 +424,12 @@ function PlayerContent() {
         ) : (
           <div className="space-y-4">
             {/* Viewport controls span full content width so player + sidebar tops align */}
-            <div className="hidden lg:flex items-center justify-between gap-4 rounded-[var(--radius-2xl)] border border-[var(--glass-border)] bg-[var(--glass-bg)] p-4">
+            <div className="hidden lg:flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-4">
               <div>
-                <div className="text-sm font-semibold text-[var(--text-color)]">
+                <div className="text-sm font-semibold text-text">
                   播放窗口大小
                 </div>
-                <div className="text-xs text-[var(--text-color-secondary)] mt-1">
+                <div className="text-xs text-text-secondary mt-1">
                   右侧源列表或选集折叠后，会自动提升到更宽的布局
                   {effectivePlayerViewportMode !== playerViewportMode && `，当前已自动切到${PLAYER_VIEWPORT_MODE_LABELS[effectivePlayerViewportMode]}`}
                 </div>
@@ -442,7 +442,7 @@ function PlayerContent() {
                 ]}
                 value={playerViewportMode}
                 onChange={setPlayerViewportMode}
-                className="min-w-[240px]"
+                className="min-w-menu-xl"
               />
             </div>
 
@@ -489,7 +489,7 @@ function PlayerContent() {
                     size={20}
                     isPremium={isPremium}
                   />
-                  <span className="text-sm text-[var(--text-color-secondary)]">
+                  <span className="text-sm text-text-secondary">
                     收藏这个视频
                   </span>
                 </div>
@@ -578,8 +578,8 @@ function PlayerContent() {
 export default function PlayerPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-color)]">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-[var(--accent-color)] border-t-transparent"></div>
+      <div className="min-h-screen flex items-center justify-center bg-bg">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
       </div>
     }>
       <PlayerContent />

@@ -19,11 +19,11 @@ export function TagInput({
                 onChange={(e) => onNewTagInputChange(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && onAddTag()}
                 placeholder="添加自定义标签..."
-                className="flex-1 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] text-[var(--text-color)] px-4 py-2 focus:outline-none focus:border-[var(--accent-color)] transition-colors rounded-[var(--radius-2xl)]"
+                className="flex-1 bg-surface backdrop-blur-xl border border-border text-text px-4 py-2 focus:outline-none focus:border-primary transition-colors rounded-2xl"
             />
             <button
                 onClick={onAddTag}
-                className="px-6 py-2 bg-[var(--accent-color)] text-white font-semibold hover:opacity-90 transition-opacity rounded-[var(--radius-2xl)] cursor-pointer"
+                className="px-6 py-2 bg-primary text-white font-semibold hover:opacity-90 transition-opacity rounded-2xl cursor-pointer"
             >
                 添加
             </button>

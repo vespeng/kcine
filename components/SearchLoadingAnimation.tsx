@@ -81,7 +81,7 @@ export function SearchLoadingAnimation({
           />
         </svg>
 
-        <span className="text-sm font-medium text-[var(--text-color-secondary)]">
+        <span className="text-sm font-medium text-text-secondary">
           正在搜索视频源{dots}
         </span>
       </div>
@@ -89,38 +89,30 @@ export function SearchLoadingAnimation({
       {/* Progress Bar - Unified 0-100% */}
       <div className="w-full">
         <div
-          className="h-1 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-[var(--radius-full)]"
+          className="h-1 bg-surface/50 overflow-hidden rounded-full"
         >
           <div
-            className="h-full bg-[var(--accent-color)] transition-all duration-500 ease-out relative rounded-[var(--radius-full)]"
+            className="h-full bg-primary transition-all duration-500 ease-out relative rounded-full"
             style={{
               width: `${progress}%`
             }}
           >
             {/* Shimmer Effect - Optimized for GPU with contain for better performance */}
-            <div
-              className="absolute inset-0 animate-shimmer"
-              style={{
-                background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
-                willChange: 'transform',
-                transform: 'translateZ(0)',
-                contain: 'strict'
-              }}
-            ></div>
+            <div className="absolute inset-0 animate-shimmer shimmer-bar"></div>
           </div>
         </div>
 
         {/* Progress Info - Real-time count with pause indicator */}
-        <div className="flex items-center justify-between mt-2 text-xs text-[var(--text-color-secondary)]">
+        <div className="flex items-center justify-between mt-2 text-xs text-text-secondary">
           <span className="flex items-center gap-2">
             {statusText}
             {isPaused && (
-              <span className="px-2 py-0.5 rounded-[var(--radius-full)] bg-[var(--glass-bg)] text-[10px]">
+              <span className="px-2 py-0.5 rounded-full bg-surface text-2xs">
                 已暂停
               </span>
             )}
             {isComplete && (
-              <span className="px-2 py-0.5 rounded-[var(--radius-full)] bg-[var(--accent-color)] text-white text-[10px]">
+              <span className="px-2 py-0.5 rounded-full bg-primary text-white text-2xs">
                 完成
               </span>
             )}
@@ -130,7 +122,7 @@ export function SearchLoadingAnimation({
             {!isComplete && onCancel && (
               <button
                 onClick={onCancel}
-                className="px-2 py-0.5 rounded-[var(--radius-full)] bg-[var(--glass-bg)] hover:bg-red-500/20 text-[10px] transition-colors cursor-pointer"
+                className="px-2 py-0.5 rounded-full bg-surface hover:bg-danger/20 text-2xs transition-colors cursor-pointer"
               >
                 取消
               </button>

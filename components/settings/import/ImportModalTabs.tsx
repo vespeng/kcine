@@ -15,7 +15,7 @@ export function ImportModalTabs({ activeTab, onTabChange }: ImportModalTabsProps
 
     return (
         <div className="relative mb-6">
-            <div className="flex border-b border-[var(--glass-border)] relative overflow-x-auto whitespace-nowrap no-scrollbar w-full">
+            <div className="flex border-b border-border relative overflow-x-auto whitespace-nowrap no-scrollbar w-full">
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
@@ -23,14 +23,14 @@ export function ImportModalTabs({ activeTab, onTabChange }: ImportModalTabsProps
                         className={`
               relative px-5 py-3 text-sm font-medium transition-colors duration-200
               ${activeTab === tab.id
-                                ? 'text-[var(--text-color)] font-semibold'
-                                : 'text-[var(--text-color-secondary)] hover:text-[var(--text-color)]'}
+                                ? 'text-text font-semibold'
+                                : 'text-text-secondary hover:text-text'}
             `}
                     >
                         {tab.label}
                         {/* Active Indicator */}
                         {activeTab === tab.id && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-color)] rounded-t-full shadow-[0_0_8px_var(--accent-color)]" />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full shadow-primary-glow-sm" />
                         )}
                     </button>
                 ))}

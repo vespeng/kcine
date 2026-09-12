@@ -10,10 +10,7 @@ interface HistoryListProps {
 
 export function HistoryList({ history, onRemove, isPremium = false }: HistoryListProps) {
     return (
-        <div className="flex-1 overflow-y-auto -mx-2 px-2" style={{
-            transform: 'translate3d(0, 0, 0)',
-            WebkitOverflowScrolling: 'touch'
-        }}>
+        <div className="flex-1 overflow-y-auto -mx-2 px-2 transform-gpu">
             {history.length === 0 ? (
                 <HistoryEmptyState />
             ) : (

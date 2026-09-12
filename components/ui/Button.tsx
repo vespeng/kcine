@@ -11,37 +11,36 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   className = '',
   ...props
 }, ref) => {
-  const baseStyles = "inline-flex items-center justify-center px-4 py-2.5 md:px-6 md:py-3 font-semibold text-sm md:text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation cursor-pointer";
+  const baseStyles = "inline-flex items-center justify-center px-4 py-2.5 md:px-6 md:py-3 font-semibold text-sm md:text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-h-touch touch-manipulation cursor-pointer";
 
   const variants = {
     primary: `
-      bg-[var(--accent-color)] 
+      bg-primary
       text-white 
       border-none 
-      rounded-[var(--radius-2xl)] 
-      shadow-[0_2px_8px_color-mix(in_srgb,var(--shadow-color)_50%,transparent)]
+      rounded-2xl
+      shadow-soft
       hover:brightness-110 
-      hover:shadow-[0_4px_12px_color-mix(in_srgb,var(--shadow-color)_70%,transparent)]
-      active:scale-[0.98] 
+      hover:shadow-card-hover
+      active:scale-98
       active:brightness-95
     `,
     secondary: `
-      bg-[var(--glass-bg)] 
-      backdrop-blur-xl
-      [-webkit-backdrop-filter:blur(25px)_saturate(180%)]
+      bg-surface 
+      backdrop-blur-glass backdrop-saturate-glass
       border 
-      border-[var(--glass-border)] 
-      rounded-[var(--radius-2xl)]
-      text-[var(--text-color)]
-      shadow-[0_2px_8px_color-mix(in_srgb,var(--shadow-color)_50%,transparent)]
-      hover:shadow-[0_4px_12px_color-mix(in_srgb,var(--shadow-color)_70%,transparent)]
-      active:scale-[0.98]
+      border-border
+      rounded-2xl
+      text-text
+      shadow-soft
+      hover:shadow-card-hover
+      active:scale-98
     `,
     ghost: `
       bg-transparent
-      text-[var(--text-color)]
-      hover:bg-[var(--glass-border)]
-      active:scale-[0.98]
+      text-text
+      hover:bg-border
+      active:scale-98
     `,
   };
 
@@ -57,5 +56,3 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 });
 
 Button.displayName = 'Button';
-
-

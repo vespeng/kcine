@@ -102,7 +102,7 @@ export function SourceSelector({
     return (
         <Card hover={false} className={`mt-6 ${className}`}>
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg sm:text-xl font-bold text-[var(--text-color)] flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2">
                     <Icons.Layers size={20} className="sm:w-6 sm:h-6" />
                     <span></span>
                     <Badge variant="primary">{sources.length}</Badge>
@@ -118,7 +118,7 @@ export function SourceSelector({
                 </Button>
             </div>
 
-            <div className="space-y-2 max-h-[300px] overflow-y-auto">
+            <div className="space-y-2 max-h-list overflow-y-auto">
                 {sortedSources.map((source, index) => {
                     const isCurrent = source.source === currentSource;
                     const latency = latencies[source.source] ?? source.latency;
@@ -128,18 +128,18 @@ export function SourceSelector({
                             key={`${source.source}-${index}`}
                             onClick={() => !isCurrent && onSourceChange(source)}
                             className={`
-                w-full p-3 rounded-[var(--radius-2xl)] text-left transition-all duration-200
+                w-full p-3 rounded-2xl text-left transition-all duration-200
                 flex items-center gap-3
                 ${isCurrent
-                                    ? 'bg-[var(--accent-color)] text-white'
-                                    : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)] cursor-pointer'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-surface hover:bg-surface-hover text-text border border-border cursor-pointer'
                                 }
               `}
                             aria-current={isCurrent ? 'true' : undefined}
                         >
                             {/* Thumbnail */}
                             {source.pic && (
-                                <div className="w-12 h-16 rounded-[var(--radius-2xl)] overflow-hidden flex-shrink-0 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)]">
+                                <div className="w-12 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
                                     <Image
                                         src={source.pic}
                                         alt=""
@@ -176,9 +176,9 @@ export function SourceSelector({
                             {!isCurrent && index < 3 && (
                                 <Badge
                                     variant="secondary"
-                                    className={`flex-shrink-0 ${index === 0 ? 'bg-yellow-500/20 text-yellow-600 border-yellow-500' :
-                                        index === 1 ? 'bg-gray-400/20 text-gray-600 border-gray-400' :
-                                            'bg-orange-400/20 text-orange-600 border-orange-400'
+                                    className={`flex-shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                        index === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
+                                            'bg-warning/20 text-warning border-warning'
                                         }`}
                                 >
                                     #{index + 1}

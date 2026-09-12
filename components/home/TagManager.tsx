@@ -55,7 +55,7 @@ export function TagManager({
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={onToggleManager}
-          className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2 cursor-pointer"
+          className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2 cursor-pointer"
         >
           <Icons.Tag size={16} />
           {showTagManager ? '完成' : '管理标签'}
@@ -63,7 +63,7 @@ export function TagManager({
         {showTagManager && (
           <button
             onClick={onRestoreDefaults}
-            className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2 cursor-pointer"
+            className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2 cursor-pointer"
           >
             <Icons.RefreshCw size={16} />
             恢复默认
@@ -83,8 +83,8 @@ export function TagManager({
       {/* Tag Filter */}
       {isLoadingTags ? (
         <div className="flex items-center gap-2 py-4">
-          <Icons.RefreshCw size={16} className="animate-spin text-[var(--accent-color)]" />
-          <span className="text-sm text-[var(--text-color-secondary)]">正在加载标签...</span>
+          <Icons.RefreshCw size={16} className="animate-spin text-primary" />
+          <span className="text-sm text-text-secondary">正在加载标签...</span>
         </div>
       ) : (
         <TagList

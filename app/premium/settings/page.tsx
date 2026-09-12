@@ -55,15 +55,15 @@ export default function PremiumSettingsPage() {
 
     return (
         <AdminGate>
-        <div className="min-h-screen bg-[var(--bg-color)] bg-[image:var(--bg-image)] bg-fixed">
+        <div className="min-h-screen bg-bg bg-page bg-fixed">
             <div className="container mx-auto px-4 py-6 max-w-4xl space-y-6">
                 {/* Custom Header for Premium Settings */}
-                <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5">
+                <div className="bg-surface border border-border rounded-2xl shadow-card p-5">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <Link
                                 href="/premium"
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="返回"
                             >
                                 <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -71,8 +71,8 @@ export default function PremiumSettingsPage() {
                                 </svg>
                             </Link>
                             <div>
-                                <h1 className="text-xl font-bold text-[var(--text-color)]">高级模式设置</h1>
-                                <p className="text-sm text-[var(--text-color-secondary)]">管理高级模式的内容源和偏好设置</p>
+                                <h1 className="text-xl font-bold text-text">高级模式设置</h1>
+                                <p className="text-sm text-text-secondary">管理高级模式的内容源和偏好设置</p>
                             </div>
                         </div>
                     </div>

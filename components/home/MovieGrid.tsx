@@ -37,7 +37,7 @@ export function MovieGrid({
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-3 md:gap-4 lg:gap-6 max-w-[1920px] mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-3 md:gap-4 lg:gap-6 max-w-page mx-auto">
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
@@ -66,8 +66,8 @@ function MovieGridLoading() {
   return (
     <div className="flex justify-center py-12">
       <div className="flex flex-col items-center gap-3">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[var(--accent-color)] border-t-transparent"></div>
-        <p className="text-sm text-[var(--text-color-secondary)]">加载中...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        <p className="text-sm text-text-secondary">加载中...</p>
       </div>
     </div>
   );
@@ -76,7 +76,7 @@ function MovieGridLoading() {
 function MovieGridNoMore() {
   return (
     <div className="text-center py-12">
-      <p className="text-[var(--text-color-secondary)]">没有更多内容了</p>
+      <p className="text-text-secondary">没有更多内容了</p>
     </div>
   );
 }
@@ -84,8 +84,8 @@ function MovieGridNoMore() {
 function MovieGridEmpty() {
   return (
     <div className="text-center py-20">
-      <Icons.Film size={64} className="text-[var(--text-color-secondary)] mx-auto mb-4" />
-      <p className="text-[var(--text-color-secondary)]">暂无内容</p>
+      <Icons.Film size={64} className="text-text-secondary mx-auto mb-4" />
+      <p className="text-text-secondary">暂无内容</p>
     </div>
   );
 }

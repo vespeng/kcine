@@ -58,25 +58,25 @@ export function SourceSettings({
     };
 
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5 mb-4">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-5 mb-4">
             <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold text-[var(--text-color)]">视频源管理</h2>
+                <h2 className="text-lg font-semibold text-text">视频源管理</h2>
                 <div className="flex gap-2 flex-wrap">
                     <button
                         onClick={onRestoreDefaults}
-                        className="px-4 py-2 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] text-sm font-medium hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                        className="px-4 py-2 rounded-2xl bg-surface border border-border text-text text-sm font-medium hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                     >
                         恢复默认
                     </button>
                     <button
                         onClick={onAddSource}
-                        className="px-4 py-2 rounded-[var(--radius-2xl)] bg-[var(--accent-color)] text-white text-sm font-semibold hover:brightness-110 hover:-translate-y-0.5 shadow-[var(--shadow-sm)] transition-all duration-200 cursor-pointer"
+                        className="px-4 py-2 rounded-2xl bg-primary text-white text-sm font-semibold hover:brightness-110 hover:-translate-y-0.5 shadow-card transition-all duration-200 cursor-pointer"
                     >
                         + 添加源
                     </button>
                 </div>
             </div>
-            <p className="text-sm text-[var(--text-color-secondary)] mb-4">
+            <p className="text-sm text-text-secondary mb-4">
                 管理视频来源，调整优先级和启用状态
             </p>
 
@@ -87,10 +87,10 @@ export function SourceSettings({
                     placeholder="搜索源..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-2 pl-10 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] placeholder-[var(--text-color-secondary)] focus:outline-none focus:border-[var(--accent-color)] transition-all duration-200"
+                    className="w-full px-4 py-2 pl-10 rounded-2xl bg-surface border border-border text-text placeholder:text-text-secondary focus:outline-none focus:border-primary transition-all duration-200"
                 />
                 <svg
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-color-secondary)]"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -110,7 +110,7 @@ export function SourceSettings({
             {!searchQuery && sources.length > 10 && (
                 <button
                     onClick={() => setShowAllSources(!showAllSources)}
-                    className="w-full mt-4 px-4 py-3 rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] text-sm font-medium hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                    className="w-full mt-4 px-4 py-3 rounded-2xl bg-surface border border-border text-text text-sm font-medium hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                 >
                     {showAllSources ? '收起' : `显示全部 (${sources.length})`}
                 </button>

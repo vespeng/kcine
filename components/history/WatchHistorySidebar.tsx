@@ -87,7 +87,7 @@ export function WatchHistorySidebar({ isPremium = false, isOpen, onOpen, onClose
       {/* Backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-[1999] bg-black/40 opacity-0 animate-[fadeIn_0.2s_ease-out_forwards]"
+          className="fixed inset-0 z-nav-backdrop bg-black/40 opacity-0 animate-fade"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -98,11 +98,7 @@ export function WatchHistorySidebar({ isPremium = false, isOpen, onOpen, onClose
         role="complementary"
         aria-labelledby="history-sidebar-title"
         aria-hidden={!sidebarOpen}
-        style={{
-          transform: sidebarOpen ? 'translate3d(0, 0, 0)' : 'translate3d(100%, 0, 0)',
-          willChange: sidebarOpen ? 'transform' : 'auto'
-        }}
-        className={`fixed top-0 right-0 bottom-0 w-[85%] sm:w-[90%] max-w-[420px] z-[2000] bg-[var(--glass-bg)] backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)] border-l border-[var(--glass-border)] rounded-tl-[var(--radius-2xl)] rounded-bl-[var(--radius-2xl)] p-6 flex flex-col shadow-[var(--shadow-sm)] transition-transform duration-250 ease-out`}
+        className={`fixed top-0 right-0 bottom-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'} will-change-transform w-drawer sm:w-drawer-sm max-w-sidebar z-nav bg-surface backdrop-blur-glass backdrop-saturate-glass border-l border-border rounded-tl-2xl rounded-bl-2xl p-6 flex flex-col shadow-card transition-transform duration-250 ease-out`}
       >
         <HistoryHeader onClose={() => setSidebarOpen(false)} />
 

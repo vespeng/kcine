@@ -51,19 +51,19 @@ export function ImportModal({
 
       {/* Modal */}
       <div
-        className={`fixed top-1/2 left-1/2 z-[9999] w-[90%] max-w-md -translate-x-1/2 transition-all duration-300 ${isOpen
+        className={`fixed top-1/2 left-1/2 z-modal w-modal max-w-md -translate-x-1/2 transition-all duration-300 ${isOpen
             ? 'opacity-100 -translate-y-1/2 scale-100'
-            : 'opacity-0 -translate-y-[40%] scale-95 pointer-events-none'
+            : 'opacity-0 -translate-y-2/5 scale-95 pointer-events-none'
           }`}
       >
-        <div className="bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6 flex flex-col max-h-[85vh]">
+        <div className="bg-surface backdrop-blur-xl border border-border rounded-2xl shadow-overlay p-6 flex flex-col max-h-modal">
           <div className="flex items-center justify-between mb-6 shrink-0">
-            <h3 className="text-xl font-semibold text-[var(--text-color)]">
+            <h3 className="text-xl font-semibold text-text">
               导入设置
             </h3>
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200"
               aria-label="关闭"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

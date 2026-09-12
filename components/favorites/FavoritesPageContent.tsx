@@ -37,7 +37,7 @@ export function FavoritesPageContent({
       isPremium={isPremium}
       onReset={() => router.push(isPremium ? '/premium' : '/')}
       onOpenHistory={() => setIsHistoryOpen(true)}
-      className="bg-[var(--bg-color)] bg-[image:var(--bg-image)] bg-fixed"
+      className="bg-bg bg-page bg-fixed"
     >
       <PageContainer className="py-8 space-y-8">
         <FavoritesPageHeader
@@ -78,7 +78,7 @@ export function FavoritesPageContent({
 export function FavoritesPageFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-16 w-16 border-4 border-[var(--accent-color)] border-t-transparent" />
+      <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent" />
     </div>
   );
 }

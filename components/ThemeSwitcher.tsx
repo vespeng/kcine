@@ -95,16 +95,16 @@ export function ThemeSwitcher() {
         className={`
           flex items-center justify-center
           w-9 h-9 sm:w-10 sm:h-10
-          rounded-[var(--radius-full)]
-          bg-[var(--glass-bg)]
-          backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)]
-          border border-[var(--glass-border)]
-          text-[var(--text-color)]
-          hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]
+          rounded-full
+          bg-surface
+          backdrop-blur-glass backdrop-saturate-glass
+          border border-border
+          text-text
+          hover:bg-primary/10
           transition-all duration-200
           cursor-pointer
-          shadow-[var(--shadow-sm)]
-          ${isOpen ? 'ring-2 ring-[var(--accent-color)]/30' : ''}
+          shadow-card
+          ${isOpen ? 'ring-2 ring-primary/30' : ''}
         `}
         aria-label="切换主题"
         title="切换主题"
@@ -116,15 +116,15 @@ export function ThemeSwitcher() {
       {isOpen && (
         <div className="
           absolute top-full right-0 mt-2
-          min-w-[150px]
-          bg-[color-mix(in_srgb,var(--bg-color)_95%,transparent)]
-          backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)]
-          border border-[var(--glass-border)]
-          rounded-[var(--radius-2xl)]
-          shadow-[var(--shadow-sm)]
+          min-w-menu
+          bg-bg/95
+          backdrop-blur-glass backdrop-saturate-glass
+          border border-border
+          rounded-2xl
+          shadow-card
           p-1.5
           z-50
-          animate-[scale-in_0.2s_ease-out]
+          animate-scale-in
         ">
           {themeOptions.map((option) => (
             <button
@@ -136,21 +136,21 @@ export function ThemeSwitcher() {
               className={`
                 w-full flex items-center gap-3 px-3 py-2
                 text-sm
-                rounded-[var(--radius-lg)]
+                rounded-lg
                 transition-colors duration-150
                 cursor-pointer
                 ${theme === option.value
-                  ? 'bg-[color-mix(in_srgb,var(--accent-color)_15%,transparent)] text-[var(--accent-color)]'
-                  : 'text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--text-color)_6%,transparent)]'
+                  ? 'bg-primary/15 text-primary'
+                  : 'text-text hover:bg-text/6'
                 }
               `}
             >
-              <span className={`flex-shrink-0 ${theme === option.value ? 'text-[var(--accent-color)]' : ''}`}>
+              <span className={`flex-shrink-0 ${theme === option.value ? 'text-primary' : ''}`}>
                 {option.icon}
               </span>
               <span>{option.label}</span>
               {theme === option.value && (
-                <svg className="w-4 h-4 ml-auto text-[var(--accent-color)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-4 h-4 ml-auto text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               )}

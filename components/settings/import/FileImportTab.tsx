@@ -46,9 +46,9 @@ export function FileImportTab({ onImport }: FileImportTabProps) {
     };
 
     return (
-        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="p-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]">
-                <p className="text-[var(--text-color-secondary)] text-sm mb-4">
+        <div className="space-y-4 animate-fade-in">
+            <div className="p-4 bg-surface border border-border rounded-2xl">
+                <p className="text-text-secondary text-sm mb-4">
                     选择之前导出的设置文件（JSON 配置文件）。支持新旧版本格式。
                 </p>
 
@@ -63,11 +63,11 @@ export function FileImportTab({ onImport }: FileImportTabProps) {
                 <button
                     onClick={() => fileInputRef.current?.click()}
                     disabled={success}
-                    className="w-full px-6 py-8 rounded-[var(--radius-2xl)] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] border-2 border-dashed border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] hover:border-[var(--accent-color)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 group"
+                    className="w-full px-6 py-8 rounded-2xl bg-surface/50 border-2 border-dashed border-border text-text hover:bg-primary/5 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 group"
                 >
                     <div className="flex flex-col items-center gap-3">
-                        <div className="p-3 rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] group-hover:scale-110 transition-transform duration-200">
-                            <svg className="w-6 h-6 text-[var(--text-color-secondary)] group-hover:text-[var(--accent-color)] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <div className="p-3 rounded-full bg-surface border border-border group-hover:scale-110 transition-transform duration-200">
+                            <svg className="w-6 h-6 text-text-secondary group-hover:text-primary transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                 <polyline points="17 8 12 3 7 8" />
                                 <line x1="12" y1="3" x2="12" y2="15" />
@@ -78,13 +78,13 @@ export function FileImportTab({ onImport }: FileImportTabProps) {
                 </button>
 
                 {error && (
-                    <div className="mt-4 text-sm text-red-500 bg-red-50 dark:bg-red-900/20 rounded-[var(--radius-2xl)] px-4 py-3 border border-red-100 dark:border-red-900/30">
+                    <div className="mt-4 text-sm text-danger bg-danger/8 rounded-2xl px-4 py-3 border border-danger/20">
                         {error}
                     </div>
                 )}
 
                 {success && (
-                    <div className="mt-4 text-sm text-green-600 bg-green-50 dark:bg-green-900/20 rounded-[var(--radius-2xl)] px-4 py-3 flex items-center gap-2 border border-green-100 dark:border-green-900/30">
+                    <div className="mt-4 text-sm text-success-dark bg-success/8 rounded-2xl px-4 py-3 flex items-center gap-2 border border-success/20">
                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M20 6L9 17l-5-5" />
                         </svg>

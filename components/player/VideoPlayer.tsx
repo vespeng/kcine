@@ -185,8 +185,8 @@ export function VideoPlayer({
       {showModeIndicator && (
         <div className="absolute top-3 right-3 z-30">
           <span className={`px-2 py-1 text-xs font-medium rounded-full backdrop-blur-md transition-all duration-300 ${effectiveUseProxy
-            ? 'bg-orange-500/80 text-white'
-            : 'bg-green-500/80 text-white'
+            ? 'bg-warning/80 text-white'
+            : 'bg-success/80 text-white'
             }`}>
             {effectiveUseProxy ? '代理模式' : '直连模式'}
           </span>

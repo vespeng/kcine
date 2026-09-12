@@ -215,7 +215,7 @@ async function runSync(): Promise<void> {
 
       if (!outcome.ok || !outcome.result) {
         failuresByUrl.set(sub.url, outcome.error || '同步失败');
-        console.error(`Failed to sync subscription: ${sub.name}`, outcome.error);
+        console.warn(`Failed to sync subscription: ${sub.name}`, outcome.error);
         return;
       }
 

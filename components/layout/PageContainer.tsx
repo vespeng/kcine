@@ -9,7 +9,7 @@ interface PageContainerProps {
 }
 
 const SIZE_CLASSES: Record<NonNullable<PageContainerProps['size']>, string> = {
-  content: 'max-w-[1240px]',
+  content: 'max-w-content',
   wide: 'max-w-7xl',
 };
 

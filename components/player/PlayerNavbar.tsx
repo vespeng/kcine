@@ -10,9 +10,9 @@ export function PlayerNavbar({ isPremium }: { isPremium?: boolean }) {
     const siteInfo = useSiteInfo();
 
     return (
-        <nav className="sticky top-0 z-50 pt-3 pb-1.5" style={{ transform: 'translateZ(0)' }}>
+        <nav className="sticky top-0 z-50 pt-3 pb-1.5 transform-gpu">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="bg-[var(--glass-bg)] backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] px-3 sm:px-5 py-1.5 sm:py-2.5">
+                <div className="bg-surface backdrop-blur-glass backdrop-saturate-glass border border-border rounded-2xl shadow-card px-3 sm:px-5 py-1.5 sm:py-2.5">
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
                         <button
                             onClick={() => router.push(isPremium ? '/premium' : '/')}
@@ -23,14 +23,14 @@ export function PlayerNavbar({ isPremium }: { isPremium?: boolean }) {
                                 <SiteLogo />
                             </div>
                             <div className="flex flex-col min-w-0">
-                                <h1 className="text-lg sm:text-2xl font-bold text-[var(--text-color)] truncate">{siteInfo.name}</h1>
-                                <p className="text-xs text-[var(--text-color-secondary)] hidden sm:block truncate">{siteInfo.description}</p>
+                                <h1 className="text-lg sm:text-2xl font-bold text-text truncate">{siteInfo.name}</h1>
+                                <p className="text-xs text-text-secondary hidden sm:block truncate">{siteInfo.description}</p>
                             </div>
                         </button>
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 onClick={() => router.back()}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="返回"
                                 title="返回"
                             >
@@ -38,7 +38,7 @@ export function PlayerNavbar({ isPremium }: { isPremium?: boolean }) {
                             </button>
                             <Link
                                 href={isPremium ? '/premium/settings' : '/settings'}
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="设置"
                             >
                                 <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 -960 960 960" fill="currentColor">

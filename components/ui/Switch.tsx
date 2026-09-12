@@ -26,7 +26,7 @@ export function Switch({
         <label
             className={`
         switch relative inline-flex items-center cursor-pointer 
-        h-[30px] w-[50px] shrink-0
+        h-7.5 w-12 shrink-0
         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         ${className}
       `}
@@ -41,17 +41,17 @@ export function Switch({
             />
             <div
                 className={`
-          switch-slider w-full h-full rounded-[var(--radius-full)] 
-          bg-[color-mix(in_srgb,var(--text-color)_20%,transparent)] 
-          peer-checked:bg-[var(--accent-color)] 
-          transition-colors duration-[0.4s] cubic-bezier(0.2,0.8,0.2,1) 
-          before:content-[''] before:absolute before:h-[26px] before:w-[26px] 
-          before:left-[2px] before:bottom-[2px] 
-          before:bg-white before:rounded-[var(--radius-full)] 
-          before:transition-transform before:duration-[0.4s] 
-          before:cubic-bezier(0.2,0.8,0.2,1) 
-          before:shadow-[0_1px_3px_rgba(0,0,0,0.2)] 
-          peer-checked:before:translate-x-[20px]
+          switch-slider w-full h-full rounded-full 
+          bg-text/20 
+          peer-checked:bg-primary 
+          transition-colors duration-400 ease-fluid
+          before:content-[''] before:absolute before:h-6.5 before:w-6.5 
+          before:left-0.5 before:bottom-0.5 
+          before:bg-white before:rounded-full 
+          before:transition-transform before:duration-400 
+          before:ease-fluid
+          before:shadow-sm 
+          peer-checked:before:translate-x-5
           active:before:scale-95
         `}
             ></div>

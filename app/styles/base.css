@@ -152,6 +152,22 @@ select:focus-visible {
     display: none;
 }
 
+/* Number input: hide native spin buttons */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+/* 渲染性能：离屏内容跳过渲染（Tailwind 无对应工具类） */
+.content-visibility-auto {
+    content-visibility: auto;
+}
+
 /* Performance Optimizations */
 nav:where(.sticky, .fixed),
 .sticky,

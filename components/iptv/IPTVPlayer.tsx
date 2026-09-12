@@ -633,9 +633,9 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
           e.stopPropagation();
           onChannelChange(ch);
         }}
-        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
+        className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors cursor-pointer ${
           isActive
-            ? 'bg-[var(--accent-color)] text-white'
+            ? 'bg-primary text-white'
             : 'text-white/70 hover:bg-white/10 hover:text-white'
         }`}
       >
@@ -645,7 +645,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
           )}
           <span className="truncate flex-1">{ch.name}</span>
           {ch.routes && ch.routes.length > 1 && (
-            <span className={`text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${
+            <span className={`text-2xs px-1.5 py-0.5 rounded flex-shrink-0 ${
               isActive ? 'bg-white/20' : 'bg-white/5 text-white/40'
             }`}>
               {ch.routes.length}线路
@@ -683,16 +683,16 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
               {/* Source Header */}
               <button
                 onClick={(e) => { e.stopPropagation(); toggleSource(source.id); }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                   isActiveSource
                     ? 'bg-white/10 text-white'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <Icons.TV size={14} className="flex-shrink-0 text-[var(--accent-color)]" />
+                  <Icons.TV size={14} className="flex-shrink-0 text-primary" />
                   <span className="truncate">{source.name}</span>
-                  <span className="text-[10px] text-white/40 flex-shrink-0">{sourceData.channels.length}</span>
+                  <span className="text-2xs text-white/40 flex-shrink-0">{sourceData.channels.length}</span>
                 </div>
                 <Icons.ChevronDown
                   size={14}
@@ -724,7 +724,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                             <div className="flex items-center gap-1.5 min-w-0">
                               <Icons.Tag size={12} className="flex-shrink-0" />
                               <span className="truncate">{group}</span>
-                              <span className="text-[10px] text-white/30 flex-shrink-0">{groupChannels.length}</span>
+                              <span className="text-2xs text-white/30 flex-shrink-0">{groupChannels.length}</span>
                             </div>
                             <Icons.ChevronDown
                               size={12}
@@ -750,7 +750,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                     if (ungrouped.length === 0) return null;
                     return (
                       <div className="mb-0.5">
-                        <div className="px-2 py-1 text-[10px] text-white/30">未分组</div>
+                        <div className="px-2 py-1 text-2xs text-white/30">未分组</div>
                         {ungrouped.map((ch, i) => renderChannelButton(ch, i))}
                       </div>
                     );
@@ -788,7 +788,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-black flex"
+      className="fixed inset-0 z-modal bg-black flex"
       style={{ cursor: shouldHideCursor ? 'none' : undefined }}
       onMouseMove={resetControlsTimeout}
       onClick={(e) => {
@@ -824,14 +824,14 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
               <div className="flex gap-2 flex-wrap justify-center">
                 <button
                   onClick={(e) => { e.stopPropagation(); loadChannel(currentUrl); }}
-                  className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md text-white text-sm transition-colors cursor-pointer"
                 >
                   重试
                 </button>
                 {routes.length > 1 && currentRouteIndex < routes.length - 1 && (
                   <button
                     onClick={(e) => { e.stopPropagation(); setCurrentRouteIndex(prev => prev + 1); }}
-                    className="px-4 py-2 bg-[var(--accent-color)]/80 hover:bg-[var(--accent-color)] rounded-lg text-white text-sm transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-primary/80 hover:bg-primary rounded-md text-white text-sm transition-colors cursor-pointer"
                   >
                     切换线路
                   </button>
@@ -882,7 +882,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                 onClick={(e) => { e.stopPropagation(); handleSeek(e); }}
               >
                 <div
-                  className="h-full bg-[var(--accent-color)] rounded-full relative pointer-events-none"
+                  className="h-full bg-primary rounded-full relative pointer-events-none"
                   style={{ width: `${progressPercent}%` }}
                 >
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -916,9 +916,9 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                   <button
                     key={i}
                     onClick={(e) => { e.stopPropagation(); setCurrentRouteIndex(i); }}
-                    className={`px-2 py-0.5 text-[10px] rounded transition-colors cursor-pointer ${
+                    className={`px-2 py-0.5 text-2xs rounded transition-colors cursor-pointer ${
                       i === currentRouteIndex
-                        ? 'bg-[var(--accent-color)] text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-white/10 text-white/60 hover:bg-white/20'
                     }`}
                   >
@@ -928,7 +928,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                 {hasMoreRoutes && (
                   <button
                     onClick={(e) => { e.stopPropagation(); setShowAllRoutes(!showAllRoutes); }}
-                    className="px-2 py-0.5 text-[10px] rounded bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/60 transition-colors cursor-pointer"
+                    className="px-2 py-0.5 text-2xs rounded bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/60 transition-colors cursor-pointer"
                   >
                     {showAllRoutes ? '收起' : `+${routes.length - MAX_VISIBLE_ROUTES}`}
                   </button>
@@ -985,8 +985,8 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
 
       {/* Sidebar */}
       {showSidebar && (
-        <div data-sidebar className="w-72 bg-[#111] border-l border-white/10 overflow-y-auto flex-shrink-0">
-          <div className="sticky top-0 bg-[#111] z-10">
+        <div data-sidebar className="w-72 bg-panel border-l border-white/10 overflow-y-auto flex-shrink-0">
+          <div className="sticky top-0 bg-panel z-10">
             <div className="p-3 border-b border-white/10 flex items-center justify-between">
               <h3 className="text-white text-sm font-medium">频道列表</h3>
               <button
@@ -1005,7 +1005,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full pl-7 pr-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-white/20"
+                  className="w-full pl-7 pr-2 py-1.5 bg-white/5 border border-white/10 rounded-md text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-white/20"
                 />
                 {isSearching && (
                   <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
@@ -1017,16 +1017,16 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
             {(activeSource || channel.group) && (
               <div className="px-3 py-2 border-b border-white/10">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-white/30">当前</span>
+                  <span className="text-2xs uppercase tracking-brand text-white/30">当前</span>
                   {activeSource && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleActiveSource();
                       }}
-                      className={`px-2 py-1 rounded-full text-[11px] border transition-colors cursor-pointer ${
+                      className={`px-2 py-1 rounded-full text-xs border transition-colors cursor-pointer ${
                         activeSourceId && expandedSources.has(activeSourceId)
-                          ? 'bg-[var(--accent-color)] border-[var(--accent-color)] text-white'
+                          ? 'bg-primary border-primary text-white'
                           : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10'
                       }`}
                     >
@@ -1039,9 +1039,9 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                         e.stopPropagation();
                         toggleActiveGroup();
                       }}
-                      className={`px-2 py-1 rounded-full text-[11px] border transition-colors cursor-pointer ${
+                      className={`px-2 py-1 rounded-full text-xs border transition-colors cursor-pointer ${
                         expandedGroups.has(activeGroupKey)
-                          ? 'bg-[var(--accent-color)] border-[var(--accent-color)] text-white'
+                          ? 'bg-primary border-primary text-white'
                           : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10'
                       }`}
                     >

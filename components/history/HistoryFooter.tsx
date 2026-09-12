@@ -10,7 +10,7 @@ export function HistoryFooter({ hasHistory, onClearAll }: HistoryFooterProps) {
     if (!hasHistory) return null;
 
     return (
-        <footer className="mt-4 pt-4 border-t border-[var(--glass-border)]">
+        <footer className="mt-4 pt-4 border-t border-border">
             <Button
                 variant="secondary"
                 onClick={onClearAll}

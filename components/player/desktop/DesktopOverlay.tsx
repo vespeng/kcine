@@ -89,7 +89,7 @@ export function DesktopOverlay({
     return (
         <>
             {/* More Menu (Top Left) - Moved slightly down and lower z-index to stay below navbar */}
-            <div className={`absolute top-8 left-6 z-40 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`} style={{ pointerEvents: showControls ? 'auto' : 'none' }}>
+            <div className={`absolute top-8 left-6 z-40 transition-opacity duration-300 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
                 <DesktopMoreMenu
                     showMoreMenu={showMoreMenu}
                     isPremium={isPremium}
@@ -107,13 +107,12 @@ export function DesktopOverlay({
 
             {isFullscreen && fullscreenClock && (
                 <div
-                    className={`absolute top-8 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300 ${showFullscreenClock ? 'opacity-100' : 'opacity-0'}`}
-                    style={{ pointerEvents: 'none' }}
+                    className={`absolute top-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none transition-opacity duration-300 ${showFullscreenClock ? 'opacity-100' : 'opacity-0'}`}
                 >
-                    <div className="min-w-[88px] px-4 py-2 rounded-full bg-black/45 backdrop-blur-md border border-white/15 text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+                    <div className="min-w-22 px-4 py-2 rounded-full bg-black/45 backdrop-blur-md border border-white/15 text-center shadow-elevated">
                         <div className="flex items-center justify-center gap-2 text-white">
                             <Icons.Clock size={14} className="opacity-80" />
-                            <span className="text-sm font-semibold tracking-[0.18em] tabular-nums">
+                            <span className="text-sm font-semibold tracking-brand tabular-nums">
                                 {fullscreenClock}
                             </span>
                         </div>
@@ -122,7 +121,7 @@ export function DesktopOverlay({
             )}
 
             {/* Speed Menu (Top Right) - Moved slightly down and lower z-index */}
-            <div className={`absolute top-8 right-6 z-40 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`} style={{ pointerEvents: showControls ? 'auto' : 'none' }}>
+            <div className={`absolute top-8 right-6 z-40 transition-opacity duration-300 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
                 <DesktopSpeedMenu
                     showSpeedMenu={showSpeedMenu}
                     playbackRate={playbackRate}
@@ -138,9 +137,9 @@ export function DesktopOverlay({
 
             {/* Loading Spinner - Glass Effect */}
             {isLoading && (
-                <div className="loading-overlay-glass">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-input z-20 transition-opacity duration-300 pointer-events-none">
                     {isTransitioningToNextEpisode ? (
-                        <div className="next-episode-loading">
+                        <div className="flex flex-col items-center gap-6">
                             <div className="spinner-glass"></div>
                             <span className="next-episode-text">正在自动播放下一集...</span>
                         </div>
@@ -153,7 +152,7 @@ export function DesktopOverlay({
             {/* Skip Backward Indicator (Animation) */}
             {showSkipBackwardIndicator && (
                 <div className="absolute top-1/2 left-24 -translate-y-1/2 pointer-events-none transition-all duration-300 z-20">
-                    <div className={`text-white text-3xl font-bold drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] ${isSkipBackwardAnimatingOut ? 'animate-scale-out' : 'animate-scale-in'
+                    <div className={`text-white text-3xl font-bold drop-shadow-skip-hint ${isSkipBackwardAnimatingOut ? 'animate-scale-out' : 'animate-scale-in'
                         }`}>
                         -{skipBackwardAmount}秒
                     </div>
@@ -163,7 +162,7 @@ export function DesktopOverlay({
             {/* Skip Forward Indicator (Animation) */}
             {showSkipForwardIndicator && (
                 <div className="absolute top-1/2 right-24 -translate-y-1/2 pointer-events-none transition-all duration-300 z-20">
-                    <div className={`text-white text-3xl font-bold drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] ${isSkipForwardAnimatingOut ? 'animate-scale-out' : 'animate-scale-in'
+                    <div className={`text-white text-3xl font-bold drop-shadow-skip-hint ${isSkipForwardAnimatingOut ? 'animate-scale-out' : 'animate-scale-in'
                         }`}>
                         +{skipForwardAmount}秒
                     </div>
@@ -172,9 +171,8 @@ export function DesktopOverlay({
 
             {/* Previous Button (Method: Skip Backward) */}
             <div
-                className={`absolute left-0 top-0 bottom-0 flex items-center justify-center p-4 md:p-8 transition-opacity duration-300 z-10 ${showNavButtons ? 'opacity-100' : 'opacity-0'
+                className={`absolute left-0 top-0 bottom-0 flex items-center justify-center p-4 md:p-8 transition-opacity duration-300 z-10 ${showNavButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                     }`}
-                style={{ pointerEvents: showNavButtons ? 'auto' : 'none' }}
             >
                 <button
                     onClick={(e) => {
@@ -190,9 +188,8 @@ export function DesktopOverlay({
 
             {/* Next Button (Method: Skip Forward) - Refined to use FastForward icon */}
             <div
-                className={`absolute right-0 top-0 bottom-0 flex items-center justify-center p-4 md:p-8 transition-opacity duration-300 z-10 ${showNavButtons ? 'opacity-100' : 'opacity-0'
+                className={`absolute right-0 top-0 bottom-0 flex items-center justify-center p-4 md:p-8 transition-opacity duration-300 z-10 ${showNavButtons ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                     }`}
-                style={{ pointerEvents: showNavButtons ? 'auto' : 'none' }}
             >
                 <button
                     onClick={(e) => {
@@ -221,9 +218,9 @@ export function DesktopOverlay({
 
             {/* Toast Notification */}
             {showToast && toastMessage && (
-                <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-[200] animate-slide-up">
-                    <div className="bg-[rgba(28,28,30,0.95)] backdrop-blur-[25px] rounded-[var(--radius-2xl)] border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.6)] px-6 py-3 flex items-center gap-3 min-w-[200px]">
-                        <Icons.Check size={18} className="text-[#34c759] flex-shrink-0" />
+                <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-toast animate-slide-up">
+                    <div className="bg-panel/95 backdrop-blur-glass rounded-2xl border border-white/20 shadow-card-hover px-6 py-3 flex items-center gap-3 min-w-menu-lg">
+                        <Icons.Check size={18} className="text-success flex-shrink-0" />
                         <span className="text-white text-sm font-medium">{toastMessage}</span>
                     </div>
                 </div>

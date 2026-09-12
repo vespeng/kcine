@@ -24,7 +24,7 @@ export function FavoritesPageHeader({
         {/* Back button - icon only, matches SettingsHeader/Navbar style */}
         <button
           onClick={() => router.back()}
-          className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+          className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
           aria-label="返回"
           title="返回上一页"
           data-focusable
@@ -34,8 +34,8 @@ export function FavoritesPageHeader({
           </svg>
         </button>
         <div>
-          <h1 className="text-xl font-bold text-[var(--text-color)]">我的收藏</h1>
-          <p className="text-sm text-[var(--text-color-secondary)]">
+          <h1 className="text-xl font-bold text-text">我的收藏</h1>
+          <p className="text-sm text-text-secondary">
             共 {count} 个视频
           </p>
         </div>
@@ -43,23 +43,23 @@ export function FavoritesPageHeader({
 
       <div className="flex items-center gap-2">
         {/* Sort buttons */}
-        <div className="flex items-center gap-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-full)] p-1">
+        <div className="flex items-center gap-1 bg-surface border border-border rounded-full p-1">
           <button
             onClick={() => onSortChange('date')}
-            className={`px-4 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
               sortBy === 'date'
-                ? 'bg-[var(--accent-color)] text-white'
-                : 'text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]'
+                ? 'bg-primary text-white'
+                : 'text-text hover:bg-primary/10'
             }`}
           >
             最新添加
           </button>
           <button
             onClick={() => onSortChange('title')}
-            className={`px-4 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
               sortBy === 'title'
-                ? 'bg-[var(--accent-color)] text-white'
-                : 'text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]'
+                ? 'bg-primary text-white'
+                : 'text-text hover:bg-primary/10'
             }`}
           >
             标题排序
@@ -70,7 +70,7 @@ export function FavoritesPageHeader({
         {count > 0 && (
           <button
             onClick={onClearAll}
-            className="px-4 py-1.5 rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all text-xs font-medium flex items-center gap-1.5"
+            className="px-4 py-1.5 rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all text-xs font-medium flex items-center gap-1.5"
           >
             <Icons.Trash size={16} />
             清空收藏

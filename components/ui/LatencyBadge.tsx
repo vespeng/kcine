@@ -3,7 +3,7 @@
  * Following Liquid Glass design system
  */
 
-import React, { memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { getLatencyInfo } from '@/lib/utils/latency';
 
 interface LatencyBadgeProps {
@@ -15,23 +15,25 @@ export const LatencyBadge = memo(function LatencyBadge({ latency, className = ''
   // Memoize the latency info calculation
   const info = useMemo(() => getLatencyInfo(latency), [latency]);
 
+  const levelStyles = {
+    excellent: 'bg-success/20 border-success text-success',
+    good: 'bg-success-light/20 border-success-light text-success-light',
+    fair: 'bg-warning/20 border-warning text-warning',
+    slow: 'bg-danger/20 border-danger text-danger',
+  };
+
   return (
     <span
       className={`
         inline-flex items-center justify-center
         px-1.5 py-0.5
-        rounded-[var(--radius-full)]
-        text-[10px] font-mono font-semibold
+        rounded-full
+        text-2xs font-mono font-semibold
         border
+        transform-gpu
+        ${levelStyles[info.level]}
         ${className}
       `}
-      style={{
-        backgroundColor: `${info.color}30`,
-        borderColor: info.color,
-        color: info.color,
-        willChange: 'auto',
-        transform: 'translate3d(0,0,0)',
-      }}
       title={`Response time: ${info.label} (${info.level})`}
       aria-label={`Latency: ${info.label}`}
     >

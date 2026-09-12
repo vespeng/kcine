@@ -10,12 +10,12 @@ export function HistoryEmptyState() {
     <div className="flex flex-col items-center justify-center h-full text-center py-12">
       <Icons.Inbox 
         size={64} 
-        className="text-[var(--text-color-secondary)] opacity-50 mb-4" 
+        className="text-text-secondary opacity-50 mb-4" 
       />
-      <p className="text-[var(--text-color-secondary)] text-lg">
+      <p className="text-text-secondary text-lg">
         暂无观看历史
       </p>
-      <p className="text-[var(--text-color-secondary)] text-sm mt-2 opacity-70">
+      <p className="text-text-secondary text-sm mt-2 opacity-70">
         您观看的视频会自动记录在这里
       </p>
     </div>

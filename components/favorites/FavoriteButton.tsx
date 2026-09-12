@@ -76,8 +76,8 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
             className={`
         flex items-center justify-center
         p-2 rounded-full
-        bg-[var(--glass-bg)] backdrop-blur-[8px]
-        border border-[var(--glass-border)]
+        bg-surface backdrop-blur
+        border border-border
         hover:scale-110 active:scale-95
         transition-all duration-200 ease-out
         cursor-pointer
@@ -89,22 +89,17 @@ export const FavoriteButton = memo<FavoriteButtonProps>(({
         >
             {isFav ? (
                 <span
-                    className="transition-transform duration-200"
-                    style={{
-                        transform: isAnimating ? 'scale(1.2)' : 'scale(1)',
-                        filter: 'drop-shadow(0 0 4px rgba(239, 68, 68, 0.5))',
-                        display: 'flex',
-                    }}
+                    className={`flex drop-shadow-danger-glow transition-transform duration-200 ${isAnimating ? 'scale-120' : 'scale-100'}`}
                 >
                     <Icons.HeartFilled
                         size={size}
-                        className="text-red-500"
+                        className="text-danger"
                     />
                 </span>
             ) : (
                 <Icons.Heart
                     size={size}
-                    className="text-[var(--text-color-secondary)] hover:text-red-400 transition-colors"
+                    className="text-text-secondary hover:text-danger-light transition-colors"
                 />
             )}
         </button>

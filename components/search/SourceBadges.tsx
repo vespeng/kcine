@@ -41,8 +41,8 @@ export const SourceBadges = memo(function SourceBadges({
     >
       <div className="flex items-start gap-3">
         <div className="flex items-center gap-2 shrink-0 pt-1">
-          <Icons.Globe size={16} className="text-[var(--accent-color)]" />
-          <span className="text-sm font-semibold text-[var(--text-color)]">
+          <Icons.Globe size={16} className="text-primary" />
+          <span className="text-sm font-semibold text-text">
             视频源 ({sources.length}):
           </span>
         </div>
@@ -55,10 +55,10 @@ export const SourceBadges = memo(function SourceBadges({
       </div>
 
       {selectedSources.size > 0 && (
-        <div className="mt-3 pt-3 border-t border-[var(--glass-border)]">
+        <div className="mt-3 pt-3 border-t border-border">
           <button
             onClick={handleClearAll}
-            className="text-xs text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] 
+            className="text-xs text-text-secondary hover:text-primary
                      flex items-center gap-1 transition-colors"
           >
             <Icons.X size={12} />

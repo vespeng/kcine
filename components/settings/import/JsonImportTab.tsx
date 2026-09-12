@@ -72,9 +72,9 @@ export function JsonImportTab() {
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-[var(--text-color-secondary)]">
+      <p className="text-xs text-text-secondary">
         粘贴 JSON 数组格式的视频源配置。格式：
-        <code className="block mt-1 px-2 py-1 bg-black/10 rounded text-[10px]">
+        <code className="block mt-1 px-2 py-1 bg-black/10 rounded text-2xs">
           {'[{ "name": "...", "baseUrl": "..." }]'}
         </code>
       </p>
@@ -84,17 +84,17 @@ export function JsonImportTab() {
         onChange={(e) => { setJsonText(e.target.value); setError(''); setPreview(null); setImported(false); }}
         placeholder='[{ "name": "源名称", "baseUrl": "https://..." }]'
         rows={6}
-        className="w-full px-3 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-sm text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)] font-mono resize-none"
+        className="w-full px-3 py-2 bg-surface border border-border rounded-2xl text-sm text-text placeholder:text-text-secondary/50 focus:outline-none focus:border-primary font-mono resize-none"
       />
 
       {error && (
-        <p className="text-xs text-red-500">{error}</p>
+        <p className="text-xs text-danger">{error}</p>
       )}
 
       {!preview && !imported && (
         <button
           onClick={handleParse}
-          className="w-full px-4 py-2.5 bg-[var(--accent-color)] text-white rounded-[var(--radius-2xl)] text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
+          className="w-full px-4 py-2.5 bg-primary text-white rounded-2xl text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
         >
           <Icons.Search size={14} />
           解析预览
@@ -103,14 +103,14 @@ export function JsonImportTab() {
 
       {preview && (
         <div className="space-y-3">
-          <div className="p-3 bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)]">
-            <p className="text-sm text-[var(--text-color)]">
-              解析成功，共 <span className="font-bold text-[var(--accent-color)]">{preview.length}</span> 个视频源
+          <div className="p-3 bg-primary/5 border border-border rounded-2xl">
+            <p className="text-sm text-text">
+              解析成功，共 <span className="font-bold text-primary">{preview.length}</span> 个视频源
             </p>
-            <div className="mt-2 space-y-1 max-h-[150px] overflow-y-auto">
+            <div className="mt-2 space-y-1 max-h-36 overflow-y-auto">
               {preview.map((s, i) => (
-                <div key={i} className="text-xs text-[var(--text-color-secondary)] flex gap-2 flex-wrap">
-                  <span className="font-medium text-[var(--text-color)]">{s.name}</span>
+                <div key={i} className="text-xs text-text-secondary flex gap-2 flex-wrap">
+                  <span className="font-medium text-text">{s.name}</span>
                   <span className="truncate">{s.baseUrl}</span>
                 </div>
               ))}
@@ -119,13 +119,13 @@ export function JsonImportTab() {
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => { setPreview(null); }}
-              className="flex-1 px-4 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] rounded-[var(--radius-2xl)] text-sm hover:bg-[var(--glass-hover)] transition-all cursor-pointer"
+              className="flex-1 px-4 py-2 bg-surface border border-border text-text rounded-2xl text-sm hover:bg-surface-hover transition-all cursor-pointer"
             >
               取消
             </button>
             <button
               onClick={handleImport}
-              className="flex-1 px-4 py-2 bg-[var(--accent-color)] text-white rounded-[var(--radius-2xl)] text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-1"
+              className="flex-1 px-4 py-2 bg-primary text-white rounded-2xl text-sm font-medium hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-1"
             >
               <Icons.Download size={14} />
               导入
@@ -135,7 +135,7 @@ export function JsonImportTab() {
       )}
 
       {imported && (
-        <p className="text-xs text-green-500 text-center py-2">导入成功！</p>
+        <p className="text-xs text-success text-center py-2">导入成功！</p>
       )}
     </div>
   );

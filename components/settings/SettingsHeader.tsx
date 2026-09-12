@@ -4,11 +4,11 @@ export function SettingsHeader() {
     const router = useRouter();
 
     return (
-        <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] p-5">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-5">
             <div className="flex items-center gap-3">
                 <button
                     onClick={() => router.back()}
-                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
+                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                     aria-label="返回"
                     title="返回上一页"
                     data-focusable
@@ -18,8 +18,8 @@ export function SettingsHeader() {
                     </svg>
                 </button>
                 <div>
-                    <h1 className="text-xl font-bold text-[var(--text-color)]">设置</h1>
-                    <p className="text-sm text-[var(--text-color-secondary)]">管理应用程序配置</p>
+                    <h1 className="text-xl font-bold text-text">设置</h1>
+                    <p className="text-sm text-text-secondary">管理应用程序配置</p>
                 </div>
             </div>
         </div>

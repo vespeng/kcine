@@ -14,9 +14,9 @@ export function PlayerError({ error, onBack, onRetry }: PlayerErrorProps) {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <Card className="max-w-2xl">
-        <Icons.AlertTriangle size={64} className="mx-auto mb-4 text-red-500" />
-        <h2 className="text-2xl font-bold text-[var(--text-color)] mb-4">视频源不可用</h2>
-        <p className="text-[var(--text-color-secondary)] mb-6">{error}</p>
+        <Icons.AlertTriangle size={64} className="mx-auto mb-4 text-danger" />
+        <h2 className="text-2xl font-bold text-text mb-4">视频源不可用</h2>
+        <p className="text-text-secondary mb-6">{error}</p>
         <div className="flex gap-3 justify-center">
           <Button 
             variant="primary"

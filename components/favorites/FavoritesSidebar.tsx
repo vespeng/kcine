@@ -86,7 +86,7 @@ export function FavoritesSidebar({ isPremium = false }: { isPremium?: boolean })
             {/* Backdrop */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-[1999] bg-black/40 opacity-0 animate-[fadeIn_0.2s_ease-out_forwards]"
+                    className="fixed inset-0 z-nav-backdrop bg-black/40 opacity-0 animate-fade"
                     onClick={() => setIsOpen(false)}
                 />
             )}
@@ -97,11 +97,7 @@ export function FavoritesSidebar({ isPremium = false }: { isPremium?: boolean })
                 role="complementary"
                 aria-labelledby="favorites-sidebar-title"
                 aria-hidden={!isOpen}
-                style={{
-                    transform: isOpen ? 'translate3d(0, 0, 0)' : 'translate3d(-100%, 0, 0)',
-                    willChange: isOpen ? 'transform' : 'auto'
-                }}
-                className={`fixed top-0 left-0 bottom-0 w-[85%] sm:w-[90%] max-w-[420px] z-[2000] bg-[var(--glass-bg)] backdrop-blur-xl [-webkit-backdrop-filter:blur(25px)_saturate(180%)] border-r border-[var(--glass-border)] rounded-tr-[var(--radius-2xl)] rounded-br-[var(--radius-2xl)] p-6 flex flex-col shadow-[var(--shadow-sm)] transition-transform duration-250 ease-out`}
+                className={`fixed top-0 left-0 bottom-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} will-change-transform w-drawer sm:w-drawer-sm max-w-sidebar z-nav bg-surface backdrop-blur-glass backdrop-saturate-glass border-r border-border rounded-tr-2xl rounded-br-2xl p-6 flex flex-col shadow-card transition-transform duration-250 ease-out`}
             >
                 <FavoritesHeader onClose={() => setIsOpen(false)} />
 

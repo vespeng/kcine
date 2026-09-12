@@ -420,14 +420,14 @@ export function DesktopVideoPlayer({
     <div
       ref={containerRef}
       className={`kcine-container relative aspect-video bg-black group ${data.fullscreenMode === 'window' ? 'is-web-fullscreen' : ''
-        } ${shouldForceLandscape ? 'force-landscape' : ''} ${isTopAlignedWebFullscreen ? 'top-align-stage' : ''} overflow-hidden rounded-none sm:rounded-[var(--radius-2xl)]`}
+        } ${shouldForceLandscape ? 'force-landscape' : ''} ${isTopAlignedWebFullscreen ? 'top-align-stage' : ''} overflow-hidden rounded-none sm:rounded-2xl`}
       style={containerStyle}
       onMouseMove={() => { handleMouseMove(); }}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
       <div className={stageClassName}>
         {/* Clipping Wrapper for video and overlays - Restores the 'Liquid Glass' rounded look */}
-        <div className={`absolute inset-0 overflow-hidden pointer-events-none ${data.fullscreenMode === 'window' ? 'rounded-none' : 'rounded-none sm:rounded-[var(--radius-2xl)]'
+        <div className={`absolute inset-0 overflow-hidden pointer-events-none ${data.fullscreenMode === 'window' ? 'rounded-none' : 'rounded-none sm:rounded-2xl'
           }`}>
           <div className="absolute inset-0 pointer-events-auto">
             {/* Video Element */}
@@ -468,7 +468,7 @@ export function DesktopVideoPlayer({
             {/* Video Resolution Badge - follows controls bar visibility */}
             {videoResolution && (
               <div className={`absolute top-3 left-3 z-20 pointer-events-none transition-opacity duration-300 ${data.showControls ? 'opacity-80' : 'opacity-0'}`}>
-                <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold text-white ${videoResolution.color}`}>
+                <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs font-bold text-white ${videoResolution.color}`}>
                   {videoResolution.label}
                   <span className="font-normal opacity-80">{videoResolution.width}x{videoResolution.height}</span>
                 </span>
@@ -478,9 +478,9 @@ export function DesktopVideoPlayer({
             {/* Long Press 2x Speed Indicator - Only shown when long-press is active */}
             {isLongPressSpeed && isMobile && !isSwipeActive && (
               <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-                <div className="flex h-28 w-28 flex-col items-center justify-center gap-1 rounded-full bg-black/60 px-3 py-3 text-center shadow-[0_0_24px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+                <div className="flex h-28 w-28 flex-col items-center justify-center gap-1 rounded-full bg-black/60 px-3 py-3 text-center shadow-glow backdrop-blur-sm">
                   <span className="text-3xl font-bold text-white">2.0×</span>
-                  <span className="text-[10px] leading-3 text-white/80">长按倍速</span>
+                  <span className="text-2xs leading-3 text-white/80">长按倍速</span>
                 </div>
               </div>
             )}
@@ -488,14 +488,14 @@ export function DesktopVideoPlayer({
             {/* Swipe Gesture Indicator - Volume/Brightness - Only shown when swipe is active */}
             {swipeState.isSwiping && isMobile && !isLongPressSpeed && (
               <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-                <div className="flex h-28 w-28 flex-col items-center justify-center gap-1 rounded-full bg-black/60 px-3 py-3 text-center shadow-[0_0_24px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+                <div className="flex h-28 w-28 flex-col items-center justify-center gap-1 rounded-full bg-black/60 px-3 py-3 text-center shadow-glow backdrop-blur-sm">
                   {swipeState.swipeSide === 'right' ? (
                     <>
                       <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                       </svg>
                       <span className="text-2xl font-bold text-white">{Math.round(swipeState.currentValue * 100)}%</span>
-                      <span className="text-[10px] leading-3 text-white/80">音量</span>
+                      <span className="text-2xs leading-3 text-white/80">音量</span>
                     </>
                   ) : (
                     <>
@@ -503,7 +503,7 @@ export function DesktopVideoPlayer({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
                       <span className="text-2xl font-bold text-white">{Math.round(swipeState.currentValue * 100)}%</span>
-                      <span className="text-[10px] leading-3 text-white/80">亮度</span>
+                      <span className="text-2xs leading-3 text-white/80">亮度</span>
                     </>
                   )}
                 </div>

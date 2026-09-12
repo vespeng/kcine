@@ -417,8 +417,7 @@ export function DanmakuCanvas({ comments, currentTime, isPlaying }: DanmakuCanva
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-[5] pointer-events-none"
-      style={{ width: '100%', height: '100%' }}
+      className="absolute inset-0 z-danmaku pointer-events-none w-full h-full"
     />
   );
 }
