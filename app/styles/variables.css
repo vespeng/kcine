@@ -28,8 +28,6 @@
     --radius-lg: 0.75rem;
     --radius-2xl: 1.5rem;
     --radius-full: 9999px;
-    --shadow-sm: 0 1px 2px var(--shadow-color);
-    --shadow-md: 0 4px 6px var(--shadow-color);
     --transition-fluid: 0.3s ease;
 
     /* Active Theme Variables */
@@ -44,11 +42,6 @@
     --glass-hover: var(--glass-hover-light);
     --shadow-color: var(--shadow-color-light);
 
-    /* Semantic aliases (referenced by some components but not previously defined) */
-    --text-secondary: var(--text-color-secondary);
-    --text-tertiary: color-mix(in srgb, var(--text-color-secondary) 75%, transparent);
-    --text-muted: var(--text-color-secondary);
-
     --background: #f2f4f7;
     --foreground: #1d1d1f;
 }
@@ -62,6 +55,10 @@ body {
     --glass-bg: var(--glass-bg-light);
     --glass-border: var(--glass-border-light);
     --shadow-color: var(--shadow-color-light);
+    /* 阴影原语须在 body 层声明：引用随主题切换的 --shadow-color，
+       放在 :root 会在 html 上固化亮色值，深色主题阴影失效 */
+    --shadow-sm: 0 1px 2px var(--shadow-color);
+    --shadow-md: 0 4px 6px var(--shadow-color);
 
     background-color: var(--bg-color);
     background-image: var(--bg-image);

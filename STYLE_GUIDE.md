@@ -1,6 +1,6 @@
-# KCINE 样式指南（Style Guide）
+# KCINE 样式指南
 
-> 本文档为 KCINE 全站样式规范。设计 Token 定义在 [tailwind.config.js](./tailwind.config.js) 的 `theme.extend` 中，通过 `@config` 在 [globals.css](./app/globals.css) 挂载。
+> 本文档为 KCINE 全站样式规范。设计 Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中（Tailwind v4 CSS-first）。
 > 所有组件样式以 Token 为准；主题相关颜色引用 CSS 变量，自动跟随亮暗主题切换。
 
 ---
@@ -20,7 +20,11 @@
 
 ## 2. 设计 Token 说明
 
-Token 定义在 [tailwind.config.js](./tailwind.config.js) 的 `theme.extend` 中。**颜色随主题切换的原理**：`primary` / `text` / `bg` / `border` 引用 CSS 变量（亮暗主题自动切换）；`success` / `warning` / `danger` / `primary.hover` 为固定值（双主题通用）。透明度修饰符可用（如 `bg-primary/10`，经 `color-mix` 实现）。
+Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，命名遵循 Tailwind v4 的 `--<命名空间>-<名称>` 规则（如 `--color-primary` → `bg-primary`、`--container-sidebar` → `max-w-sidebar`、`--z-index-modal` → `z-modal`）；新增 Token 只需在该块内按对应命名空间追加变量，即自动生成工具类。
+
+`inline` 不可省略：它让 Token 值直接内联进工具类（`.bg-surface { background-color: var(--glass-bg) }`），使 `var()` 在元素自身解析，才能正确跟随亮暗主题。若写成普通 `@theme`，Token 会先落到 `:root` 变量再被引用，`var()` 将在 `:root` 处解析，而暗色变量定义在 `body` 上够不到，这些 Token 在暗色下会保持亮色值。
+
+**颜色随主题切换的原理**：`primary` / `text` / `bg` / `border` 引用 CSS 变量（亮暗主题自动切换）；`success` / `warning` / `danger` / `primary.hover` 为固定值（双主题通用）。透明度修饰符可用（如 `bg-primary/10`，经 `color-mix` 实现）。
 
 ### 2.1 颜色
 
@@ -67,7 +71,7 @@ Token 定义在 [tailwind.config.js](./tailwind.config.js) 的 `theme.extend` �
 | 图标尺寸 | `w-icon` / `h-icon` 18px（可配 `sm:w-icon` 等） | 菜单行内图标（16/20/24px 等走默认档 `w-4`/`w-5`/`w-6`） |
 | 宽高比 | `aspect-poster` = `2 / 3` | 海报卡片（MovieCard/VideoCard 等）；16:9 视频用默认 `aspect-video` |
 | 字体 | `font-system` · `font-mono` | `font-system` 系统字体栈（body 默认应用，一般无需手动添加）；`font-mono` 等宽栈（延迟徽章、JSON 文本域） |
-| 缓动 | `ease-fluid` = `cubic-bezier(0.2, 0.8, 0.2, 1)` | 全站标准缓动；时长默认档 `duration-150/200/300/500`，补充档 `duration-250`（侧滑抽屉滑入） |
+| 缓动 | `ease-fluid` = `cubic-bezier(0.2, 0.8, 0.2, 1)` | 全站标准缓动；时长走 v4 数字档 `duration-<number>`（150/200/250/300/400/500ms，如 `duration-250` 侧滑抽屉滑入、`duration-400` 播放器控件显隐） |
 | 动画 | `animate-fade` 0.2s 纯透明度 · `animate-fade-in` 0.3s · `animate-slide-up` 0.3s · `animate-scale-in` 0.25s · `animate-scale-out` 0.25s · `animate-shake` 0.4s · `animate-spin-slow` 2s · `animate-shimmer` 1.5s · `animate-jiggle` 0.2s | keyframes 位于 transitions.css / effects.css / globals.css；`animate-fade` 用于遮罩层淡入；`animate-pulse`/`animate-spin` 使用 v4 内置 |
 | z-index | `z-danmaku` 5 · `z-toast` 200 · `z-nav-backdrop` 1999 · `z-nav` 2000 · `z-backdrop` 9998 · `z-modal` 9999 · `z-max` 2147483647 | 层级唯一取值来源；组件内部相对层级（`z-10`/`z-20`）除外。`z-danmaku` 为播放器弹幕画布局部层级 |
 
@@ -232,9 +236,10 @@ Token 定义在 [tailwind.config.js](./tailwind.config.js) 的 `theme.extend` �
 | 4 | 非 Token 间距（2/6/10/12/20/28/36/40/44px…） | 见第 4 节 6 档取值 |
 | 5 | 组件内写死宽度（`w-[200px]`、`min-w-[200px]`、`max-w-[60px]`） | 内容自适应 + `flex/grid` 约束。例外：固定尺寸组件（按钮 `min-h-[44px]`、图标按钮 `w-8 h-8`、弹窗 `max-w-md`、Logo 容器） |
 | 6 | Tailwind 任意值（`text-[15px]`、`pt-[13px]`、`rounded-[0.6rem]`） | 用 Token 类替代（如 `rounded-2xl`、`shadow-card`、`text-text`） |
-| 7 | CSS 文件中硬编码颜色/间距（`app/styles/*.css` 中新写 `padding: 13px`、`color: #eee`） | 引用 `variables.css` 的变量；确需新增变量先在 `variables.css` 定义 |
+| 7 | CSS 文件中硬编码颜色/间距（`app/styles/*.css` 中新写 `padding: 13px`、`color: #eee`） | 用 `var(...)` 引用变量：设计 Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline`，主题运行变量（亮暗切换）定义在 `variables.css` |
 | 8 | 同一组件混用 Tailwind 与原生 CSS 设置同一属性（如 Tailwind `rounded-*` + CSS `border-radius`） | 一个属性只有一个来源；容器类用 Tailwind，皮肤级复用样式放 CSS 文件 |
 | 9 | 新写 `@media` 查询与 `z-index` 随手取值 | 响应式用 Tailwind 前缀（见第 6 节）；层级一律用 Token 类（见 2.3），组件内部相对层级（`z-10`/`z-20`）除外 |
+| 10 | `tailwind.config.js` / `@config` / `@apply` 等 v3 写法；把 `@theme inline` 改成普通 `@theme` | Token 一律写在 [globals.css](./app/globals.css) 的 `@theme inline`；复用样式写成 CSS 类或组件 |
 
 ---
 
