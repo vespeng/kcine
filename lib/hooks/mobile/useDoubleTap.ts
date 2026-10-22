@@ -1,88 +1,57 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 interface DoubleTapHandler {
-    onDoubleTapLeft: () => void;
-    onDoubleTapRight: () => void;
+    onDoubleTap: () => void;
     onSingleTap: () => void;
-    onSkipContinueLeft: () => void;
-    onSkipContinueRight: () => void;
-    isSkipModeActive: boolean;
 }
 
+const DOUBLE_TAP_INTERVAL_MS = 300;
+
 /**
- * Hook for handling double-tap gestures on mobile devices
- * Divides the video into left/right zones for skip forward/backward
+ * Hook for handling tap gestures on mobile devices
+ * - Single tap: toggle controls visibility
+ * - Double tap: toggle play/pause
  */
 export function useDoubleTap({
-    onDoubleTapLeft,
-    onDoubleTapRight,
+    onDoubleTap,
     onSingleTap,
-    onSkipContinueLeft,
-    onSkipContinueRight,
-    isSkipModeActive,
 }: DoubleTapHandler) {
-    const lastTapRef = useRef<{ time: number; side: 'left' | 'right' | null }>({
-        time: 0,
-        side: null,
-    });
+    const lastTapTimeRef = useRef<number>(0);
     const singleTapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const handleTap = (e: React.TouchEvent<HTMLVideoElement>) => {
-        const currentTime = Date.now();
-        const videoElement = e.currentTarget;
-        const touch = e.touches[0] || e.changedTouches[0];
-
-        if (!touch || !videoElement) return;
-
-        // Calculate touch position relative to video element
-        const rect = videoElement.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const width = rect.width;
-        const side = x < width / 2 ? 'left' : 'right';
-
-        const timeDiff = currentTime - lastTapRef.current.time;
-        const sameSide = lastTapRef.current.side === side;
-
-        // Clear any pending single tap
+    const clearPendingSingleTap = useCallback(() => {
         if (singleTapTimeoutRef.current) {
             clearTimeout(singleTapTimeoutRef.current);
             singleTapTimeoutRef.current = null;
         }
+    }, []);
 
-        // If skip mode is active, single tap continues skipping
-        if (isSkipModeActive) {
-            if (side === 'left') {
-                onSkipContinueLeft();
-            } else {
-                onSkipContinueRight();
-            }
-            lastTapRef.current = { time: currentTime, side };
+    const handleTap = useCallback((e: React.TouchEvent<HTMLVideoElement>) => {
+        const currentTime = Date.now();
+        const videoElement = e.currentTarget;
+
+        if (!videoElement) return;
+
+        const timeDiff = currentTime - lastTapTimeRef.current;
+
+        clearPendingSingleTap();
+
+        // Double tap detected (within 300ms)
+        if (timeDiff < DOUBLE_TAP_INTERVAL_MS && lastTapTimeRef.current > 0) {
+            e.preventDefault();
+            lastTapTimeRef.current = 0;
+            onDoubleTap();
             return;
         }
 
-        // Double tap detected (within 300ms on the same side)
-        if (timeDiff < 300 && sameSide) {
-            e.preventDefault();
+        // Possible single tap - wait to see if there's a double tap
+        lastTapTimeRef.current = currentTime;
+        singleTapTimeoutRef.current = setTimeout(() => {
+            // After 300ms, no double tap detected, execute single tap action
+            onSingleTap();
+            singleTapTimeoutRef.current = null;
+        }, DOUBLE_TAP_INTERVAL_MS);
+    }, [clearPendingSingleTap, onDoubleTap, onSingleTap]);
 
-            if (side === 'left') {
-                onDoubleTapLeft();
-            } else {
-                onDoubleTapRight();
-            }
-
-            // Reset to prevent triple-tap
-            lastTapRef.current = { time: 0, side: null };
-        } else {
-            // Possible single tap - wait to see if there's a double tap
-            lastTapRef.current = { time: currentTime, side };
-
-            singleTapTimeoutRef.current = setTimeout(() => {
-                // After 300ms, no double tap detected, execute single tap action
-                onSingleTap();
-                singleTapTimeoutRef.current = null;
-            }, 300);
-        }
-    };
-
-    return { handleTap };
+    return { handleTap, cancelPendingTap: clearPendingSingleTap };
 }

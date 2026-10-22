@@ -335,30 +335,14 @@ export function DesktopVideoPlayer({
     : 'kcine-stage absolute inset-0';
   const isTopAlignedWebFullscreen = data.fullscreenMode === 'window' && isMobile && !isLandscape && !shouldForceLandscape;
 
-  // Mobile double-tap gesture for skip forward/backward
-  const { handleTap } = useDoubleTap({
+  // Mobile tap gestures: single tap toggles controls, double tap toggles play/pause
+  const { handleTap, cancelPendingTap } = useDoubleTap({
     onSingleTap: handleTouchToggleControls,
-    onDoubleTapLeft: () => {
-      logic.skipBackward();
-      handleMouseMove(); // Reset 3s auto-hide timer
-    },
-    onDoubleTapRight: () => {
-      logic.skipForward();
-      handleMouseMove(); // Reset 3s auto-hide timer
-    },
-    onSkipContinueLeft: () => {
-      logic.skipBackward();
-      handleMouseMove();
-    },
-    onSkipContinueRight: () => {
-      logic.skipForward();
-      handleMouseMove();
-    },
-    isSkipModeActive: data.showSkipForwardIndicator || data.showSkipBackwardIndicator,
+    onDoubleTap: togglePlay,
   });
 
-  // Unified mobile gestures coordinator - handles long-press (2x speed) and swipe (volume/brightness)
-  const { swipeState, isLongPressSpeed: isLongPressActive, handleTouchStart: handleGesturesStart, handleTouchMove: handleGesturesMove, handleTouchEnd: handleGesturesEnd } = useMobileGestures(
+  // Unified mobile gestures coordinator - handles long-press (2x speed), swipe (volume/brightness) and horizontal swipe-to-seek
+  const { swipeState, seekState, isLongPressSpeed: isLongPressActive, handleTouchStart: handleGesturesStart, handleTouchMove: handleGesturesMove, handleTouchEnd: handleGesturesEnd } = useMobileGestures(
     {
       onVolumeChange: (volume) => {
         // Directly set volume on video element
@@ -393,6 +377,17 @@ export function DesktopVideoPlayer({
         logic.changePlaybackSpeed(originalSpeedRef.current);
         setIsLongPressSpeed(false);
       },
+      getCurrentTime: () => videoRef.current?.currentTime ?? data.currentTime,
+      getDuration: () => videoRef.current?.duration || data.duration,
+      onSeekCommit: (deltaSeconds) => {
+        const video = videoRef.current;
+        if (!video || deltaSeconds === 0) return;
+        const targetTime = Math.min(Math.max(video.currentTime + deltaSeconds, 0), video.duration || 0);
+        video.currentTime = targetTime;
+        actions.setCurrentTime(targetTime);
+        handleMouseMove(); // Reset 3s auto-hide timer
+      },
+      onGestureActivate: cancelPendingTap,
     },
     { disabled: !isMobile }
   );
@@ -506,6 +501,20 @@ export function DesktopVideoPlayer({
                       <span className="text-2xs leading-3 text-white/80">亮度</span>
                     </>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Horizontal Swipe Seek Indicator - Only shown when swipe-to-seek is active */}
+            {seekState.isSeeking && isMobile && !isLongPressSpeed && !swipeState.isSwiping && (
+              <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+                <div className="flex flex-col items-center gap-1 rounded-2xl bg-black/60 px-6 py-4 text-center shadow-glow backdrop-blur-sm">
+                  <span className="text-2xl font-bold text-white">
+                    {seekState.deltaSeconds >= 0 ? '+' : '-'}{Math.abs(seekState.deltaSeconds).toFixed(1)}秒
+                  </span>
+                  <span className="text-2xs leading-3 text-white/80 tabular-nums">
+                    {logic.formatTime(Math.min(Math.max(currentTime + seekState.deltaSeconds, 0), duration || 0))} / {logic.formatTime(duration)}
+                  </span>
                 </div>
               </div>
             )}

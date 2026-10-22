@@ -1,10 +1,17 @@
-# KCine - 视频聚合平台
+<div align="center">
+  <img src="public/logo.svg" alt="KCine Logo" width="120" height="120">
+  <h1>KCine - 视频聚合平台</h1>
+  <p><b>基于 KVideo 4.9.18 深度重构与优化的视频聚合平台</b></p>
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js&style=flat-square" alt="Next.js">
+    <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&style=flat-square" alt="React">
+    <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&style=flat-square" alt="Tailwind CSS">
+    <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&style=flat-square" alt="TypeScript">
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License"></a>
+  </p>
+</div>
 
-<p align="center">
-  <img src="public/logo.svg" alt="KCine Logo" width="144" height="144">
-</p>
-
-![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<br />
 
 基于 [KVideo](https://github.com/KuekHaoYang/KVideo) **4.9.18** 版本二次开发的 **KCine** 视频聚合平台，在继承原版核心能力的基础上进行了深度重构与优化：
 
