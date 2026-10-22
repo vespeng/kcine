@@ -1,7 +1,11 @@
 <div align="center">
+  
   <img src="public/logo.svg" alt="KCine Logo" width="120" height="120">
-  <h1>KCine - 视频聚合平台</h1>
-  <p><b>基于 KVideo 深度重构与优化的视频聚合平台，提供更简洁清爽的视觉与交互体验</b></p>
+  
+  # KCine - 视频聚合平台
+  
+  **基于 KVideo 深度重构与优化的视频聚合平台，提供更简洁清爽的视觉与交互体验**
+  
   <p>
     <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js&style=flat-square" alt="Next.js">
     <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&style=flat-square" alt="React">
@@ -13,6 +17,9 @@
     <img src="https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&style=flat-square" alt="Docker">
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License"></a>
   </p>
+
+  [在线 Demo](https://kcine.vespeng.tech) · [报告 Bug](https://github.com/vespeng/kcine/issues) · [提交需求](https://github.com/vespeng/kcine/issues)
+  
 </div>
 
 <br />
