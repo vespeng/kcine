@@ -87,7 +87,7 @@ const DANMAKU_API_URL = process.env.DANMAKU_API_URL || '';
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 const MANAGED_AUTH_FORCED = process.env.MANAGED_AUTH_ENABLED === 'true';
 
-function getRuntimeEnvValue(name: string, fallback = ''): string {
+export function getRuntimeEnvValue(name: string, fallback = ''): string {
   try {
     const runtimeEnv = getOptionalRequestContext()?.env as unknown as Record<string, unknown> | undefined;
     const value = runtimeEnv?.[name];
@@ -256,10 +256,14 @@ function getPublicRuntimeConfig(): Omit<PublicAuthConfig, 'hasAuth' | 'hasPremiu
 
   return {
     persistSession: PERSIST_SESSION,
-    subscriptionSources: SUBSCRIPTION_SOURCES,
-    iptvSources: runtimeFeatures.iptvEnabled ? IPTV_SOURCES : '',
-    mergeSources: MERGE_SOURCES,
-    danmakuApiUrl: DANMAKU_API_URL,
+    // Runtime-injected vars (e.g. Cloudflare Dashboard bindings) are invisible
+    // to module-level process.env constants, so read them per-request.
+    subscriptionSources: getRuntimeEnvValue('SUBSCRIPTION_SOURCES', SUBSCRIPTION_SOURCES),
+    iptvSources: runtimeFeatures.iptvEnabled
+      ? getRuntimeEnvValue('IPTV_SOURCES', IPTV_SOURCES)
+      : '',
+    mergeSources: getRuntimeEnvValue('MERGE_SOURCES', MERGE_SOURCES),
+    danmakuApiUrl: getRuntimeEnvValue('DANMAKU_API_URL', DANMAKU_API_URL),
   };
 }
 

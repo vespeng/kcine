@@ -5,13 +5,12 @@
  */
 
 import { NextResponse } from 'next/server';
+import { getRuntimeEnvValue } from '@/lib/server/auth';
 
 export const runtime = 'edge';
 
-const SUBSCRIPTION_SOURCES = process.env.SUBSCRIPTION_SOURCES || '';
-
 export async function GET() {
     return NextResponse.json({
-        subscriptionSources: SUBSCRIPTION_SOURCES,
+        subscriptionSources: getRuntimeEnvValue('SUBSCRIPTION_SOURCES'),
     });
 }

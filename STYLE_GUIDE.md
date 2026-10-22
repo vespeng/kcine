@@ -1,6 +1,6 @@
 # KCINE 样式指南
 
-> 本文档为 KCINE 全站样式规范。设计 Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中（Tailwind v4 CSS-first）。
+> 本文档为 KCINE 全站样式规范；设计 Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中（Tailwind v4 CSS-first）。
 > 所有组件样式以 Token 为准；主题相关颜色引用 CSS 变量，自动跟随亮暗主题切换。
 
 ---

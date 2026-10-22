@@ -1,12 +1,16 @@
 <div align="center">
   <img src="public/logo.svg" alt="KCine Logo" width="120" height="120">
   <h1>KCine - 视频聚合平台</h1>
-  <p><b>基于 KVideo 4.9.18 深度重构与优化的视频聚合平台</b></p>
+  <p><b>基于 KVideo 深度重构与优化的视频聚合平台，提供更简洁清爽的视觉与交互体验</b></p>
   <p>
     <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js&style=flat-square" alt="Next.js">
     <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&style=flat-square" alt="React">
     <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&style=flat-square" alt="Tailwind CSS">
     <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&style=flat-square" alt="TypeScript">
+    <img src="https://img.shields.io/badge/Zustand-4-orange?style=flat-square" alt="Zustand">
+    <img src="https://img.shields.io/badge/hls.js-1.7-EF5B25?style=flat-square" alt="hls.js">
+    <img src="https://img.shields.io/badge/PWA-ready-5A0FC8?logo=pwa&style=flat-square" alt="PWA">
+    <img src="https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&style=flat-square" alt="Docker">
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License"></a>
   </p>
 </div>
@@ -44,7 +48,7 @@
 - **响应式设计**：桌面/移动端/TV 全适配，支持电视遥控器导航
 - **PWA 支持**：可安装为独立应用
 - **跨设备同步**：基于 Redis 的配置同步（可选）
-- **移动端手势**：长按倍速播放、屏幕亮度及音量控制
+- **移动端手势**：长按倍速播放、双击播放/暂停、滑动快进快退、屏幕亮度及音量控制
 
 ## 快速部署
 

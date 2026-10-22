@@ -80,8 +80,10 @@ export const getDefaultPremiumSources = (): VideoSource[] => PREMIUM_SOURCES;
 
 
 
-function getEnvSubscriptions(customValue?: string): SourceSubscription[] {
-  const envValue = (customValue || process.env.SUBSCRIPTION_SOURCES || '').trim();
+// Env-provided subscriptions only reach the client through /api/auth
+// (syncEnvSubscriptions); the raw value must be passed in explicitly.
+function getEnvSubscriptions(rawEnvValue: string): SourceSubscription[] {
+  const envValue = rawEnvValue.trim();
   if (!envValue) return [];
 
   // 1. Try JSON
@@ -114,15 +116,13 @@ function getEnvSubscriptions(customValue?: string): SourceSubscription[] {
 
   return [];
 }
-// Debugging helper
-// console.log("Environment Subscriptions:", getEnvSubscriptions());
 
 // Shared default settings factory to avoid code duplication
 function getDefaultAppSettings(): AppSettings {
   return {
     sources: getDefaultSources(),
     premiumSources: getDefaultPremiumSources(),
-    subscriptions: getEnvSubscriptions(),
+    subscriptions: [],
     sortBy: 'default',
     searchHistory: true,
     watchHistory: true,
@@ -186,33 +186,9 @@ export const settingsStore = {
 
     try {
       const parsed = JSON.parse(stored);
-      // Get ENV subscriptions
-      const envSubscriptions = getEnvSubscriptions();
 
-      // Parse stored subscriptions
       const storedSubscriptions = Array.isArray(parsed.subscriptions) ? parsed.subscriptions : [];
-
-      // Merge: ENV subscriptions take precedence for existence, but we want to keep local state (like lastUpdated) if possible
-      // However, for simplicity and ensuring "auto update" as user requested, if it's in ENV, we act as if it's a fresh/enforced source
-      // actually, let's just merge them by URL.
-
       const mergedSubscriptions = [...storedSubscriptions];
-
-      envSubscriptions.forEach(envSub => {
-        const existingIndex = mergedSubscriptions.findIndex(s => s.url === envSub.url);
-        if (existingIndex > -1) {
-          // Update name if changed in ENV, but keep ID and lastUpdated from local to avoid unnecessary re-fetches or ID shifts if dependent
-          // BUT, if the user explicitly wants "ENV input... automatically update", maybe they mean the content updates.
-          // Let's just ensure it exists.
-          mergedSubscriptions[existingIndex] = {
-            ...mergedSubscriptions[existingIndex],
-            name: envSub.name, // Allow renaming via ENV
-            autoRefresh: true // Enforce autoRefresh for ENV sources
-          };
-        } else {
-          mergedSubscriptions.push(envSub);
-        }
-      });
 
       // Filter out invalid sources (missing baseUrl etc) and dedupe by id,
       // avoiding React list key collisions from duplicates restored in storage

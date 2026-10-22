@@ -86,6 +86,31 @@ function applyRuntimeConfig(data: {
   }
 }
 
+// /api/auth is the only source of subscriptions for a fresh browser; retry
+// transient failures instead of silently leaving the session with zero sources.
+const CONFIG_FETCH_ATTEMPTS = 4;
+const CONFIG_FETCH_RETRY_DELAY_MS = 1500;
+
+async function fetchRuntimeConfigWithRetry(url: string): Promise<Response> {
+  let lastError: unknown = new Error('Runtime config fetch failed');
+
+  for (let attempt = 0; attempt < CONFIG_FETCH_ATTEMPTS; attempt += 1) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return res;
+      lastError = new Error(`Runtime config fetch failed with HTTP ${res.status}`);
+    } catch (error) {
+      lastError = error;
+    }
+
+    if (attempt < CONFIG_FETCH_ATTEMPTS - 1) {
+      await new Promise((resolve) => setTimeout(resolve, CONFIG_FETCH_RETRY_DELAY_MS * (attempt + 1)));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
 function toAuthSession(session: {
   accountId: string;
   profileId: string;
@@ -145,7 +170,7 @@ export function PasswordGate({
 
       try {
         const [configRes, sessionRes] = await Promise.all([
-          fetch('/api/auth'),
+          fetchRuntimeConfigWithRetry('/api/auth'),
           fetch('/api/auth/session'),
         ]);
 
