@@ -2,28 +2,20 @@ import type { ReactNode } from 'react';
 
 interface PageContainerProps {
   children: ReactNode;
-  /** Max width preset: 'content' = 1240px (home/premium), 'wide' = 1280px (favorites) */
-  size?: 'content' | 'wide';
-  /** Extra classes, e.g. vertical padding, spacing */
+  /** 附加类名，如垂直内边距、区块间距 */
   className?: string;
 }
 
-const SIZE_CLASSES: Record<NonNullable<PageContainerProps['size']>, string> = {
-  content: 'max-w-content',
-  wide: 'max-w-7xl',
-};
-
 /**
- * Shared content area container: centered column with horizontal padding.
- * All pages use this so the content area keeps one consistent code path.
+ * 内容区容器：最大宽 1920px 居中，左右内边距与顶栏一致。
+ * 全部页面共用，保证内容区水平对齐统一。
  */
 export function PageContainer({
   children,
-  size = 'content',
   className = '',
 }: PageContainerProps) {
   return (
-    <main className={[SIZE_CLASSES[size], 'mx-auto px-4', className].filter(Boolean).join(' ')}>
+    <main className={['max-w-page w-full mx-auto px-6', className].filter(Boolean).join(' ')}>
       {children}
     </main>
   );

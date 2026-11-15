@@ -36,8 +36,7 @@
 
   /* 最大宽度 */
   --container-sidebar: 420px; /* 侧滑抽屉（收藏/观看历史） */
-  --container-content: 1240px; /* 页面内容栅格（搜索页/播放页） */
-  --container-page: 1920px; /* 内容栅格最大宽 */
+  --container-page: 1920px; /* 页面内容栅格最大宽 */
 
   /* 背景图 */
   --background-image-page: var(--bg-image); /* 页面主题背景图（暗色渐变） */
@@ -57,8 +56,10 @@
   --min-width-menu-lg: 200px; /* 宽下拉菜单最小宽 */
   --min-width-menu-xl: 240px; /* 最宽下拉菜单最小宽 */
 
-  /* 宽度 / 高度 */
+  /* 间距 / 宽度 / 高度 */
+  --spacing-navbar: 82px; /* sm 及以上顶栏总高度，作为吸顶偏移 top-navbar 基准 */
   --width-icon: 18px; /* 菜单行内图标（无默认档位，w-4=16 w-5=20 之间） */
+  --width-sidenav: 224px; /* 左侧导航侧栏宽度（左右分栏布局） */
   --width-drawer: 85%; /* 侧滑抽屉移动端宽度 */
   --width-drawer-sm: 90%; /* 侧滑抽屉 sm 断点宽度 */
   --width-modal: 90%; /* 弹窗移动端宽度（配 max-w-md 使用） */
@@ -68,13 +69,12 @@
   --drop-shadow-danger-glow: 0 0 10px rgba(251, 44, 54, 0.4); /* 错误图标红色光晕 */
   --drop-shadow-skip-hint: 0 4px 8px rgba(0, 0, 0, 0.8); /* 播放器快进/快退提示文字投影 */
 
-  /* 栅格：播放页双栏栅格（播放器区 + 集数面板区，xl 断点） */
-  --grid-template-columns-player-cinema: minmax(0, 1.9fr) minmax(280px, 0.55fr); /* 影院模式：播放器最大 */
-  --grid-template-columns-player-wide: minmax(0, 1.65fr) minmax(300px, 0.72fr); /* 宽屏模式 */
-  --grid-template-columns-player-standard: minmax(0, 1.45fr) minmax(320px, 0.9fr); /* 标准模式 */
+  /* 栅格：播放页双栏栅格（播放器区 + 集数面板区，lg 断点） */
+  --grid-template-columns-player: minmax(0, 1.9fr) minmax(280px, 0.55fr); /* 播放器优先，集数面板自适应 */
 
   /* 宽高比 */
   --aspect-poster: 2 / 3; /* 海报卡片宽高比（影视封面） */
+  --aspect-banner: 21 / 9; /* 首页轮播图宽幅比例（桌面端） */
 
   /* 圆角（覆盖 v4 默认值） */
   --radius-sm: 4px;
@@ -124,7 +124,6 @@
   --animate-shake: shake 0.4s ease-in-out; /* 水平抖动（错误提示） */
   --animate-spin-slow: spin-slow 2s linear infinite;
   --animate-shimmer: shimmer 1.5s linear infinite; /* 骨架屏扫光 */
-  --animate-jiggle: jiggle 0.2s infinite; /* 抖动（长按排序提示） */
   --animate-dropdown-in: search-dropdown-appear 0.2s ease-out forwards; /* 搜索历史下拉入场 */
 
   /* 阴影 */
@@ -141,7 +140,6 @@
   /* 层级 */
   --z-index-danmaku: 5; /* 弹幕画布（播放器内部局部层级） */
   --z-index-toast: 200;
-  --z-index-page-nav: 1000; /* 搜索页吸顶导航（需低于侧滑抽屉） */
   --z-index-nav-backdrop: 1999; /* 侧滑抽屉遮罩 */
   --z-index-nav: 2000; /* 吸顶导航 / 侧滑抽屉 */
   --z-index-backdrop: 9998; /* 弹窗遮罩 */

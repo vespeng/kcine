@@ -11,7 +11,8 @@ async function handleCategoryRequest(
     sourceList: any[],
     categoryParam: string,
     page: number,
-    limit: number
+    limit: number,
+    sourceId = ''
 ) {
     try {
         const sourceMap = new Map<string, string>(); // sourceId -> typeId
@@ -37,6 +38,11 @@ async function handleCategoryRequest(
             targetSources = sourceList.filter(s => sourceMap.has(s.id) && s.enabled);
         } else {
             targetSources = sourceList.filter(s => s.enabled);
+        }
+
+        // 选定单个订阅源时仅保留该源，用于左侧导航按源筛选
+        if (sourceId) {
+            targetSources = targetSources.filter(s => s.id === sourceId);
         }
 
         if (targetSources.length === 0) {
@@ -110,14 +116,15 @@ async function handleCategoryRequest(
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { sources, category, page, limit } = body;
+        const { sources, category, sourceId, page, limit } = body;
 
         // Use provided sources
         return await handleCategoryRequest(
             sources || [],
             category || '',
             parseInt(page || '1'),
-            parseInt(limit || '20')
+            parseInt(limit || '20'),
+            sourceId || ''
         );
     } catch (error) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });

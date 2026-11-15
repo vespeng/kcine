@@ -1,62 +1,87 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { LogOut } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { SiteLogo } from '@/components/SiteLogo';
 import { Icons } from '@/components/ui/Icon';
 import { useSiteInfo } from '@/components/SiteInfoProvider';
-import { hasPermission } from '@/lib/store/auth-store';
-import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
+import { clearSession, getSession } from '@/lib/store/auth-store';
 import { NavbarSearch, type NavbarSearchConfig } from './NavbarSearch';
 
 interface NavbarProps {
-    onReset: () => void;
+    /** 点击 Logo 时的复位回调（搜索页用于清空搜索态） */
+    onReset?: () => void;
     isPremiumMode?: boolean;
-    /** 传入后显示导航栏内联搜索（药丸输入框） */
+    /** 顶栏搜索配置；缺省时提交搜索后跳转对应首页 */
     search?: NavbarSearchConfig;
+    /** 是否显示顶栏搜索框；设置页等非浏览页可关闭 */
+    showSearch?: boolean;
+    /** 汉堡按钮点击回调（移动端打开导航抽屉） */
+    onMenuClick?: () => void;
 }
 
-export function Navbar({ onReset, isPremiumMode = false, search }: NavbarProps) {
+export function Navbar({ onReset, isPremiumMode = false, search, showSearch = true, onMenuClick }: NavbarProps) {
     const settingsHref = isPremiumMode ? '/premium/settings' : '/settings';
     const favoritesHref = isPremiumMode ? '/premium/favorites' : '/favorites';
     const historyHref = isPremiumMode ? '/premium/history' : '/history';
-    const { iptvEnabled } = useRuntimeFeatures();
     const siteInfo = useSiteInfo();
+    // 登录态在客户端读取（localStorage），首帧置空避免 SSR 水合不一致
+    const [loggedIn, setLoggedIn] = useState(false);
+    useEffect(() => {
+        setLoggedIn(!!getSession());
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/session', { method: 'DELETE' });
+        } catch {
+            // 尽力而为：即使请求失败也清除本地会话
+        }
+        clearSession();
+        window.location.reload();
+    };
 
     return (
         <nav className="sticky top-0 z-nav pt-3 pb-1.5 transform-gpu will-change-transform">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="bg-surface backdrop-blur-glass backdrop-saturate-glass border border-border shadow-card px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-2xl transform-gpu">
-                    <div className="flex items-center justify-between gap-2 sm:gap-4">
-                        <Link
-                            href={isPremiumMode ? '/premium' : '/'}
-                            className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity cursor-pointer min-w-0"
-                            onClick={onReset}
-                            data-focusable
-                        >
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex items-center justify-center flex-shrink-0">
-                                <SiteLogo />
-                            </div>
-                            <div className="flex flex-col min-w-0">
-                                <h1 className="text-lg sm:text-2xl font-bold text-text truncate">{siteInfo.name}</h1>
-                                <p className="text-xs text-text-secondary hidden sm:block truncate">{siteInfo.description}</p>
-                            </div>
-                        </Link>
-
-                        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                            {/* IPTV Link - only show if user has iptv_access or no auth configured */}
-                            {iptvEnabled && hasPermission('iptv_access') && (
+            <div className="w-full px-6">
+                <div className="py-1.5 sm:py-2.5">
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        {/* 左右两侧等宽，保证搜索框始终居于顶栏正中 */}
+                        <div className="flex-1 min-w-0 flex items-center gap-2">
+                            {onMenuClick && (
+                                <button
+                                    type="button"
+                                    onClick={onMenuClick}
+                                    aria-label="打开导航菜单"
+                                    className="md:hidden w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
+                                    data-focusable
+                                >
+                                    <Icons.Menu size={20} />
+                                </button>
+                            )}
                             <Link
-                                href="/iptv"
-                                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
-                                aria-label="直播"
-                                title="直播"
+                                href={isPremiumMode ? '/premium' : '/'}
+                                className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity cursor-pointer min-w-0"
+                                onClick={onReset}
                                 data-focusable
                             >
-                                <Icons.TV size={16} className="sm:w-5 sm:h-5" />
+                                <div className="w-8 h-8 md:w-10 md:h-10 relative flex items-center justify-center shrink-0">
+                                    <SiteLogo />
+                                </div>
+                                <h1 className="text-lg md:text-xxl font-bold text-text truncate">{siteInfo.name}</h1>
                             </Link>
-                            )}
+                        </div>
 
+                        {/* 独立搜索框：全站常驻居中；未传配置的页面提交后跳转首页搜索 */}
+                        {showSearch && (
+                            <div className="w-full max-w-xl min-w-0">
+                                <NavbarSearch {...search} isPremium={isPremiumMode} />
+                            </div>
+                        )}
+
+                        <div className="flex-1 min-w-0 flex items-center justify-end gap-2 sm:gap-3">
                             <Link
                                 href={favoritesHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
@@ -86,8 +111,19 @@ export function Navbar({ onReset, isPremiumMode = false, search }: NavbarProps) 
                             </Link>
                             {/* Theme switcher is hidden in premium mode (theme is forced to dark) */}
                             {!isPremiumMode && <ThemeSwitcher />}
-                            {/* Inline search: icon expands into a pill input, other icons shift along */}
-                            {search && <NavbarSearch {...search} isPremium={isPremiumMode} />}
+                            {/* Logout button: only shown when a session exists */}
+                            {loggedIn && (
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    aria-label="退出登录"
+                                    title="退出登录"
+                                    data-focusable
+                                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:text-danger hover:border-danger/30 transition-all duration-200 cursor-pointer"
+                                >
+                                    <LogOut size={16} className="sm:w-5 sm:h-5" />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

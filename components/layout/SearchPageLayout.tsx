@@ -5,6 +5,9 @@ import { AppShell } from './AppShell';
 import { PageContainer } from './PageContainer';
 import { SearchResults } from '@/components/home/SearchResults';
 import { NoResults } from '@/components/search/NoResults';
+import { StatusCard } from '@/components/ui/StatusCard';
+import { Button } from '@/components/ui/Button';
+import { Icons } from '@/components/ui/Icon';
 import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 import type { SourceBadge, Video } from '@/lib/types';
 
@@ -20,9 +23,8 @@ interface SearchPageLayoutProps {
   onSearch: (query: string) => void;
   onReset: () => void;
   /**
-   * Non-null when the current search has no usable video sources yet because
-   * subscriptions are still syncing ('syncing') or the last sync failed
-   * ('failed'). Rendered instead of the generic "no results" view.
+   * 搜索无可用视频源时由同步状态决定展示：syncing 同步中 / failed 同步失败
+   * 传入后替代通用的「无结果」视图
    */
   sourceIssue?: 'syncing' | 'failed' | null;
   onRetrySources?: () => void;
@@ -31,8 +33,7 @@ interface SearchPageLayoutProps {
 }
 
 /**
- * Shared layout for search pages (home & premium):
- * navbar (with inline pill search) + result/loading/empty states + favorites sidebar.
+ * 搜索页共用布局：顶栏搜索联动 + 结果/加载/空态 + 收藏侧栏
  */
 export function SearchPageLayout({
   query,
@@ -86,36 +87,28 @@ export function SearchPageLayout({
         {!loading && hasSearched && results.length === 0 && (
           sourceIssue ? (
             <div className="flex justify-center py-16">
-              <div className="w-full max-w-md p-6 rounded-2xl border border-border bg-surface text-center space-y-4">
-                {sourceIssue === 'syncing' ? (
-                  <>
-                    <div className="flex justify-center">
-                      <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent"></div>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="font-medium text-text">正在同步视频源…</p>
-                      <p className="text-sm text-text-secondary">
-                        同步完成后将自动重新搜索，请稍候。
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="space-y-1">
-                      <p className="font-medium text-text">视频源同步失败，无法搜索</p>
-                      <p className="text-sm text-text-secondary">
-                        可能是订阅地址暂时不可用。同步已自动重试，也可手动重试。
-                      </p>
-                    </div>
-                    <button
-                      onClick={onRetrySources}
-                      className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-full hover:brightness-110 active:scale-98 transition-all duration-200 cursor-pointer"
-                    >
-                      重试同步
-                    </button>
-                  </>
-                )}
-              </div>
+              {sourceIssue === 'syncing' ? (
+                <StatusCard
+                  icon={Icons.RefreshCw}
+                  tone="primary"
+                  busy
+                  surface={false}
+                  title="正在同步视频源…"
+                  description="同步完成后将自动重新搜索，请稍候。"
+                />
+              ) : (
+                <StatusCard
+                  icon={Icons.AlertTriangle}
+                  tone="danger"
+                  surface={false}
+                  title="视频源同步失败，无法搜索"
+                  description="可能是订阅地址暂时不可用。同步已自动重试，也可手动重试。"
+                >
+                  <Button variant="primary" size="sm" onClick={onRetrySources}>
+                    重试同步
+                  </Button>
+                </StatusCard>
+              )}
             </div>
           ) : (
             <NoResults onReset={onReset} />

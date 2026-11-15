@@ -379,7 +379,7 @@ export function DesktopMoreMenu({
                 </div>
                 <button
                     onClick={() => setShowModeIndicator(!showModeIndicator)}
-                    className={`relative rounded-full transition-all duration-300 cursor-pointer flex-shrink-0 border border-white/20 ${showModeIndicator
+                    className={`relative rounded-full transition-all duration-300 cursor-pointer shrink-0 border border-white/20 ${showModeIndicator
                         ? 'bg-primary shadow-primary-glow-sm'
                         : 'bg-white/5 hover:bg-white/10'
                         } ${isRotated ? 'w-6 h-3.5' : 'w-8 h-icon sm:w-10 sm:h-6'}`}
@@ -387,7 +387,7 @@ export function DesktopMoreMenu({
                     role="switch"
                 >
                     <span
-                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5'} ${showModeIndicator ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
+                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-icon sm:h-icon'} ${showModeIndicator ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
                             }`}
                     />
                 </button>
@@ -448,7 +448,7 @@ export function DesktopMoreMenu({
                 <button
                     onClick={() => danmakuApiUrl && setDanmakuEnabled(!danmakuEnabled)}
                     disabled={!danmakuApiUrl}
-                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 border border-white/20 ${!danmakuApiUrl
+                    className={`relative rounded-full transition-all duration-300 shrink-0 border border-white/20 ${!danmakuApiUrl
                         ? 'bg-white/5 opacity-40 cursor-not-allowed'
                         : danmakuEnabled
                             ? 'bg-primary shadow-primary-glow-sm cursor-pointer'
@@ -458,7 +458,7 @@ export function DesktopMoreMenu({
                     role="switch"
                 >
                     <span
-                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5'} ${danmakuEnabled && danmakuApiUrl ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
+                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-icon sm:h-icon'} ${danmakuEnabled && danmakuApiUrl ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
                             }`}
                     />
                 </button>
@@ -537,7 +537,7 @@ export function DesktopMoreMenu({
                 </div>
                 <button
                     onClick={() => setAutoNextEpisode(!autoNextEpisode)}
-                    className={`relative rounded-full transition-all duration-300 cursor-pointer flex-shrink-0 border border-white/20 ${autoNextEpisode
+                    className={`relative rounded-full transition-all duration-300 cursor-pointer shrink-0 border border-white/20 ${autoNextEpisode
                         ? 'bg-primary shadow-primary-glow-sm'
                         : 'bg-white/5 hover:bg-white/10'
                         } ${isRotated ? 'w-6 h-3.5' : 'w-8 h-icon sm:w-10 sm:h-6'}`}
@@ -545,7 +545,7 @@ export function DesktopMoreMenu({
                     role="switch"
                 >
                     <span
-                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5'} ${autoNextEpisode ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
+                        className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-icon sm:h-icon'} ${autoNextEpisode ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
                             }`}
                     />
                 </button>
@@ -560,7 +560,7 @@ export function DesktopMoreMenu({
                     </div>
                     <button
                         onClick={() => setAutoSkipIntro(!autoSkipIntro)}
-                        className={`relative rounded-full transition-all duration-300 cursor-pointer flex-shrink-0 border border-white/20 ${autoSkipIntro
+                        className={`relative rounded-full transition-all duration-300 cursor-pointer shrink-0 border border-white/20 ${autoSkipIntro
                             ? 'bg-primary shadow-primary-glow-sm'
                             : 'bg-white/5 hover:bg-white/10'
                             } ${isRotated ? 'w-6 h-3.5' : 'w-8 h-icon sm:w-10 sm:h-6'}`}
@@ -568,7 +568,7 @@ export function DesktopMoreMenu({
                         role="switch"
                     >
                         <span
-                            className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5'} ${autoSkipIntro ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
+                            className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-icon sm:h-icon'} ${autoSkipIntro ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
                                 }`}
                         />
                     </button>
@@ -600,7 +600,7 @@ export function DesktopMoreMenu({
                     </div>
                     <button
                         onClick={() => setAutoSkipOutro(!autoSkipOutro)}
-                        className={`relative rounded-full transition-all duration-300 cursor-pointer flex-shrink-0 border border-white/20 ${autoSkipOutro
+                        className={`relative rounded-full transition-all duration-300 cursor-pointer shrink-0 border border-white/20 ${autoSkipOutro
                             ? 'bg-primary shadow-primary-glow-sm'
                             : 'bg-white/5 hover:bg-white/10'
                             } ${isRotated ? 'w-6 h-3.5' : 'w-8 h-icon sm:w-10 sm:h-6'}`}
@@ -608,7 +608,7 @@ export function DesktopMoreMenu({
                         role="switch"
                     >
                         <span
-                            className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5'} ${autoSkipOutro ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
+                            className={`absolute top-0.5 left-0.5 bg-white rounded-full transition-transform duration-300 shadow-dropdown ${isRotated ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5 sm:w-icon sm:h-icon'} ${autoSkipOutro ? (isRotated ? 'translate-x-2.5' : 'translate-x-3.5 sm:translate-x-4.5') : 'translate-x-0'
                                 }`}
                         />
                     </button>

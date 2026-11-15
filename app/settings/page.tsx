@@ -1,6 +1,7 @@
 'use client';
 
 import { AddSourceModal } from '@/components/settings/AddSourceModal';
+import { AppShell } from '@/components/layout/AppShell';
 import { ExportModal } from '@/components/settings/ExportModal';
 import { ImportModal } from '@/components/settings/ImportModal';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -73,8 +74,11 @@ export default function SettingsPage() {
   } = useSettingsPage();
 
   return (
-    <div className="min-h-screen bg-bg bg-page bg-fixed">
-      <div className="container mx-auto px-4 py-6 max-w-4xl space-y-6">
+    <AppShell
+      className="bg-bg bg-page bg-fixed"
+      showSearch={false}
+    >
+      <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
         {/* Header */}
         <SettingsHeader />
 
@@ -201,6 +205,6 @@ export default function SettingsPage() {
         onCancel={() => setIsResetDialogOpen(false)}
         dangerous
       />
-    </div>
+    </AppShell>
   );
 }

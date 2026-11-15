@@ -5,7 +5,6 @@
 
 export interface SiteConfig {
   title: string;
-  description: string;
   name: string;
 }
 
@@ -16,6 +15,5 @@ export interface SiteConfig {
  */
 export const siteConfig: SiteConfig = {
   title: process.env.SITE_TITLE || "KCine - 视频聚合平台",
-  description: process.env.SITE_DESCRIPTION || "视频聚合平台",
   name: process.env.SITE_NAME || "KCine",
 };

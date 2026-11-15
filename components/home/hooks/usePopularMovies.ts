@@ -1,13 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
-
-interface DoubanMovie {
-    id: string;
-    title: string;
-    cover: string;
-    rate: string;
-    url: string;
-}
+import { fetchTmdbSubjects } from '@/lib/utils/tmdb-client';
+import { fetchDoubanSubjects } from '@/lib/utils/douban-client';
+import type { MediaItem } from '@/lib/types';
 
 const PAGE_LIMIT = 20;
 const POPULAR_CACHE_KEY = 'kcine_popular_cache';
@@ -19,7 +14,7 @@ const getTodayKey = (): string => {
 };
 
 interface PopularCacheEntry {
-    movies: DoubanMovie[];
+    movies: MediaItem[];
     hasMore: boolean;
     page: number;
     dateKey: string;
@@ -56,8 +51,12 @@ const savePopularCache = (cache: PopularCache): void => {
     }
 };
 
-export function usePopularMovies(selectedTags: string[], contentType: 'movie' | 'tv' = 'movie') {
-    const [movies, setMovies] = useState<DoubanMovie[]>([]);
+export function usePopularMovies(
+    selectedTags: string[],
+    contentType: 'movie' | 'tv' = 'movie',
+    doubanTagMap?: Record<string, string>
+) {
+    const [movies, setMovies] = useState<MediaItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
@@ -71,34 +70,38 @@ export function usePopularMovies(selectedTags: string[], contentType: 'movie' | 
     const effectiveTags = tagList.length > 0 ? tagList : ['热门'];
     const tagKey = effectiveTags.join('|');
 
-    const loadMovies = useCallback(async (tags: string[], pageStart: number, append = false) => {
+    // 豆瓣兜底时标签名映射（如 真人秀→综艺）
+    const doubanTagOf = (tag: string): string => doubanTagMap?.[tag] || tag;
+
+    const loadMovies = useCallback(async (tags: string[], pageIndex: number, append = false) => {
         const requestId = ++requestIdRef.current;
         setLoading(true);
+
+        const fetchTmdb = (tag: string): Promise<MediaItem[]> =>
+            fetchTmdbSubjects(contentType, tag, pageIndex + 1);
+
+        const fetchDouban = (tag: string): Promise<MediaItem[]> =>
+            fetchDoubanSubjects(contentType, doubanTagOf(tag), PAGE_LIMIT, pageIndex * PAGE_LIMIT);
+
         try {
-            // 豆瓣接口单次只接受一个标签，多选时并行请求后在合并阶段交错去重
+            // TMDB 优先，无结果时回退豆瓣；多标签并行请求后交错去重
             const pages = await Promise.all(
-                tags.map(tag =>
-                    fetch(
-                        `/api/douban/recommend?type=${contentType}&tag=${encodeURIComponent(tag)}&page_limit=${PAGE_LIMIT}&page_start=${pageStart}`
-                    )
-                        .then(res => {
-                            if (!res.ok) throw new Error('Failed to fetch');
-                            return res.json();
-                        })
-                        .then(data => (data.subjects || []) as DoubanMovie[])
-                )
+                tags.map(async tag => {
+                    const tmdbItems = await fetchTmdb(tag);
+                    return tmdbItems.length > 0 ? tmdbItems : await fetchDouban(tag);
+                })
             );
 
             // Drop stale results if the user switched tags during the fetch
             if (requestIdRef.current !== requestId) return;
 
-            setHasMore(pages.some(p => p.length === PAGE_LIMIT));
+            setHasMore(pages.some(p => p.length >= PAGE_LIMIT));
             // Update page after a successful fetch so a stale request can't corrupt pagination
-            setPage(Math.floor(pageStart / PAGE_LIMIT));
+            setPage(pageIndex);
             setMovies(prev => {
                 // Round-robin interleave of each tag's page, deduped by id
                 const seen = new Set(append ? prev.map(m => m.id) : []);
-                const merged: DoubanMovie[] = append ? [...prev] : [];
+                const merged: MediaItem[] = append ? [...prev] : [];
                 const maxLen = Math.max(...pages.map(p => p.length));
                 for (let i = 0; i < maxLen; i++) {
                     for (const pageItems of pages) {
@@ -120,7 +123,7 @@ export function usePopularMovies(selectedTags: string[], contentType: 'movie' | 
                 setLoading(false);
             }
         }
-    }, [contentType]);
+    }, [contentType, doubanTagMap]);
 
     useEffect(() => {
         // Invalidate any in-flight fetch from a previous tag/type so it can't overwrite current results
@@ -180,7 +183,7 @@ export function usePopularMovies(selectedTags: string[], contentType: 'movie' | 
         onLoadMore: (nextPage) => {
             // page is updated inside loadMovies after a successful fetch,
             // so a stale loadMore can't advance the pagination state
-            loadMovies(effectiveTags, nextPage * PAGE_LIMIT, true);
+            loadMovies(effectiveTags, nextPage, true);
         },
     });
 

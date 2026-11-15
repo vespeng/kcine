@@ -32,18 +32,15 @@ export function ConfirmDialog({
 
   useEffect(() => {
     if (isOpen) {
-      // Focus the cancel button when dialog opens
       cancelButtonRef.current?.focus();
-
-      // Prevent body scroll
-      document.body.style.overflow = 'hidden';
+      // 锁定实际滚动容器 html；scrollbar-gutter 已预留滚动条槽位，避免页面横向偏移
+      document.documentElement.style.overflow = 'hidden';
     } else {
-      // Restore body scroll
-      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
 
     return () => {
-      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [isOpen]);
 

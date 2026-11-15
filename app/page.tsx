@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useMemo } from 'react';
-import { PopularFeatures } from '@/components/home/PopularFeatures';
+import { HomeFeatured } from '@/components/home/HomeFeatured';
 import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { useHomePage } from '@/lib/hooks/useHomePage';
 import { useDirectPlay } from '@/lib/hooks/useDirectPlay';
@@ -46,7 +46,7 @@ function HomePage() {
       onReset={handleReset}
       sourceIssue={sourceIssue}
       onRetrySources={handleRetrySources}
-      featured={<PopularFeatures onMovieClick={handleDirectPlay} directPlayStatus={directPlayStatus} onResetDirectPlay={resetDirectPlay} />}
+      featured={<HomeFeatured onMovieClick={handleDirectPlay} directPlayStatus={directPlayStatus} onResetDirectPlay={resetDirectPlay} />}
     />
   );
 }

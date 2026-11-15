@@ -62,7 +62,7 @@ export function PlayerSettings({
     const effectiveProxyMode = mediaProxyEnabled ? proxyMode : 'none';
 
     return (
-        <div className="bg-surface border border-border rounded-2xl shadow-card p-5 mb-4">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-text mb-3">播放器设置</h2>
 
             <div className="space-y-6">

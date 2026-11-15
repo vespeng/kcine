@@ -139,7 +139,7 @@ export function SourceSelector({
                         >
                             {/* Thumbnail */}
                             {source.pic && (
-                                <div className="w-12 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
+                                <div className="w-12 h-16 rounded-2xl overflow-hidden shrink-0 bg-surface/50">
                                     <Image
                                         src={source.pic}
                                         alt=""
@@ -169,14 +169,14 @@ export function SourceSelector({
 
                             {/* Current indicator */}
                             {isCurrent && (
-                                <Icons.Play size={16} className="flex-shrink-0" />
+                                <Icons.Play size={16} className="shrink-0" />
                             )}
 
                             {/* Rank badge for top 3 */}
                             {!isCurrent && index < 3 && (
                                 <Badge
                                     variant="secondary"
-                                    className={`flex-shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                    className={`shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
                                         index === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
                                             'bg-warning/20 text-warning border-warning'
                                         }`}

@@ -126,13 +126,13 @@ export const VideoGroupCard = memo<VideoGroupCardProps>(({
                     {/* Badge Container */}
                     <div className="absolute top-2 left-2 right-2 z-10 flex items-center justify-between gap-1">
                         {/* Source count badge */}
-                        <Badge variant="primary" className="bg-primary flex-shrink-0">
+                        <Badge variant="primary" className="bg-primary shrink-0">
                             <Icons.Layers size={12} className="mr-1" />
                             {videos.length} 源
                         </Badge>
 
                         {bestLatency !== undefined && (
-                            <LatencyBadge latency={bestLatency} className="flex-shrink-0" />
+                            <LatencyBadge latency={bestLatency} className="shrink-0" />
                         )}
                     </div>
 

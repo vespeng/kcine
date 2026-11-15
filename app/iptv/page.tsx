@@ -1,10 +1,11 @@
 'use client';
 
 /**
- * IPTV Page - Live TV channel viewer with M3U source management
+ * IPTV 直播页：M3U 源管理、频道栅格与播放器
  */
 
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useIPTVStore } from '@/lib/store/iptv-store';
 import { IPTVSourceManager } from '@/components/iptv/IPTVSourceManager';
 import { IPTVChannelGrid } from '@/components/iptv/IPTVChannelGrid';
@@ -13,9 +14,13 @@ import { Icons } from '@/components/ui/Icon';
 import { hasPermission, getSession } from '@/lib/store/auth-store';
 import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
 import Link from 'next/link';
+import { AppShell } from '@/components/layout/AppShell';
+import { PageContainer } from '@/components/layout/PageContainer';
+import { StatusCard } from '@/components/ui/StatusCard';
 import type { M3UChannel } from '@/lib/utils/m3u-parser';
 
 export default function IPTVPage() {
+  const router = useRouter();
   const { iptvEnabled, restrictionSummary } = useRuntimeFeatures();
   const { sources, cachedChannels, cachedChannelsBySource, refreshSources, isLoading } = useIPTVStore();
   const [activeChannel, setActiveChannel] = useState<M3UChannel | null>(null);
@@ -61,74 +66,92 @@ export default function IPTVPage() {
   // If auth is configured and user doesn't have iptv_access, show access denied
   if (!canAccessIPTV && getSession()) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bg bg-page">
-        <div className="text-center p-8">
-          <Icons.TV size={48} className="mx-auto mb-4 text-text-secondary opacity-40" />
-          <p className="text-text font-medium mb-2">无权访问 IPTV</p>
-          <p className="text-sm text-text-secondary mb-4">请联系管理员开通权限</p>
-          <Link href="/" className="text-sm text-primary hover:underline">返回首页</Link>
+      <AppShell className="bg-bg bg-page">
+        <div className="min-h-screen flex items-center justify-center px-6 py-16">
+          <StatusCard
+            icon={Icons.TV}
+            tone="warning"
+            surface={false}
+            title="无权访问 IPTV"
+            description="请联系管理员开通权限"
+          >
+            <Link
+              href="/"
+              className="inline-flex w-full items-center justify-center min-h-touch rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:brightness-110 active:scale-98 transition-all duration-200"
+            >
+              返回首页
+            </Link>
+          </StatusCard>
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   if (!iptvEnabled) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bg bg-page">
-        <div className="max-w-xl mx-auto px-6 py-8 text-center bg-surface border border-border rounded-2xl shadow-card">
-          <Icons.TV size={48} className="mx-auto mb-4 text-text-secondary opacity-40" />
-          <p className="text-text font-medium mb-2">当前部署已禁用 IPTV</p>
-          <p className="text-sm text-text-secondary mb-4">
-            {restrictionSummary}
-          </p>
-          <Link href="/" className="text-sm text-primary hover:underline">返回首页</Link>
+      <AppShell className="bg-bg bg-page">
+        <div className="min-h-screen flex items-center justify-center px-6 py-16">
+          <StatusCard
+            icon={Icons.TV}
+            tone="warning"
+            surface={false}
+            title="当前部署已禁用 IPTV"
+            description={restrictionSummary}
+          >
+            <Link
+              href="/"
+              className="inline-flex w-full items-center justify-center min-h-touch rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:brightness-110 active:scale-98 transition-all duration-200"
+            >
+              返回首页
+            </Link>
+          </StatusCard>
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   return (
-      <div className="min-h-screen bg-bg bg-page bg-fixed">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          {/* Header */}
-          <div className="bg-surface border border-border rounded-2xl shadow-card p-6 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
-                  aria-label="返回首页"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </Link>
-                <div>
-                  <h1 className="text-2xl font-bold text-text flex items-center gap-2">
-                    <Icons.TV size={24} className="text-primary" />
-                    直播
-                  </h1>
-                  <p className="text-sm text-text-secondary">
-                    {visibleChannels.length > 0 ? `${visibleChannels.length} 个频道` : 'IPTV 直播频道'}
-                  </p>
-                </div>
+    <AppShell className="bg-bg bg-page bg-fixed">
+      <PageContainer className="py-8 space-y-8">
+          {/* 页头：返回 + 标题/频道数 + 管理源，样式与收藏/历史页一致 */}
+          <div className="flex items-center justify-between gap-3 sm:gap-4 flex-wrap">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <button
+                onClick={() => router.back()}
+                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
+                aria-label="返回"
+                title="返回上一页"
+                data-focusable
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <div>
+                <h1 className="text-xl font-bold text-text flex items-center gap-2">
+                  <Icons.TV size={20} className="text-primary" />
+                  直播
+                </h1>
+                <p className="text-sm text-text-secondary">
+                  {visibleChannels.length > 0 ? `${visibleChannels.length} 个频道` : 'IPTV 直播频道'}
+                </p>
               </div>
-
-              {canManageSources && (
-                <button
-                  onClick={() => setShowManager(!showManager)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-surface border border-border rounded-2xl text-sm text-text hover:border-primary/30 transition-all cursor-pointer"
-                >
-                  <Icons.Settings size={16} />
-                  管理源
-                </button>
-              )}
             </div>
+
+            {canManageSources && (
+              <button
+                onClick={() => setShowManager(!showManager)}
+                className="px-4 py-2 rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all text-xs font-medium flex items-center gap-1 cursor-pointer"
+              >
+                <Icons.Settings size={16} />
+                管理源
+              </button>
+            )}
           </div>
 
           {/* Source Manager (collapsible) */}
           {showManager && (
-            <div className="bg-surface border border-border rounded-2xl shadow-card p-6 mb-6">
+            <div className="bg-surface border border-border rounded-2xl shadow-card p-6">
               <IPTVSourceManager />
             </div>
           )}
@@ -143,7 +166,7 @@ export default function IPTVPage() {
 
           {/* Channel Grid */}
           {!isLoading && (
-            <div className="bg-surface border border-border rounded-2xl shadow-card p-6">
+            <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
               <IPTVChannelGrid
                 channels={visibleChannels}
                 groups={visibleGroups}
@@ -154,7 +177,7 @@ export default function IPTVPage() {
               />
             </div>
           )}
-        </div>
+      </PageContainer>
 
         {/* Player Overlay */}
         {activeChannel && (
@@ -167,6 +190,6 @@ export default function IPTVPage() {
             sources={visibleSources}
           />
         )}
-      </div>
+    </AppShell>
   );
 }

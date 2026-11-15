@@ -6,7 +6,7 @@ interface DataSettingsProps {
 
 export function DataSettings({ onExport, onImport, onReset }: DataSettingsProps) {
     return (
-        <div className="bg-surface border border-border rounded-2xl shadow-card p-5">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-text mb-3">数据管理</h2>
             <div className="space-y-3">
                 <button

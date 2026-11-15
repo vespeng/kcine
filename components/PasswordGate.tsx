@@ -8,6 +8,8 @@ import { resolvePasswordGateState } from '@/lib/auth/password-gate-state';
 import { useSubscriptionSync } from '@/lib/hooks/useSubscriptionSync';
 import { hasStoredAppSetting, settingsStore } from '@/lib/store/settings-store';
 import { useIPTVStore } from '@/lib/store/iptv-store';
+import { StatusCard } from '@/components/ui/StatusCard';
+import { Button } from '@/components/ui/Button';
 
 type LoginMode = 'none' | 'legacy_password' | 'managed';
 
@@ -279,107 +281,80 @@ export function PasswordGate({
   // Direct access to premium routes without login: show an interception notice and auto-redirect to the normal page login
   if (isPremiumRoute) {
     return (
-      <div className="fixed inset-0 z-modal flex items-center justify-center bg-bg bg-page text-text">
-        <div className="w-full max-w-sm p-4 -translate-y-gate-shift">
-          <div className="bg-surface backdrop-blur-glass border border-border rounded-2xl p-6 shadow-overlay flex flex-col items-center gap-4 transition-all duration-400 ease-fluid">
-            <div className="w-10 h-10 rounded-full bg-warning/10 flex items-center justify-center text-warning shadow-card border border-border">
-              <Lock size={20} />
-            </div>
-
-            <div className="text-center space-y-1">
-              <h2 className="text-xl font-bold">无法访问</h2>
-              <p className="text-sm text-text-secondary">
-                高级内容需在普通模式下登录后访问
-              </p>
-              <p className="text-xs text-text-secondary">
-                即将跳转到普通模式...
-              </p>
-            </div>
-
-            <a
-              href="/"
-              className="w-full py-2.5 px-4 bg-primary text-white font-bold rounded-2xl hover:-translate-y-0.5 hover:brightness-110 shadow-card hover:shadow-soft active:translate-y-0 active:scale-98 transition-all duration-200 text-center"
-            >
-              前往普通模式登录
-            </a>
-          </div>
-        </div>
-      </div>
+      <StatusCard
+        icon={Lock}
+        tone="warning"
+        fullscreen
+        title="无法访问"
+        description={
+          <>
+            <p>高级内容需在普通模式下登录后访问</p>
+            <p className="text-xs">即将跳转到普通模式...</p>
+          </>
+        }
+      >
+        <a
+          href="/"
+          className="inline-flex w-full items-center justify-center min-h-touch rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-soft hover:brightness-110 active:scale-98 transition-all duration-200"
+        >
+          前往普通模式登录
+        </a>
+      </StatusCard>
     );
   }
 
   const showManagedFields = loginMode === 'managed';
 
   return (
-    <div className="fixed inset-0 z-modal flex items-center justify-center bg-bg bg-page text-text">
-      <div className="w-full max-w-sm p-4 -translate-y-gate-shift">
-        <form
-          id="password-form"
-          onSubmit={handleUnlock}
-          className="bg-surface backdrop-blur-glass border border-border rounded-2xl p-6 shadow-overlay flex flex-col items-center gap-4 transition-all duration-400 ease-fluid"
-        >
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-card border border-border">
-            <Lock size={20} />
+    <StatusCard
+      icon={Lock}
+      fullscreen
+      title="访问受限"
+      description={showManagedFields ? '请输入用户名和密码以继续' : '请输入访问密码以继续'}
+    >
+      <form id="password-form" onSubmit={handleUnlock} className="w-full space-y-3">
+        {showManagedFields && (
+          <div className="relative">
+            <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" />
+            <input
+              type="text"
+              value={username}
+              onChange={(event) => {
+                setUsername(event.target.value);
+                setError('');
+              }}
+              placeholder="输入用户名..."
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-surface border border-border focus:outline-none focus:border-primary transition-all duration-400 ease-fluid text-text placeholder:text-text-secondary"
+              autoComplete="username"
+              autoFocus
+            />
           </div>
+        )}
 
-          <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold">访问受限</h2>
-            <p className="text-sm text-text-secondary">
-              {showManagedFields ? '请输入用户名和密码以继续' : '请输入访问密码以继续'}
+        <div className="space-y-2">
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setError('');
+            }}
+            placeholder="输入密码..."
+            className={`w-full px-4 py-2.5 rounded-2xl bg-surface border ${error ? 'border-danger' : 'border-border'} focus:outline-none focus:border-primary transition-all duration-400 ease-fluid text-text placeholder:text-text-secondary`}
+            autoFocus={!showManagedFields}
+            autoComplete={showManagedFields ? 'current-password' : 'off'}
+          />
+          {error && (
+            <p className="text-sm text-danger text-center animate-pulse">
+              {error}
             </p>
-          </div>
+          )}
+        </div>
 
-          <div className="w-full space-y-3">
-            {showManagedFields && (
-              <div className="space-y-2">
-                <div className="relative">
-                  <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" />
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(event) => {
-                      setUsername(event.target.value);
-                      setError('');
-                    }}
-                    placeholder="输入用户名..."
-                    className="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-surface border border-border focus:outline-none focus:border-primary transition-all duration-400 ease-fluid text-text placeholder:text-text-secondary"
-                    autoComplete="username"
-                    autoFocus
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                  setError('');
-                }}
-                placeholder={showManagedFields ? '输入密码...' : '输入密码...'}
-                className={`w-full px-4 py-2.5 rounded-2xl bg-surface border ${error ? 'border-danger' : 'border-border'} focus:outline-none focus:border-primary transition-all duration-400 ease-fluid text-text placeholder:text-text-secondary`}
-                autoFocus={!showManagedFields}
-                autoComplete={showManagedFields ? 'current-password' : 'off'}
-              />
-              {error && (
-                <p className="text-sm text-danger text-center animate-pulse">
-                  {error}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isValidating}
-              className="w-full py-2.5 px-4 bg-primary text-white font-bold rounded-2xl hover:-translate-y-0.5 hover:brightness-110 shadow-card hover:shadow-soft active:translate-y-0 active:scale-98 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isValidating ? '验证中...' : '登录'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <Button type="submit" disabled={isValidating} className="w-full">
+          {isValidating ? '验证中...' : '登录'}
+        </Button>
+      </form>
+    </StatusCard>
   );
 }

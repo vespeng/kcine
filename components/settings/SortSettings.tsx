@@ -8,7 +8,7 @@ interface SortSettingsProps {
 
 export function SortSettings({ sortBy, onSortChange }: SortSettingsProps) {
     return (
-        <div className="bg-surface border border-border rounded-2xl shadow-card p-5 mb-4">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-text mb-3">搜索结果排序</h2>
             <p className="text-sm text-text-secondary mb-4">
                 选择搜索结果的默认排序方式

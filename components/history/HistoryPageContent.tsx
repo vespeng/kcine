@@ -40,7 +40,7 @@ export function HistoryPageContent({ isPremium = false }: HistoryPageContentProp
       onReset={() => router.push(isPremium ? '/premium' : '/')}
       className="bg-bg bg-page bg-fixed"
     >
-      <PageContainer size="wide" className="py-8 space-y-8">
+      <PageContainer className="py-8 space-y-8">
         <div className="flex items-center justify-between gap-3 sm:gap-4 flex-wrap">
           <div className="flex items-center gap-3 sm:gap-4">
             {/* 返回按钮，样式与收藏页页头一致 */}

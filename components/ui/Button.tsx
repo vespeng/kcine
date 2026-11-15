@@ -2,16 +2,24 @@ import React, { forwardRef } from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost';
+  /** md 为页面主按钮；sm 用于卡片内联操作 */
+  size?: 'md' | 'sm';
   children: React.ReactNode;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   variant = 'primary',
+  size = 'md',
   children,
   className = '',
   ...props
 }, ref) => {
-  const baseStyles = "inline-flex items-center justify-center px-4 py-2.5 md:px-6 md:py-3 font-semibold text-sm md:text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-h-touch touch-manipulation cursor-pointer";
+  const baseStyles = "inline-flex items-center justify-center font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-h-touch touch-manipulation cursor-pointer";
+
+  const sizes = {
+    md: 'px-4 py-2.5 md:px-6 md:py-3 text-sm md:text-base',
+    sm: 'px-4 py-2 text-sm',
+  };
 
   const variants = {
     primary: `
@@ -47,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   return (
     <button
       ref={ref}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
+      className={`${baseStyles} ${sizes[size]} ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

@@ -92,7 +92,7 @@ export function UserDanmakuSettings() {
             className={`w-full flex items-center gap-3 px-4 py-2.5 bg-surface border rounded-2xl text-left transition-all cursor-pointer ${activeId === null ? 'border-primary bg-primary/5' : 'border-border'
               }`}
           >
-            <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === null ? 'border-primary' : 'border-border'
+            <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${activeId === null ? 'border-primary' : 'border-border'
               }`}>
               {activeId === null && <span className="w-2 h-2 rounded-full bg-primary" />}
             </span>
@@ -116,7 +116,7 @@ export function UserDanmakuSettings() {
                 onClick={() => userSourcesStore.setActiveDanmakuApi(api.id)}
                 className="flex items-center gap-3 flex-1 min-w-0 text-left cursor-pointer"
               >
-                <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${activeId === api.id ? 'border-primary' : 'border-border'
+                <span className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${activeId === api.id ? 'border-primary' : 'border-border'
                   }`}>
                   {activeId === api.id && <span className="w-2 h-2 rounded-full bg-primary" />}
                 </span>
@@ -127,7 +127,7 @@ export function UserDanmakuSettings() {
               </button>
               <button
                 onClick={() => userSourcesStore.removeDanmakuApi(api.id)}
-                className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer flex-shrink-0"
+                className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer shrink-0"
               >
                 <Icons.Trash size={14} />
               </button>

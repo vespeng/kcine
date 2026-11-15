@@ -69,7 +69,7 @@ export function DesktopControls(props: DesktopControlsProps) {
             />
 
             {/* Controls Bar */}
-            <div className="player-controls-bar bg-gradient-to-t from-black/90 via-black/70 to-transparent px-4 pb-4 pt-2">
+            <div className="player-controls-bar bg-linear-to-t from-black/90 via-black/70 to-transparent px-4 pb-4 pt-2">
                 <div className="player-controls-row flex min-w-0 items-center justify-between gap-4">
                     <DesktopLeftControls {...props} formatTime={formatTime} />
                     <DesktopRightControls {...props} />

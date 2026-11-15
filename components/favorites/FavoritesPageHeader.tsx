@@ -70,7 +70,7 @@ export function FavoritesPageHeader({
         {count > 0 && (
           <button
             onClick={onClearAll}
-            className="px-4 py-1.5 rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all text-xs font-medium flex items-center gap-1.5"
+            className="px-4 py-2 rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all text-xs font-medium flex items-center gap-1"
           >
             <Icons.Trash size={16} />
             清空收藏

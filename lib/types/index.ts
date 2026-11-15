@@ -61,6 +61,16 @@ export interface SourceBadge {
   typeName?: string;
 }
 
+// 影视目录条目（豆瓣 / TMDB 通用结构）
+export interface MediaItem {
+  id: string;
+  title: string;
+  cover: string;
+  rate: string;
+  url: string;
+  backdrop?: string | null;
+}
+
 export interface TypeBadge {
   type: string;
   count: number;

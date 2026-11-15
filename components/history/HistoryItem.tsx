@@ -104,7 +104,7 @@ export function HistoryItem({ item, onRemove, isPremium = false }: HistoryItemPr
               remarks={episodeText}
               sourceMap={item.sourceMap}
               size={14}
-              className="!p-1.5 !bg-transparent !border-0 !shadow-none hover:!bg-surface"
+              className="p-1.5! bg-transparent! border-0! shadow-none! hover:bg-surface!"
               showTooltip={false}
               isPremium={isPremium}
             />

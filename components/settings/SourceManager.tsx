@@ -46,7 +46,7 @@ export function SourceManager({
               {/* Toggle Switch */}
               <button
                 onClick={() => handleToggle(source.id)}
-                className="relative inline-block w-12 h-7 flex-shrink-0 cursor-pointer"
+                className="relative inline-block w-12 h-7 shrink-0 cursor-pointer"
                 aria-label={`切换 ${source.name} 状态`}
               >
                 <span
@@ -73,7 +73,7 @@ export function SourceManager({
             </div>
 
             {/* Controls */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               {/* Priority Controls */}
               <button
                 onClick={() => handlePriorityChange(source.id, 'up')}

@@ -92,7 +92,7 @@ export function UserSourceSettings() {
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => userSourcesStore.toggleSource(source.id)}
-                    className={`w-8 h-5 rounded-full transition-colors cursor-pointer relative flex-shrink-0 ${source.enabled !== false ? 'bg-primary' : 'bg-border'
+                    className={`w-8 h-5 rounded-full transition-colors cursor-pointer relative shrink-0 ${source.enabled !== false ? 'bg-primary' : 'bg-border'
                       }`}
                   >
                     <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${source.enabled !== false ? 'left-3.5' : 'left-0.5'
@@ -105,7 +105,7 @@ export function UserSourceSettings() {
                 </div>
                 <button
                   onClick={() => userSourcesStore.removeSource(source.id)}
-                  className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer flex-shrink-0"
+                  className="p-1 text-text-secondary hover:text-danger transition-colors cursor-pointer shrink-0"
                 >
                   <Icons.Trash size={14} />
                 </button>

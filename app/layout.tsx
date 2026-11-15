@@ -102,7 +102,7 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <SiteIconProvider iconSrc={siteIconSrc}>
-          <SiteInfoProvider name={siteConfig.name} description={siteConfig.description}>
+          <SiteInfoProvider name={siteConfig.name}>
           <ThemeProvider>
             <RuntimeFeaturesProvider initialFeatures={runtimeFeatures}>
               <LocaleProvider />

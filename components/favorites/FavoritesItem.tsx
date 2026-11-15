@@ -65,7 +65,7 @@ export function FavoritesItem({ item, onRemove, isPremium = false }: FavoritesIt
             >
                 <div className="flex gap-3">
                     {/* Poster - Same size as HistoryItem */}
-                    <div className="relative w-28 h-16 flex-shrink-0 bg-surface rounded-2xl overflow-hidden">
+                    <div className="relative w-28 h-16 shrink-0 bg-surface rounded-2xl overflow-hidden">
                         {item.poster ? (
                             <img
                                 src={item.poster}
@@ -98,7 +98,7 @@ export function FavoritesItem({ item, onRemove, isPremium = false }: FavoritesIt
                             {item.remarks && (
                                 <span className="truncate">{item.remarks}</span>
                             )}
-                            <span className="flex-shrink-0">
+                            <span className="shrink-0">
                                 {formatDate(item.addedAt)}
                             </span>
                         </div>

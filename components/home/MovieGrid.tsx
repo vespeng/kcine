@@ -1,24 +1,16 @@
 /**
- * MovieGrid - Grid layout for movie cards with infinite scroll
- * Handles movie display and loading states
+ * 影片海报栅格：无限滚动加载，含加载态、空态与结束提示
  */
 
 import { MovieCard } from './MovieCard';
 import { Icons } from '@/components/ui/Icon';
-
-interface DoubanMovie {
-  id: string;
-  title: string;
-  cover: string;
-  rate: string;
-  url: string;
-}
+import type { MediaItem } from '@/lib/types';
 
 interface MovieGridProps {
-  movies: DoubanMovie[];
+  movies: MediaItem[];
   loading: boolean;
   hasMore: boolean;
-  onMovieClick: (movie: DoubanMovie) => void;
+  onMovieClick: (movie: MediaItem) => void;
   prefetchRef: React.RefObject<HTMLDivElement | null>;
   loadMoreRef: React.RefObject<HTMLDivElement | null>;
 }

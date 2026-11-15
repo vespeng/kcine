@@ -58,7 +58,7 @@ export function PremiumSourceSettings({
     };
 
     return (
-        <div className="bg-surface border border-border rounded-2xl shadow-card p-5 mb-4">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-semibold text-text">高级源管理</h2>
                 <div className="flex gap-2 flex-wrap">

@@ -66,6 +66,7 @@ export function EpisodeList({
   onEpisodeSectionCollapseChange,
 }: EpisodeListProps) {
   const listRef = useRef<HTMLDivElement>(null);
+  const sourceListRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const sourceItemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const [sourceExpanded, setSourceExpanded] = useState(false);
@@ -133,10 +134,16 @@ export function EpisodeList({
     if (!isSourceListOpen || !currentSource) return;
 
     const frame = requestAnimationFrame(() => {
-      sourceItemRefs.current[currentSource]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+      const item = sourceItemRefs.current[currentSource];
+      const container = sourceListRef.current;
+      if (!item || !container) return;
+      // 仅滚动源列表内部容器，避免 scrollIntoView 连带滚动整页
+      const itemRect = item.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const target = container.scrollTop
+        + (itemRect.top - containerRect.top)
+        - (container.clientHeight - itemRect.height) / 2;
+      container.scrollTo({ top: target, behavior: 'smooth' });
     });
 
     return () => cancelAnimationFrame(frame);
@@ -317,17 +324,17 @@ export function EpisodeList({
     <Card hover={false}>
       {showSourceSelector && (
         <div className="mb-4">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-4">
             <div className="flex items-center gap-2 min-w-0">
               <Icons.Layers size={18} className="text-text" />
-              <span className="text-base sm:text-lg font-semibold text-text">
+              <span className="text-md sm:text-lg font-semibold text-text">
                 源列表
               </span>
               <Badge variant="primary">{sources!.length}</Badge>
             </div>
             <button
               onClick={() => onSourceSectionCollapseChange?.(!sourceSectionCollapsed)}
-              className="ml-auto p-1.5 rounded-2xl bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
+              className="ml-auto p-2 rounded-full bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
               aria-label={sourceSectionCollapsed ? '展开源列表' : '折叠源列表'}
               title={sourceSectionCollapsed ? '展开源列表' : '折叠源列表'}
             >
@@ -338,22 +345,22 @@ export function EpisodeList({
             </button>
           </div>
 
-          <div className="p-3 rounded-2xl bg-surface border border-border">
-            <div className="flex items-start gap-3">
+          <div className="p-4 rounded-2xl bg-surface border border-border">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => {
                   if (!sourceSectionCollapsed) {
                     setSourceExpanded((current) => !current);
                   }
                 }}
-                className={`flex-1 min-w-0 flex items-center justify-between gap-3 text-left ${sourceSectionCollapsed ? 'cursor-default' : 'cursor-pointer'}`}
+                className={`flex-1 min-w-0 flex items-center justify-between gap-2 text-left ${sourceSectionCollapsed ? 'cursor-default' : 'cursor-pointer'}`}
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-sm font-medium text-text truncate">
                     {currentSourceInfo?.sourceName || currentSourceInfo?.source || '当前来源'}
                   </span>
                   {currentResolution && (
-                    <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${currentResolution.color} flex-shrink-0`}>
+                    <span className={`inline-flex items-center px-1 py-0 rounded-sm text-3xs font-bold text-white ${currentResolution.color} shrink-0`}>
                       {currentResolution.label}
                     </span>
                   )}
@@ -361,22 +368,22 @@ export function EpisodeList({
                 {!sourceSectionCollapsed && (
                   <Icons.ChevronDown
                     size={16}
-                    className={`flex-shrink-0 text-text-secondary transition-transform duration-200 ${isSourceListOpen ? 'rotate-180' : 'rotate-0'}`}
+                    className={`shrink-0 text-text-secondary transition-transform duration-200 ${isSourceListOpen ? 'rotate-180' : 'rotate-0'}`}
                   />
                 )}
               </button>
 
               {!sourceSectionCollapsed && (
                 <Button
-                  variant="secondary"
+                  variant="ghost"
                   onClick={(event) => {
                     event.stopPropagation();
                     refreshLatencies();
                   }}
                   disabled={isLoadingLatency}
-                  className="flex items-center gap-1.5 text-xs px-2.5 py-1 min-h-9 md:px-3 md:py-1.5 md:text-sm"
+                  className="flex items-center gap-1 rounded-full text-xs px-2 py-1 min-h-touch text-text-secondary hover:text-text md:px-3 md:text-sm"
                 >
-                  <Icons.RefreshCw size={12} className={isLoadingLatency ? 'animate-spin' : ''} />
+                  <Icons.RefreshCw size={14} className={isLoadingLatency ? 'animate-spin' : ''} />
                   刷新延迟
                 </Button>
               )}
@@ -409,7 +416,7 @@ export function EpisodeList({
 
                 return (
                   <>
-                    <div className="space-y-1.5 max-h-list overflow-y-auto">
+                    <div ref={sourceListRef} className="space-y-2 max-h-list overflow-y-auto">
                       {hasTypeGroups ? (
                         Array.from(groupedByType.entries()).map(([typeName, typeSources]) => (
                           <div key={typeName || '__default'}>
@@ -435,8 +442,8 @@ export function EpisodeList({
                                     }
                                   }}
                                   className={`
-                                    w-full p-2.5 rounded-2xl text-left transition-all duration-200
-                                    flex items-center gap-2.5
+                                    w-full p-2 rounded-xl text-left transition-all duration-200
+                                    flex items-center gap-2
                                     ${isCurrent
                                       ? 'bg-primary text-white'
                                       : 'bg-surface hover:bg-surface-hover text-text border border-border cursor-pointer'
@@ -444,7 +451,7 @@ export function EpisodeList({
                                   `}
                                   aria-current={isCurrent ? 'true' : undefined}
                                 >
-                                  <div className="w-10 h-14 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
+                                  <div className="w-10 h-14 rounded-md overflow-hidden shrink-0 bg-surface/50">
                                     <Image
                                       src={source.pic || '/placeholder-poster.svg'}
                                       alt=""
@@ -462,30 +469,30 @@ export function EpisodeList({
                                     />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <div className="font-medium text-sm truncate flex items-center gap-1.5">
+                                    <div className="font-medium text-sm truncate flex items-center gap-1">
                                       {source.sourceName || source.source}
                                       {badge ? (
-                                        <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${badge.color}`}>
+                                        <span className={`inline-flex items-center px-1 py-0 rounded-sm text-3xs font-bold text-white ${badge.color}`}>
                                           {badge.label}
                                         </span>
                                       ) : null}
                                     </div>
                                     {source.remarks && !badge && (
-                                      <div className="text-2xs text-text-secondary truncate mt-0.5">{source.remarks}</div>
+                                      <div className="text-2xs text-text-secondary truncate mt-1">{source.remarks}</div>
                                     )}
                                     {latency !== undefined && (
-                                      <div className="mt-0.5">
+                                      <div className="mt-1">
                                         <LatencyBadge latency={latency} />
                                       </div>
                                     )}
                                   </div>
                                   {isCurrent && (
-                                    <Icons.Play size={14} className="flex-shrink-0" />
+                                    <Icons.Play size={14} className="shrink-0" />
                                   )}
                                   {!isCurrent && globalIndex < 3 && (
                                     <Badge
                                       variant="secondary"
-                                      className={`flex-shrink-0 ${globalIndex === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                      className={`shrink-0 ${globalIndex === 0 ? 'bg-warning/20 text-warning border-warning' :
                                         globalIndex === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
                                           'bg-warning/20 text-warning border-warning'
                                       }`}
@@ -515,8 +522,8 @@ export function EpisodeList({
                                 }
                               }}
                               className={`
-                                w-full p-2.5 rounded-2xl text-left transition-all duration-200
-                                flex items-center gap-2.5
+                                w-full p-2 rounded-xl text-left transition-all duration-200
+                                flex items-center gap-2
                                 ${isCurrent
                                   ? 'bg-primary text-white'
                                   : 'bg-surface hover:bg-surface-hover text-text border border-border cursor-pointer'
@@ -524,7 +531,7 @@ export function EpisodeList({
                               `}
                               aria-current={isCurrent ? 'true' : undefined}
                             >
-                              <div className="w-10 h-14 rounded-2xl overflow-hidden flex-shrink-0 bg-surface/50">
+                              <div className="w-10 h-14 rounded-md overflow-hidden shrink-0 bg-surface/50">
                                 <Image
                                   src={source.pic || '/placeholder-poster.svg'}
                                   alt=""
@@ -542,30 +549,30 @@ export function EpisodeList({
                                 />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <div className="font-medium text-sm truncate flex items-center gap-1.5">
+                                <div className="font-medium text-sm truncate flex items-center gap-1">
                                   {source.sourceName || source.source}
                                   {badge ? (
-                                    <span className={`inline-flex items-center px-1 py-0 rounded text-3xs font-bold text-white ${badge.color}`}>
+                                    <span className={`inline-flex items-center px-1 py-0 rounded-sm text-3xs font-bold text-white ${badge.color}`}>
                                       {badge.label}
                                     </span>
                                   ) : null}
                                 </div>
                                 {source.remarks && !badge && (
-                                  <div className="text-2xs text-text-secondary truncate mt-0.5">{source.remarks}</div>
+                                  <div className="text-2xs text-text-secondary truncate mt-1">{source.remarks}</div>
                                 )}
                                 {latency !== undefined && (
-                                  <div className="mt-0.5">
+                                  <div className="mt-1">
                                     <LatencyBadge latency={latency} />
                                   </div>
                                 )}
                               </div>
                               {isCurrent && (
-                                <Icons.Play size={14} className="flex-shrink-0" />
+                                <Icons.Play size={14} className="shrink-0" />
                               )}
                               {!isCurrent && index < 3 && (
                                 <Badge
                                   variant="secondary"
-                                  className={`flex-shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
+                                  className={`shrink-0 ${index === 0 ? 'bg-warning/20 text-warning border-warning' :
                                     index === 1 ? 'bg-text-secondary/20 text-text-secondary border-text-secondary' :
                                       'bg-warning/20 text-warning border-warning'
                                   }`}
@@ -581,7 +588,7 @@ export function EpisodeList({
                     {hasMoreSources && (
                       <button
                         onClick={() => setShowAllSources((current) => !current)}
-                        className="w-full mt-1.5 py-1.5 text-xs text-text-secondary hover:text-primary flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                        className="w-full mt-2 py-2 text-xs text-text-secondary hover:text-primary flex items-center justify-center gap-1 transition-colors cursor-pointer"
                       >
                         {showAllVisibleSources ? (
                           <>收起 <Icons.ChevronDown size={12} className="rotate-180" /></>
@@ -604,13 +611,13 @@ export function EpisodeList({
         {episodes && (
           <Badge variant="primary">{episodes.length}</Badge>
         )}
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ml-auto flex items-center gap-2">
           {/* Layout toggle */}
           {showReverseToggle && !episodeSectionCollapsed && (
             <button
               onClick={() => setEpisodeLayout((current) => (current === 'grid' ? 'list' : 'grid'))}
               className={`
-                p-1.5 rounded-2xl transition-all duration-200 cursor-pointer
+                p-2 rounded-full transition-all duration-200 cursor-pointer
                 ${episodeLayout === 'grid'
                   ? 'bg-primary text-white'
                   : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
@@ -627,7 +634,7 @@ export function EpisodeList({
             <button
               onClick={() => onToggleReverse?.(!isReversed)}
               className={`
-                p-1.5 rounded-2xl transition-all duration-200 cursor-pointer
+                p-2 rounded-full transition-all duration-200 cursor-pointer
                 ${isReversed
                   ? 'bg-primary text-white'
                   : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
@@ -641,7 +648,7 @@ export function EpisodeList({
           )}
           <button
             onClick={() => onEpisodeSectionCollapseChange?.(!episodeSectionCollapsed)}
-            className="p-1.5 rounded-2xl bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
+            className="p-2 rounded-full bg-surface text-text-secondary hover:bg-surface-hover border border-border transition-all duration-200 cursor-pointer"
             aria-label={episodeSectionCollapsed ? '展开选集列表' : '折叠选集列表'}
             title={episodeSectionCollapsed ? '展开选集列表' : '折叠选集列表'}
           >
@@ -654,8 +661,8 @@ export function EpisodeList({
       </div>
 
       {episodeSectionCollapsed ? (
-        <div className="rounded-2xl border border-border bg-surface p-3">
-          <div className="flex items-center justify-between gap-3 text-sm">
+        <div className="rounded-2xl border border-border bg-surface p-4">
+          <div className="flex items-center justify-between gap-4 text-sm">
             <span className="text-text-secondary">当前选集</span>
             <span className="font-medium text-text truncate">
               {currentEpisodeLabel}
@@ -663,16 +670,16 @@ export function EpisodeList({
           </div>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {/* Section page chips for long episode lists */}
           {episodeLayout === 'grid' && totalEpisodePages > 1 && (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {pageRangeLabels.map((label, page) => (
                 <button
                   key={label}
                   onClick={() => setEpisodePage(page)}
                   className={`
-                    px-2.5 py-1 rounded-2xl text-xs font-medium transition-all duration-200 cursor-pointer
+                    px-2 py-1 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer
                     ${episodePage === page
                       ? 'bg-primary text-white'
                       : 'bg-surface text-text-secondary hover:bg-surface-hover border border-border'
@@ -719,10 +726,10 @@ export function EpisodeList({
                     aria-current={isCurrentEpisode ? 'true' : undefined}
                     aria-label={`${episode.name || `第 ${originalIndex + 1} 集`}${isCurrentEpisode ? '，当前播放' : ''}`}
                     className={`
-                      rounded-2xl transition-all duration-300 cursor-pointer
+                      min-h-touch rounded-xl transition-all duration-300 cursor-pointer
                       ${isGrid
-                        ? 'px-2 py-2.5 text-center'
-                        : 'w-full px-3 py-2 sm:px-4 sm:py-3 text-left'
+                        ? 'px-2 py-2 text-center'
+                        : 'w-full px-4 py-2 text-left'
                       }
                       ${isCurrentEpisode
                         ? 'bg-primary text-white'
@@ -732,7 +739,7 @@ export function EpisodeList({
                     `}
                   >
                     <div className={`flex items-center ${isGrid ? 'justify-center gap-1' : 'justify-between'}`}>
-                      <span className={`font-medium ${isGrid ? 'text-xs sm:text-sm truncate' : 'text-sm sm:text-base'}`}>
+                      <span className={`font-medium ${isGrid ? 'text-xs sm:text-sm truncate' : 'text-sm sm:text-md'}`}>
                         {episode.name || `第 ${originalIndex + 1} 集`}
                       </span>
                       {isCurrentEpisode && !isGrid && (

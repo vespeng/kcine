@@ -13,7 +13,7 @@ interface PosterImageProps {
 
 export function PosterImage({ poster, title, progress }: PosterImageProps) {
     return (
-        <div className="relative w-28 h-16 flex-shrink-0 bg-surface rounded-2xl overflow-hidden">
+        <div className="relative w-28 h-16 shrink-0 bg-surface rounded-2xl overflow-hidden">
             {poster ? (
                 <img
                     src={poster}

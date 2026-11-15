@@ -9,7 +9,7 @@
 
 | # | 原则 | 说明 |
 |---|------|------|
-| 1 | **Liquid Glass 玻璃拟态** | 表面一律使用半透明背景（`--glass-bg`）+ `backdrop-blur` + 1px 细边框（`--glass-border`），层次靠透明度与模糊，而非重阴影 |
+| 1 | **Liquid Glass 玻璃拟态** | 表面一律使用半透明背景（`--glass-bg`）+ `backdrop-blur` + 1px 细边框（`--glass-border`），层次靠透明度与模糊，而非重阴影；顶栏与左侧导航为无边框平面，内容区同底色 |
 | 2 | **Apple 系统级语义色** | 主色 `#0066cc`（亮）/`#1a86f2`（暗），状态色取自 iOS 系统色板（success/warning/danger），全站禁止出现调色板之外的彩色 |
 | 3 | **中性灰文字层级** | 仅两级文字色：主文字、次级文字，靠字号与字重区分更多层级 |
 | 4 | **胶囊化大圆角** | 图标按钮、标签、头像一律 `rounded-full`；容器统一 24px 大圆角（`rounded-2xl`） |
@@ -53,26 +53,28 @@ Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，�
 
 | 类别 | Tailwind 类 → 值 | 说明 |
 |------|-----------------|------|
-| 间距 | `p-1` 4px · `p-2` 8px · `p-4` 16px · `p-6` 24px · `p-8` 32px · `p-12` 48px（含 `m-/gap-/w-/h-` 等所有间距前缀） | 项目不定义命名 spacing token，统一用数字默认档（详见第 4 节） |
-| 圆角 | `rounded-sm` 4px · `rounded-md` 8px · `rounded-lg` 12px · `rounded-xl` 16px · `rounded-2xl` 24px · `rounded-full` | ⚠️ `rounded-md`/`rounded-lg`/`rounded-xl`/`rounded-2xl` 为项目自定义覆盖（8/12/16/24px），非 Tailwind 默认值；8px 场景一律用 `rounded-md`；16px 用于紧凑面板/列表项（搜索历史下拉） |
+| 间距 | `p-1` 4px · `p-1.5` 6px · `p-2` 8px · `p-2.5` 10px · `p-3` 12px · `p-4` 16px · `p-6` 24px · `p-8` 32px · `p-12` 48px（含 `m-/gap-/w-/h-` 等所有间距前缀） | 除吸顶偏移专用的 `--spacing-navbar` 外，项目不定义命名 spacing token，统一用数字默认档（详见第 4 节） |
+| 圆角 | `rounded-sm` 4px · `rounded-md` 8px · `rounded-lg` 12px · `rounded-xl` 16px · `rounded-2xl` 24px · `rounded-full` | ⚠️ `rounded-md`/`rounded-lg`/`rounded-xl`/`rounded-2xl` 为项目自定义覆盖（8/12/16/24px），非 Tailwind 默认值；8px 场景一律用 `rounded-md`；12px 用于紧凑列表项（搜索历史条目、源列表项），16px 用于紧凑面板/下拉容器；按钮、标签、图标按钮用 `rounded-full` |
 | 字号 | `text-3xs` 9px · `text-2xs` 10px · `text-xs` 12px · `text-sm` 14px · `text-md` 16px · `text-lg` 18px · `text-xl` 20px · `text-xxl` 24px | `text-2xs`/`text-3xs` 用于徽章/角标小字（含行高配对）；`text-md`/`text-xxl` 分别等价 `text-base`/`text-2xl`；其余沿用 v4 默认值 |
 | 阴影 | `shadow-card` = `var(--shadow-sm)` · `shadow-overlay` = `var(--shadow-md)` · `shadow-dropdown` = `0 2px 4px rgba(0,0,0,0.4)` | 前两者随主题切换阴影浓度（亮 0.05 / 暗 0.3）；`dropdown` 用于深色浮层，固定深投影 |
 
-阴影使用场景：`card` → 导航药丸、徽章、静态卡片；`overlay` → 弹窗、下拉菜单、悬浮卡片；`dropdown` → 深色背景上的浮层（播放器桌面菜单）。
+阴影使用场景：`card` → 导航图标按钮、徽章、静态卡片；`overlay` → 弹窗、下拉菜单、悬浮卡片；`dropdown` → 深色背景上的浮层（播放器桌面菜单）。
 
 ### 2.3 尺寸 / 字体 / 动效 / 层级
 
 | 类别 | Tailwind 类 → 值 | 说明 |
 |------|-----------------|------|
-| 最大宽度 | `max-w-sidebar` 420px · `max-w-content` 1240px · `max-w-page` 1920px | 侧滑抽屉、内容栅格（搜索页/播放页）、海报栅格；其余用默认档（`max-w-md` 弹窗 448px、`max-w-7xl` 导航 1280px） |
+| 最大宽度 | `max-w-sidebar` 420px · `max-w-page` 1920px | 侧滑抽屉/移动导航抽屉、页面内容与海报栅格；其余用默认档（`max-w-xl` 576px 顶栏搜索框、`max-w-md` 448px 弹窗、`max-w-4xl` 设置页内容列） |
 | 最大高度 | `max-h-list` 300px · `max-h-panel` 400px · `max-h-panel-lg` 600px · `max-h-sheet` 60vh · `max-h-modal` 85vh | 弹层内滚动列表（选源/选集）、面板滚动区（集数面板/搜索历史下拉）、集数面板桌面端、弹窗内滚动列表（导入/订阅）、弹窗整体 |
-| 最小宽度 | `min-w-cta` 100px | 对话框/表单主按钮最小宽（ConfirmDialog 等） |
+| 最小宽度 | `min-w-cta` 100px · `min-w-menu` 150px · `min-w-menu-md` 170px · `min-w-menu-lg` 200px · `min-w-menu-xl` 240px | 对话框/表单主按钮最小宽；下拉菜单最小宽（按内容长度选用） |
 | 最小高度 | `min-h-touch` 44px | 所有可点击目标（触控标准） |
-| 图标尺寸 | `w-icon` / `h-icon` 18px（可配 `sm:w-icon` 等） | 菜单行内图标（16/20/24px 等走默认档 `w-4`/`w-5`/`w-6`） |
-| 宽高比 | `aspect-poster` = `2 / 3` | 海报卡片（MovieCard/VideoCard 等）；16:9 视频用默认 `aspect-video` |
+| 宽度 | `w-sidenav` 224px · `w-icon`/`h-icon` 18px | `w-sidenav` 桌面左侧导航栏宽度；`w-icon`/`h-icon` 菜单行内图标（16/20/24px 等走默认档 `w-4`/`w-5`/`w-6`） |
+| 吸顶偏移 | `top-navbar` 82px | 左侧导航与播放页右侧栏的吸顶偏移，等于 sm 及以上顶栏总高度 |
+| 宽高比 | `aspect-poster` = `2 / 3` · `aspect-banner` = `21 / 9` | 海报卡片（MovieCard/VideoCard 等）；首页轮播桌面端宽幅比例；16:9 视频用默认 `aspect-video` |
+| 播放页栅格 | `grid-cols-player` | 播放器区 + 集数面板区双栏，lg 断点启用 |
 | 字体 | `font-system` · `font-mono` | `font-system` 系统字体栈（body 默认应用，一般无需手动添加）；`font-mono` 等宽栈（延迟徽章、JSON 文本域） |
 | 缓动 | `ease-fluid` = `cubic-bezier(0.2, 0.8, 0.2, 1)` | 全站标准缓动；时长走 v4 数字档 `duration-<number>`（150/200/250/300/400/500ms，如 `duration-250` 侧滑抽屉滑入、`duration-400` 播放器控件显隐） |
-| 动画 | `animate-fade` 0.2s 纯透明度 · `animate-fade-in` 0.3s · `animate-slide-up` 0.3s · `animate-scale-in` 0.25s · `animate-scale-out` 0.25s · `animate-shake` 0.4s · `animate-spin-slow` 2s · `animate-shimmer` 1.5s · `animate-jiggle` 0.2s | keyframes 位于 transitions.css / effects.css / globals.css；`animate-fade` 用于遮罩层淡入；`animate-pulse`/`animate-spin` 使用 v4 内置 |
+| 动画 | `animate-fade` 0.2s 纯透明度 · `animate-fade-in` 0.3s · `animate-slide-up` 0.3s · `animate-scale-in` 0.25s · `animate-scale-out` 0.25s · `animate-shake` 0.4s · `animate-spin-slow` 2s · `animate-shimmer` 1.5s · `animate-dropdown-in` 0.2s | keyframes 位于 transitions.css / effects.css / globals.css；`animate-fade` 用于遮罩层淡入；`animate-pulse`/`animate-spin` 使用 v4 内置 |
 | z-index | `z-danmaku` 5 · `z-toast` 200 · `z-nav-backdrop` 1999 · `z-nav` 2000 · `z-backdrop` 9998 · `z-modal` 9999 · `z-max` 2147483647 | 层级唯一取值来源；组件内部相对层级（`z-10`/`z-20`）除外。`z-danmaku` 为播放器弹幕画布局部层级 |
 
 ---
@@ -85,8 +87,9 @@ Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，�
 
 | 属性 | 规范值 | 说明 |
 |------|--------|------|
-| 内边距（移动） | `px-4 py-2`（水平 `md 16px` / 垂直 `sm 8px`） | |
-| 内边距（≥md） | `md:px-6 md:py-4`（水平 `lg 24px` / 垂直 `md 16px`） | |
+| 内边距（移动） | `px-4 py-2.5`（水平 `md 16px` / 垂直 `sm 10px`） | |
+| 内边距（≥md） | `md:px-6 md:py-3`（水平 `lg 24px` / 垂直 `md 12px`） | |
+| 紧凑尺寸 | `size="sm"` → `px-4 py-2 text-sm` | 状态卡片、错误页等内联操作，高度仍受 `min-h-touch` 约束 |
 | 最小高度 | `min-h-touch`（44px 触控标准，固定尺寸例外） | |
 | 字号 | 移动 `text-sm` / 桌面 `text-md`，`font-semibold` | |
 | 圆角 | `rounded-2xl`（24px） | |
@@ -150,19 +153,40 @@ Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，�
 | 边框 | 仅行分隔线 1px `border-border`；容器圆角 `rounded-lg`（12px） |
 | 单元格文字 | 正文 `text-sm`；数字/次要信息 `text-text-secondary` |
 
-### 3.6 导航（Nav） — [Navbar.tsx](./components/layout/Navbar.tsx)、[SegmentedControl.tsx](./components/ui/SegmentedControl.tsx)
+### 3.6 页面布局与导航 — [AppShell.tsx](./components/layout/AppShell.tsx)、[Navbar.tsx](./components/layout/Navbar.tsx)、[Sidebar.tsx](./components/layout/Sidebar.tsx)、[NavDrawer.tsx](./components/layout/NavDrawer.tsx)、[PageContainer.tsx](./components/layout/PageContainer.tsx)
+
+> 全站统一「上下 + 左右」结构：顶部为全宽顶栏（Logo、常驻搜索框、功能图标），下方为左侧导航 + 右侧内容列；仅播放页通过 `showSidebar={false}` 隐藏左侧导航。
+
+**顶栏（Navbar）**
 
 | 属性 | 规范值 | 说明 |
 |------|--------|------|
-| 布局 | `sticky top-0`，`z-nav`，内容区 `max-w-7xl` 居中 | |
-| 药丸背景 | `--glass-bg` + blur(25px)、1px `border-border`、阴影 `shadow-card` | |
-| 药丸圆角 | `rounded-2xl`（24px） | |
-| 内边距（移动） | `px-4 py-2`（水平 `md 16px` / 垂直 `sm 8px`） | |
-| 内边距（≥sm） | `sm:px-6 sm:py-2`（水平 `lg 24px` / 垂直 `sm 8px`） | |
-| 高度 | 自适应；图标按钮 `w-8 h-8`（移动）/ `sm:w-10 sm:h-10`（桌面）固定 | 固定尺寸例外 |
-| 图标悬停态 | 背景 `color-mix(primary 10%, transparent)`（可写 `hover:bg-primary/10`） | |
-| 选中态（SegmentedControl） | 背景 `bg-primary` + 白色文字；未选中 `text-text-secondary`，悬停 → `text-text` | 全站选中态统一模式 |
-| 页面标题 | `text-lg`（移动）/ `text-xxl`（桌面），bold | |
+| 布局 | `sticky top-0`、`z-nav`、`w-full px-6` | 全宽无内层胶囊，内容不再居中收窄 |
+| 结构 | 左区（汉堡 + Logo + 站名）、中区搜索框、右区功能图标 | 左右两区 `flex-1` 等宽，保证搜索框居中 |
+| 垂直内边距 | `pt-3 pb-1.5`；内层 `py-1.5 sm:py-2.5` | sm 及以上总高度 = `top-navbar`（82px，由搜索框 `h-11` 撑起） |
+| 站名 | `text-lg`（移动）/ `md:text-xxl`，bold | |
+| 图标按钮 | `w-8 h-8`（移动）/ `sm:w-10 sm:h-10`，`rounded-full`，`bg-surface` + 1px `border-border` | 固定尺寸例外 |
+| 图标悬停态 | `hover:bg-primary/10` | |
+| 搜索框 | `h-10 sm:h-11`、`max-w-xl`、`rounded-full`、`bg-surface` + 1px `border-border` | 全站常驻，左侧无图标，仅右侧提交按钮 |
+| 汉堡按钮 | 仅移动端（`md:hidden`）显示，点击打开 [NavDrawer.tsx](./components/layout/NavDrawer.tsx) | |
+
+**左侧导航（Sidebar / NavDrawer）**
+
+| 属性 | 规范值 | 说明 |
+|------|--------|------|
+| 桌面侧栏 | `hidden md:flex`、`md:w-sidenav`（224px）、`md:self-start md:sticky md:top-navbar` | 无背景、无垂直分割线，与内容区同底色；`self-start` 是吸顶生效的前提 |
+| 高级模式侧栏 | 由 `PremiumSourcesProvider` 提供订阅源列表（「今日推荐」+ 各启用源） | 选源驱动右侧内容筛选；无 Provider 的页面回退普通菜单 |
+| 移动抽屉 | `w-drawer sm:w-drawer-sm max-w-sidebar`、`z-nav`、玻璃背景 + 右侧圆角 | 遮罩 `z-nav-backdrop` + `animate-fade` |
+| 菜单项 | `px-4 min-h-touch rounded-2xl text-sm`，图标 `size={20}` | 桌面与抽屉共用 `SidebarMenu` |
+| 选中态 | `bg-primary text-white shadow-primary-glow-sm`；未选中 `text-text hover:bg-primary/10` | 全站导航选中统一模式 |
+| 选中态（SegmentedControl） | 背景 `bg-primary` + 白色文字；未选中 `text-text-secondary`，悬停 → `text-text` | |
+
+**内容容器（PageContainer）**
+
+| 属性 | 规范值 | 说明 |
+|------|--------|------|
+| 宽度 | `max-w-page`（1920px）居中 | 不提供多档宽度，设置页在内部再限制 `max-w-4xl` |
+| 内边距 | `px-6` + 页面级 `py-8` / `pt-4 pb-20` | 左右内边距与顶栏 `px-6` 对齐 |
 
 ### 3.7 标签（Tag / Badge） — [Badge.tsx](./components/ui/Badge.tsx)
 
@@ -200,29 +224,44 @@ Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，�
 | 内边距 | `px-4 py-2`（水平 `md 16px` / 垂直 `sm 8px`） | |
 | ConfirmDialog 危险按钮 | 背景 `bg-danger`，悬停加深 | |
 
+**状态卡片（StatusCard）** — [StatusCard.tsx](./components/ui/StatusCard.tsx)
+
+页面级告警、失败、权限拦截与登录门统一使用该组件，禁止再单独拼装卡片样式。
+
+| 属性 | 规范值 | 说明 |
+|------|--------|------|
+| 卡片 | `bg-surface` + blur(25px)、1px `border-border`、`rounded-2xl`、`p-6`、`shadow-overlay` | 与弹窗同一视觉层级；页面内联状态用 `surface={false}` 仅保留文本内容 |
+| 图标徽章 | `w-10 h-10 rounded-full` + `border-border` + `shadow-card`，图标 20px | 色彩由 `tone` 决定 |
+| tone | `primary` / `warning`（权限）/ `danger`（失败）/ `success` | 背景为对应色的 10% 透明度 |
+| 标题 / 描述 | `text-xl font-bold text-text` / `text-sm text-text-secondary` | 居中排布 |
+| 全屏模式 | `fullscreen`：`fixed inset-0 z-modal` + `bg-bg bg-page` + `-translate-y-gate-shift` | 登录门、权限门、路由拦截 |
+| 宽度 | `md` 448px · `lg` 512px · `xl` 576px · `2xl` 672px | 默认 `md` |
+| 操作按钮 | 使用 [Button](./components/ui/Button.tsx)；链接按钮沿用同一套 primary 类 | |
+
 ---
 
-## 4. 间距规范（4px 网格系统）
+## 4. 间距规范
 
-所有间距（padding / margin / gap / 留白类尺寸）必须是 **4 的整数倍**，且仅允许以下 6 档。
-
-> ⚠️ **项目不定义命名 spacing token**：`p-xs`/`p-sm`/`p-md` 等类未注册、不会生成，写了样式不生效。原因：命名 spacing 会遮蔽 Tailwind 默认容器档位（如 `max-w-md` 弹窗 448px、`max-w-lg` 512px）。一律使用数字档。
+所有间距（padding / margin / gap / 留白类尺寸）统一使用 Tailwind 数字档（`n × 4px`），允许以下档位：
 
 | 档位 | 值 | Tailwind 类 | 典型场景 |
 |------|-----|------------|---------|
-| xs | 4px | `p-1` | 图标与文字间距、徽章垂直内边距 |
-| sm | 8px | `p-2` | 紧凑元素内边距、Label 与输入框间距 |
-| md | 16px | `p-4` | 卡片移动端内边距、列表项间距、栅格 gap |
-| lg | 24px | `p-6` | 卡片桌面端内边距、弹窗内边距 |
-| xl | 32px | `p-8` | 页面区块垂直间距 |
-| xxl | 48px | `p-12` | 页面级大留白（空状态、区块分隔） |
+| 最小 | 4px | `p-1` | 图标与文字间距、徽章垂直内边距 |
+| 紧凑 | 6px | `p-1.5` | 紧凑控件的上下内边距（标签、小按钮） |
+| 小 | 8px | `p-2` | 紧凑元素内边距、Label 与输入框间距 |
+| 紧凑中 | 10px | `p-2.5` | 输入框/菜单项垂直内边距 |
+| 中 | 12px | `p-3` | 小面板内边距、行内间距 |
+| 标准 | 16px | `p-4` | 卡片移动端内边距、列表项间距、栅格 gap |
+| 大 | 24px | `p-6` | 卡片桌面端/页面内边距、弹窗内边距 |
+| 特大 | 32px | `p-8` | 页面区块垂直间距 |
+| 页面级 | 48px | `p-12` | 页面级大留白（空状态、区块分隔） |
 
 规则：
 
-- 允许 `0` 和 `auto`；边框宽度（1px/2px）、图标/头像固定尺寸（16/20/32/40px）不属于间距 Token，不受此限。
+- 允许 `0` 和 `auto`；边框宽度（1px/2px）、图标/头像/媒体固定尺寸（16/20/32/40/128px 等）不属于间距，不受此限。
 - 禁止使用命名间距类（`p-xs`/`p-sm`/`p-md`/`p-lg`/`p-xl`/`p-xxl` 及 `m-`/`gap-`/`px-`/`py-` 等同形变体）——项目未注册，不会生成样式。
-- 禁止使用中间档间距类：`p-0.5`(2) `p-1.5`(6) `p-2.5`(10) `p-3`(12) `p-5`(20) `p-7`(28) `p-9`(36) `p-10`(40) `p-11`(44) 及其 `-x/-y/-t/-r/-b/-l` 变体。
-- 组合规则：需要 12px 视觉效果时用 8px（`p-2`）或 16px（`p-4`），不引入新档位。
+- 禁止表外中间档：`p-3.5`(14) `p-5`(20) `p-7`(28) `p-9`(36) `p-10`(40) `p-11`(44) 及其 `-x/-y/-t/-r/-b/-l` 变体。
+- 组合规则：需要非标准视觉间距时，就近取上表档位，不引入任意值（`p-[13px]`）。
 
 ---
 
@@ -233,7 +272,7 @@ Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline` 块中，�
 | 1 | 硬编码颜色值（hex/rgb/named，如 `bg-[#34c759]`、CSS 里的 `color: #666`）；状态色使用 Tailwind 调色板类（`text-red-500`、`text-amber-500` 等） | 用语义 Token 类：`text-danger`、`bg-success`、`text-text-secondary`（主题色类内部引用变量，自动切换主题）。例外：Token 派生色 `color-mix(...)` 与 Toast 固定深色玻璃 |
 | 2 | `!important` | 用选择器优先级或调整书写顺序解决 |
 | 3 | 小数像素值（`9.6px`、`0.6rem`、`1.5px`） | 归入最近 Token 档位 |
-| 4 | 非 Token 间距（2/6/10/12/20/28/36/40/44px…） | 见第 4 节 6 档取值 |
+| 4 | 表外间距档位（14/20/28/36/40/44px…） | 见第 4 节允许档位取值 |
 | 5 | 组件内写死宽度（`w-[200px]`、`min-w-[200px]`、`max-w-[60px]`） | 内容自适应 + `flex/grid` 约束。例外：固定尺寸组件（按钮 `min-h-[44px]`、图标按钮 `w-8 h-8`、弹窗 `max-w-md`、Logo 容器） |
 | 6 | Tailwind 任意值（`text-[15px]`、`pt-[13px]`、`rounded-[0.6rem]`） | 用 Token 类替代（如 `rounded-2xl`、`shadow-card`、`text-text`） |
 | 7 | CSS 文件中硬编码颜色/间距（`app/styles/*.css` 中新写 `padding: 13px`、`color: #eee`） | 用 `var(...)` 引用变量：设计 Token 定义在 [globals.css](./app/globals.css) 的 `@theme inline`，主题运行变量（亮暗切换）定义在 `variables.css` |

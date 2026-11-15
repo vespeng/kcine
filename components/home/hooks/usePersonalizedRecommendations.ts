@@ -1,23 +1,14 @@
 /**
- * usePersonalizedRecommendations
- *
- * Fetches personalized content based on viewing history patterns.
- * Designed to integrate into the tag system — returns the same shape
- * as usePopularMovies (movies, loading, hasMore, prefetchRef, loadMoreRef).
- *
- * Features:
- * - Interleaves results from multiple recommendation queries into a single mixed feed
- * - Randomizes Douban API offsets so each page load shows different content
- * - Excludes already-watched titles
- * - Auto-infinite-scroll via useInfiniteScroll (no "load more" button)
- * - When current queries exhaust, regenerates with new random offsets for more content
- * - Caches results for 30 minutes
- * - hasHistory = true when viewingHistory.length >= 2
+ * 个性化推荐：基于观看历史生成多条查询并交错合并，随机偏移保证内容多样性；
+ * 自动无限滚动，查询耗尽后重新生成，结果缓存 30 分钟。观看满 2 部才启用。
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useHistoryStore, usePremiumHistoryStore } from '@/lib/store/history-store';
 import { useInfiniteScroll } from '@/lib/hooks/useInfiniteScroll';
+import { fetchTmdbSubjects } from '@/lib/utils/tmdb-client';
+import { fetchDoubanSubjects } from '@/lib/utils/douban-client';
+import type { MediaItem } from '@/lib/types';
 import {
   generateRecommendations,
   getWatchedTitles,
@@ -25,15 +16,7 @@ import {
   type RecommendationQuery,
 } from '@/lib/utils/recommendation-engine';
 
-interface DoubanMovie {
-  id: string;
-  title: string;
-  cover: string;
-  rate: string;
-  url: string;
-}
-
-interface InterleavedMovie extends DoubanMovie {
+interface InterleavedMovie extends MediaItem {
   sourceLabel: string;
 }
 
@@ -69,24 +52,15 @@ export function usePersonalizedRecommendations(isPremium = false) {
   ): Promise<InterleavedMovie[]> => {
     const results = await Promise.all(
       queries.map(async (query) => {
-        try {
-          const offset = query.pageStart + pageNum * ITEMS_PER_PAGE;
-          const res = await fetch(
-            `/api/douban/recommend?tag=${encodeURIComponent(query.tag)}&type=${query.type}&page_limit=${ITEMS_PER_PAGE}&page_start=${offset}`
-          );
-          if (!res.ok) return { label: query.label, movies: [] as DoubanMovie[] };
-          const data = await res.json();
-          const movies: DoubanMovie[] = (data.subjects || []).map((s: any) => ({
-            id: s.id,
-            title: s.title,
-            cover: s.cover,
-            rate: s.rate,
-            url: s.url,
-          }));
-          return { label: query.label, movies };
-        } catch {
-          return { label: query.label, movies: [] as DoubanMovie[] };
+        const offset = query.pageStart + pageNum * ITEMS_PER_PAGE;
+        // TMDB 优先：按页取数，随机偏移换算为页码以保持内容多样性
+        const tmdbPage = Math.floor(offset / ITEMS_PER_PAGE) + 1;
+        let movies = await fetchTmdbSubjects(query.type, query.tag, tmdbPage);
+        // TMDB 无结果（如演员标签无映射）→ 豆瓣兜底
+        if (movies.length === 0) {
+          movies = await fetchDoubanSubjects(query.type, query.tag, ITEMS_PER_PAGE, offset);
         }
+        return { label: query.label, movies };
       })
     );
 

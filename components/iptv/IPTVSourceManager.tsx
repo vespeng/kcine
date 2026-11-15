@@ -188,7 +188,7 @@ export function IPTVSourceManager() {
                     </div>
                     <p className="text-xs text-text-secondary truncate">{source.url}</p>
                   </div>
-                  <div className="flex items-center gap-1 ml-2 flex-shrink-0">
+                  <div className="flex items-center gap-1 ml-2 shrink-0">
                     {source.kind !== 'builtin' ? (
                       <>
                         <button

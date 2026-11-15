@@ -82,7 +82,7 @@ export const VideoCard = memo<VideoCardProps>(({
                     <div className="absolute top-2 left-2 right-2 z-10 flex items-center justify-between gap-1">
                         <div className="flex items-center gap-1 min-w-0">
                             {video.sourceName && (
-                                <Badge variant="primary" className="bg-primary flex-shrink-0 max-w-full truncate">
+                                <Badge variant="primary" className="bg-primary shrink-0 max-w-full truncate">
                                     {video.sourceName}
                                 </Badge>
                             )}

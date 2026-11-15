@@ -13,14 +13,12 @@ interface PremiumVideo {
 
 const PAGE_LIMIT = 20;
 
-export function usePremiumContent(categoryValues: string[]) {
+export function usePremiumContent(categoryValues: string[], sourceId = '') {
     const [videos, setVideos] = useState<PremiumVideo[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
 
-    // Track source count to detect meaningful updates
-    const sourceCountRef = useRef(0);
     // Tracks the latest request so stale fetches can be discarded during rapid category switching
     const requestIdRef = useRef(0);
 
@@ -56,6 +54,7 @@ export function usePremiumContent(categoryValues: string[]) {
                         body: JSON.stringify({
                             sources: premiumSources,
                             category: value,
+                            sourceId,
                             page: pageNum.toString(),
                             limit: PAGE_LIMIT.toString()
                         })
@@ -103,7 +102,7 @@ export function usePremiumContent(categoryValues: string[]) {
                 setLoading(false);
             }
         }
-    }, []);
+    }, [sourceId]);
 
     // Initial load and category change
     useEffect(() => {
@@ -114,13 +113,8 @@ export function usePremiumContent(categoryValues: string[]) {
         setVideos([]);
         setHasMore(true);
 
-        // Initial check for sources
-        const settings = settingsStore.getSettings();
-        const sourcesCount = settings.premiumSources.length + settings.subscriptions.length;
-        sourceCountRef.current = sourcesCount;
-
         loadVideos(requestValues, 1, false);
-    }, [categoryKey]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [categoryKey, sourceId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Subscribe to settings changes to handle async source loading
     useEffect(() => {

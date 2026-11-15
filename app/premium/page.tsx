@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { SearchPageLayout } from '@/components/layout/SearchPageLayout';
 import { usePremiumHomePage } from '@/lib/hooks/usePremiumHomePage';
 import { PremiumContent } from '@/components/premium/PremiumContent';
+import { PremiumSourcesProvider } from '@/components/premium/PremiumSourcesProvider';
 import { PremiumPasswordGate } from '@/components/PremiumPasswordGate';
 import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
 
@@ -19,18 +20,20 @@ function PremiumHomePage() {
     } = usePremiumHomePage();
 
     return (
-        <SearchPageLayout
-            query={query}
-            hasSearched={hasSearched}
-            loading={loading}
-            results={results}
-            availableSources={availableSources}
-            isPremium
-            placeholder="搜你想看..."
-            onSearch={handleSearch}
-            onReset={handleReset}
-            featured={<PremiumContent />}
-        />
+        <PremiumSourcesProvider>
+            <SearchPageLayout
+                query={query}
+                hasSearched={hasSearched}
+                loading={loading}
+                results={results}
+                availableSources={availableSources}
+                isPremium
+                placeholder="搜你想看..."
+                onSearch={handleSearch}
+                onReset={handleReset}
+                featured={<PremiumContent />}
+            />
+        </PremiumSourcesProvider>
     );
 }
 

@@ -336,7 +336,7 @@ export function AccountSettings() {
   if (!hasAuth && !session) return null;
 
   return (
-    <SettingsSection title="账户管理" description="查看当前登录用户，并根据部署模式管理访问账户。" disableHover>
+    <SettingsSection title="账户管理" description="查看当前登录用户，并根据部署模式管理访问账户。">
       <div className="space-y-6">
         {session && (
           <div className="flex items-center justify-between gap-4 p-4 bg-surface border border-border rounded-2xl">
@@ -694,7 +694,7 @@ export function AccountSettings() {
                         </code>
                         <button
                           onClick={() => navigator.clipboard.writeText(generatedLegacyAccounts)}
-                          className="px-3 py-2 bg-primary text-white rounded-2xl text-xs hover:opacity-90 transition-all cursor-pointer flex items-center gap-1 flex-shrink-0"
+                          className="px-3 py-2 bg-primary text-white rounded-2xl text-xs hover:opacity-90 transition-all cursor-pointer flex items-center gap-1 shrink-0"
                         >
                           <Icons.Copy size={12} />
                           复制

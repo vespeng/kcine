@@ -28,7 +28,6 @@
     --radius-lg: 0.75rem;
     --radius-2xl: 1.5rem;
     --radius-full: 9999px;
-    --transition-fluid: 0.3s ease;
 
     /* Active Theme Variables */
     --bg-color: var(--bg-color-light);
@@ -41,9 +40,6 @@
     --glass-border: var(--glass-border-light);
     --glass-hover: var(--glass-hover-light);
     --shadow-color: var(--shadow-color-light);
-
-    --background: #f2f4f7;
-    --foreground: #1d1d1f;
 }
 
 body {
@@ -83,7 +79,4 @@ body.dark,
     --glass-border: var(--glass-border-dark);
     --glass-hover: var(--glass-hover-dark);
     --shadow-color: var(--shadow-color-dark);
-
-    --background: #121212;
-    --foreground: #f5f5f7;
 }

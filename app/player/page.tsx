@@ -15,25 +15,16 @@ import { useVideoPlayer } from '@/lib/hooks/useVideoPlayer';
 import { useHistory } from '@/lib/store/history-store';
 import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 import { FavoriteButton } from '@/components/favorites/FavoriteButton';
-import { PlayerNavbar } from '@/components/player/PlayerNavbar';
+import { AppShell } from '@/components/layout/AppShell';
 import { settingsStore } from '@/lib/store/settings-store';
 import { premiumModeSettingsStore } from '@/lib/store/premium-mode-settings';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
+import { PageContainer } from '@/components/layout/PageContainer';
 import { getSourceName } from '@/lib/utils/source-names';
 import { retrieveGroupedSources, storeGroupedSources } from '@/lib/utils/grouped-sources-cache';
 import { traditionalToSimplified } from '@/lib/utils/chinese-convert';
 import { parseVideoTitle } from '@/lib/utils/video';
 import { usePremiumTheme } from '@/lib/hooks/usePremiumTheme';
-
-type PlayerViewportMode = 'standard' | 'wide' | 'cinema';
-
-const PLAYER_VIEWPORT_MODE_KEY = 'kcine-player-viewport-mode';
-const PLAYER_VIEWPORT_MODE_ORDER: PlayerViewportMode[] = ['standard', 'wide', 'cinema'];
-const PLAYER_VIEWPORT_MODE_LABELS: Record<PlayerViewportMode, string> = {
-  standard: '标准',
-  wide: '宽屏',
-  cinema: '影院',
-};
 
 function PlayerContent() {
   const searchParams = useSearchParams();
@@ -60,11 +51,6 @@ function PlayerContent() {
 
   // Mobile tab state
   const [activeTab, setActiveTab] = useState<'episodes' | 'info'>('episodes');
-  const [playerViewportMode, setPlayerViewportMode] = useState<PlayerViewportMode>(() => {
-    if (typeof window === 'undefined') return 'standard';
-    const saved = localStorage.getItem(PLAYER_VIEWPORT_MODE_KEY);
-    return saved === 'wide' || saved === 'cinema' || saved === 'standard' ? saved : 'standard';
-  });
   const [isSourceSectionCollapsed, setIsSourceSectionCollapsed] = useState(false);
   const [isEpisodeSectionCollapsed, setIsEpisodeSectionCollapsed] = useState(false);
 
@@ -72,10 +58,6 @@ function PlayerContent() {
   useEffect(() => {
     setIsReversed(modeStore.getSettings().episodeReverseOrder);
   }, [modeStore]);
-
-  useEffect(() => {
-    localStorage.setItem(PLAYER_VIEWPORT_MODE_KEY, playerViewportMode);
-  }, [playerViewportMode]);
 
   // Migrate legacy long groupedSources URL to short gs key
   useEffect(() => {
@@ -388,97 +370,61 @@ function PlayerContent() {
     }
   }, [currentEpisode, handleEpisodeClick, isReversed, videoData]);
 
-  const effectivePlayerViewportMode = useMemo<PlayerViewportMode>(() => {
-    const manualIndex = PLAYER_VIEWPORT_MODE_ORDER.indexOf(playerViewportMode);
-    const collapsedCount = Number(isSourceSectionCollapsed) + Number(isEpisodeSectionCollapsed);
-    const autoIndex = Math.min(collapsedCount, PLAYER_VIEWPORT_MODE_ORDER.length - 1);
-    return PLAYER_VIEWPORT_MODE_ORDER[Math.max(manualIndex, autoIndex)];
-  }, [playerViewportMode, isSourceSectionCollapsed, isEpisodeSectionCollapsed]);
-
-  const playerGridClass = effectivePlayerViewportMode === 'cinema'
-    ? 'xl:grid-cols-player-cinema'
-    : effectivePlayerViewportMode === 'wide'
-      ? 'xl:grid-cols-player-wide'
-      : 'xl:grid-cols-player-standard';
-
   if (missingRequiredParams) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-bg">
-      {/* Glass Navbar */}
-      <PlayerNavbar isPremium={isPremium} />
-
-      <main className="max-w-content mx-auto px-4 pb-20 pt-2">
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-              <p className="text-sm text-text-secondary">正在加载视频详情...</p>
-            </div>
-          </div>
-        ) : videoError && !videoData ? (
+    <AppShell
+      isPremium={isPremium}
+      onReset={() => router.push(isPremium ? '/premium' : '/')}
+      showSidebar={false}
+      className="bg-bg bg-page bg-fixed"
+    >
+      <PageContainer className="pb-20 pt-4">
+        {videoError && !videoData ? (
           <PlayerError
             error={videoError}
-            onBack={() => router.back()}
             onRetry={fetchVideoDetails}
           />
         ) : (
           <div className="space-y-4">
-            {/* Viewport controls span full content width so player + sidebar tops align */}
-            <div className="hidden lg:flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-4">
-              <div>
-                <div className="text-sm font-semibold text-text">
-                  播放窗口大小
-                </div>
-                <div className="text-xs text-text-secondary mt-1">
-                  右侧源列表或选集折叠后，会自动提升到更宽的布局
-                  {effectivePlayerViewportMode !== playerViewportMode && `，当前已自动切到${PLAYER_VIEWPORT_MODE_LABELS[effectivePlayerViewportMode]}`}
-                </div>
-              </div>
-              <SegmentedControl<PlayerViewportMode>
-                options={[
-                  { label: '标准', value: 'standard' },
-                  { label: '宽屏', value: 'wide' },
-                  { label: '影院', value: 'cinema' },
-                ]}
-                value={playerViewportMode}
-                onChange={setPlayerViewportMode}
-                className="min-w-menu-xl"
-              />
-            </div>
-
-          <div className={`grid gap-6 lg:grid-cols-3 lg:items-start ${playerGridClass}`}>
+            <div className="grid gap-6 lg:grid-cols-player lg:items-start">
             {/* Video Player Section */}
-            <div className="lg:col-span-2 xl:col-span-1 space-y-6">
+            <div className="space-y-6">
               <div className="sm:mx-0">
-                <VideoPlayer
-                  playUrl={playUrl}
-                  videoId={videoId || undefined}
-                  currentEpisode={currentEpisode}
-                  onBack={() => router.back()}
-                  totalEpisodes={videoData?.episodes?.length || 0}
-                  onNextEpisode={handleNextEpisode}
-                  isReversed={isReversed}
-                  isPremium={isPremium}
-                  videoTitle={videoData?.vod_name || title || ''}
-                  episodeName={videoData?.episodes?.[currentEpisode]?.name || ''}
-                  externalTimeRef={playerTimeRef}
-                  onResolutionDetected={handleResolutionDetected}
-                />
+                {loading ? (
+                  <PlayerLoading />
+                ) : (
+                  <VideoPlayer
+                    playUrl={playUrl}
+                    videoId={videoId || undefined}
+                    currentEpisode={currentEpisode}
+                    onBack={() => router.back()}
+                    totalEpisodes={videoData?.episodes?.length || 0}
+                    onNextEpisode={handleNextEpisode}
+                    isReversed={isReversed}
+                    isPremium={isPremium}
+                    videoTitle={videoData?.vod_name || title || ''}
+                    episodeName={videoData?.episodes?.[currentEpisode]?.name || ''}
+                    externalTimeRef={playerTimeRef}
+                    onResolutionDetected={handleResolutionDetected}
+                  />
+                )}
               </div>
-              <div className="hidden lg:block">
-                <VideoMetadata
-                  videoData={videoData}
-                  source={source}
-                  title={title}
-                />
-              </div>
+              {!loading && (
+                <div className="hidden lg:block">
+                  <VideoMetadata
+                    videoData={videoData}
+                    source={source}
+                    title={title}
+                  />
+                </div>
+              )}
 
               {/* Favorite Button for current video */}
               {videoData && videoId && (
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex items-center gap-4 mt-4">
                   <FavoriteButton
                     videoId={videoId}
                     source={source}
@@ -499,9 +445,10 @@ function PlayerContent() {
               )}
             </div>
 
-            {/* Sidebar with sticky wrapper — top offset matches navbar height for alignment */}
-            <div className="lg:col-span-1">
-              <div className="lg:sticky lg:top-28 space-y-6">
+            {/* 右侧栏吸顶，偏移与顶栏总高度一致；详情加载完成后再渲染 */}
+            {!loading && (
+            <div>
+              <div className="lg:sticky lg:top-navbar space-y-6">
                 {/* Mobile Tabs */}
                 <SegmentedControl
                   options={[
@@ -567,13 +514,24 @@ function PlayerContent() {
                 </div>
               </div>
             </div>
-          </div>
+            )}
+            </div>
           </div>
         )}
-      </main>
+      </PageContainer>
 
       {/* Favorites Sidebar - Left */}
       <FavoritesSidebar isPremium={isPremium} />
+    </AppShell>
+  );
+}
+
+/** 播放窗口占位：详情加载期间仅在此区域展示加载标识 */
+function PlayerLoading() {
+  return (
+    <div className="w-full aspect-video rounded-2xl border border-border bg-panel flex flex-col items-center justify-center gap-4">
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent" />
+      <p className="text-sm text-white/70">正在加载视频详情…</p>
     </div>
   );
 }

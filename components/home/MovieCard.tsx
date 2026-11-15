@@ -1,24 +1,16 @@
 /**
- * MovieCard - Individual movie card component
- * Displays movie poster, title, and rating
+ * 影片海报卡片：封面、评分角标与标题；点击按标题搜索并直连播放
  */
 
 import { memo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/Icon';
-
-interface DoubanMovie {
-  id: string;
-  title: string;
-  cover: string;
-  rate: string;
-  url: string;
-}
+import type { MediaItem } from '@/lib/types';
 
 interface MovieCardProps {
-  movie: DoubanMovie;
-  onMovieClick: (movie: DoubanMovie) => void;
+  movie: MediaItem;
+  onMovieClick: (movie: MediaItem) => void;
 }
 
 export const MovieCard = memo(function MovieCard({ movie, onMovieClick }: MovieCardProps) {

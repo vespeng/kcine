@@ -145,7 +145,7 @@ export function ThemeSwitcher() {
                 }
               `}
             >
-              <span className={`flex-shrink-0 ${theme === option.value ? 'text-primary' : ''}`}>
+              <span className={`shrink-0 ${theme === option.value ? 'text-primary' : ''}`}>
                 {option.icon}
               </span>
               <span>{option.label}</span>

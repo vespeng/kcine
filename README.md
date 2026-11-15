@@ -48,7 +48,8 @@
 - **源智能优选**：多源延迟检测与排序，播放分辨率自动探测
 - **IPTV 直播**：M3U/JSON 格式支持，HEVC 智能兼容，流媒体代理
 - **弹幕系统**：Canvas 高性能渲染，支持多 API 管理
-- **豆瓣集成**：影视信息获取、推荐系统、标签管理
+- **影视数据集成**：豆瓣 + TMDB 双数据源，首页轮播、热门榜单与电影/剧集/综艺/动漫分类浏览
+- **个性化推荐**：基于观看历史生成推荐，未满 2 部时自动降级为热门内容
 - **个性化功能**：收藏管理、观看历史、断点续播
 - **订阅管理**：订阅源自动同步，自定义视频源，数据一键导入导出
 - **账户与权限**：多账户体系与细粒度角色权限控制
@@ -71,7 +72,7 @@ docker run -d -p 3000:3000 \
   -e PREMIUM_PASSWORD="premium456" \
   -e ACCOUNTS="user1:pass1:用户一:viewer,user2:pass2:用户二:admin" \
   -e SITE_NAME="我的视频" \
-  --name video vespeng/video:latest
+  --name video vespeng/kcine:latest
 ```
 
 ### Node.js 部署
@@ -110,7 +111,6 @@ npm start
 |--------|------|--------|
 | `SITE_NAME` | 站点名称 | `KCine` |
 | `SITE_TITLE` | 浏览器标题 | `KCine - 视频聚合平台` |
-| `SITE_DESCRIPTION` | 站点描述 | `视频聚合平台` |
 | `SITE_ICON_FILE` | Docker 图标文件路径 | - |
 | `SITE_ICON_URL` | Docker 图标 URL | - |
 
@@ -123,6 +123,7 @@ npm start
 | `DANMAKU_API_URL` | 弹幕 API 地址 | - |
 | `AD_KEYWORDS` | 广告过滤关键词 | - |
 | `MERGE_SOURCES` | 合并同名源（`true`/`1`） | - |
+| `TMDB_API_KEY` | TMDB API Key（v3 key 或 v4 Bearer Token，影片推荐数据源与高清图片，[免费申请](https://www.themoviedb.org/settings/api)） | - |
 
 ### 网络配置
 

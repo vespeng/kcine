@@ -194,13 +194,13 @@ export function IPTVChannelGrid({ channels, groups, onSelect, activeChannel, cha
                 <img
                   src={channel.logo}
                   alt=""
-                  className="w-8 h-8 rounded object-contain bg-black/10 flex-shrink-0"
+                  className="w-8 h-8 rounded object-contain bg-black/10 shrink-0"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
               ) : (
-                <div className={`w-8 h-8 rounded flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-8 h-8 rounded flex items-center justify-center shrink-0 ${
                   activeChannel?.url === channel.url ? 'bg-white/20' : 'bg-surface'
                 }`}>
                   <Icons.TV size={14} className={activeChannel?.url === channel.url ? 'text-white/70' : 'text-text-secondary'} />
@@ -221,7 +221,7 @@ export function IPTVChannelGrid({ channels, groups, onSelect, activeChannel, cha
                     </p>
                   )}
                   {channel.routes && channel.routes.length > 1 && (
-                    <span className={`text-3xs px-1 rounded flex-shrink-0 ${
+                    <span className={`text-3xs px-1 rounded shrink-0 ${
                       activeChannel?.url === channel.url ? 'bg-white/20 text-white/80' : 'bg-primary/10 text-primary'
                     }`}>
                       {channel.routes.length}线路

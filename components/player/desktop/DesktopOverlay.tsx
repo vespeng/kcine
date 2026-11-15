@@ -220,7 +220,7 @@ export function DesktopOverlay({
             {showToast && toastMessage && (
                 <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-toast animate-slide-up">
                     <div className="bg-panel/95 backdrop-blur-glass rounded-2xl border border-white/20 shadow-card-hover px-6 py-3 flex items-center gap-3 min-w-menu-lg">
-                        <Icons.Check size={18} className="text-success flex-shrink-0" />
+                        <Icons.Check size={18} className="text-success shrink-0" />
                         <span className="text-white text-sm font-medium">{toastMessage}</span>
                     </div>
                 </div>

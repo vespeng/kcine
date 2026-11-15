@@ -641,11 +641,11 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
       >
         <div className="flex items-center gap-2">
           {isActive && (
-            <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0 animate-pulse" />
           )}
           <span className="truncate flex-1">{ch.name}</span>
           {ch.routes && ch.routes.length > 1 && (
-            <span className={`text-2xs px-1.5 py-0.5 rounded flex-shrink-0 ${
+            <span className={`text-2xs px-1.5 py-0.5 rounded shrink-0 ${
               isActive ? 'bg-white/20' : 'bg-white/5 text-white/40'
             }`}>
               {ch.routes.length}线路
@@ -690,13 +690,13 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                 }`}
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <Icons.TV size={14} className="flex-shrink-0 text-primary" />
+                  <Icons.TV size={14} className="shrink-0 text-primary" />
                   <span className="truncate">{source.name}</span>
-                  <span className="text-2xs text-white/40 flex-shrink-0">{sourceData.channels.length}</span>
+                  <span className="text-2xs text-white/40 shrink-0">{sourceData.channels.length}</span>
                 </div>
                 <Icons.ChevronDown
                   size={14}
-                  className={`flex-shrink-0 text-white/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                  className={`shrink-0 text-white/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
                 />
               </button>
 
@@ -722,13 +722,13 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
                             }`}
                           >
                             <div className="flex items-center gap-1.5 min-w-0">
-                              <Icons.Tag size={12} className="flex-shrink-0" />
+                              <Icons.Tag size={12} className="shrink-0" />
                               <span className="truncate">{group}</span>
-                              <span className="text-2xs text-white/30 flex-shrink-0">{groupChannels.length}</span>
+                              <span className="text-2xs text-white/30 shrink-0">{groupChannels.length}</span>
                             </div>
                             <Icons.ChevronDown
                               size={12}
-                              className={`flex-shrink-0 text-white/30 transition-transform duration-200 ${groupExpanded ? 'rotate-180' : ''}`}
+                              className={`shrink-0 text-white/30 transition-transform duration-200 ${groupExpanded ? 'rotate-180' : ''}`}
                             />
                           </button>
                           {groupExpanded && (
@@ -844,7 +844,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
         {/* Top Bar */}
         <div
           data-controls
-          className={`absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`absolute top-0 left-0 right-0 p-4 bg-linear-to-b from-black/70 to-transparent transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -871,7 +871,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
         {/* Bottom Controls */}
         <div
           data-controls
-          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           {/* Progress Bar (non-live only) */}
           {!isLive && duration > 0 && (
@@ -985,7 +985,7 @@ export function IPTVPlayer({ channel, onClose, channels, onChannelChange, channe
 
       {/* Sidebar */}
       {showSidebar && (
-        <div data-sidebar className="w-72 bg-panel border-l border-white/10 overflow-y-auto flex-shrink-0">
+        <div data-sidebar className="w-72 bg-panel border-l border-white/10 overflow-y-auto shrink-0">
           <div className="sticky top-0 bg-panel z-10">
             <div className="p-3 border-b border-white/10 flex items-center justify-between">
               <h3 className="text-white text-sm font-medium">频道列表</h3>

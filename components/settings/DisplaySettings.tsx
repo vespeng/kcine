@@ -51,7 +51,7 @@ export function DisplaySettings({
         onBlockedCategoriesChange(blockedCategories.filter(c => c !== cat));
     };
     return (
-        <div className="bg-surface border border-border rounded-2xl shadow-card p-5 mb-4">
+        <div className="bg-surface border border-border rounded-2xl shadow-card p-4 sm:p-6">
             <h2 className="text-lg font-semibold text-text mb-3">显示设置</h2>
 
             {/* Remember Scroll Position Toggle */}
