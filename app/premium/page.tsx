@@ -14,11 +14,8 @@ function PremiumHomePage() {
         loading,
         results,
         availableSources,
-        completedSources,
-        totalSources,
         handleSearch,
         handleReset,
-        handleCancelSearch,
     } = usePremiumHomePage();
 
     return (
@@ -28,13 +25,10 @@ function PremiumHomePage() {
             loading={loading}
             results={results}
             availableSources={availableSources}
-            completedSources={completedSources}
-            totalSources={totalSources}
             isPremium
-            placeholder="输入关键词开始搜索..."
+            placeholder="搜你想看..."
             onSearch={handleSearch}
             onReset={handleReset}
-            onCancelSearch={handleCancelSearch}
             featured={<PremiumContent />}
         />
     );

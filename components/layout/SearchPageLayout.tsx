@@ -3,7 +3,6 @@
 import type { ReactNode } from 'react';
 import { AppShell } from './AppShell';
 import { PageContainer } from './PageContainer';
-import { SearchForm } from '@/components/search/SearchForm';
 import { SearchResults } from '@/components/home/SearchResults';
 import { NoResults } from '@/components/search/NoResults';
 import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
@@ -15,15 +14,11 @@ interface SearchPageLayoutProps {
   loading: boolean;
   results: Video[];
   availableSources: SourceBadge[];
-  completedSources: number;
-  totalSources: number;
   isPremium?: boolean;
   latencies?: Record<string, number>;
   placeholder?: string;
   onSearch: (query: string) => void;
   onReset: () => void;
-  onCancelSearch?: () => void;
-  onOpenHistory?: () => void;
   /**
    * Non-null when the current search has no usable video sources yet because
    * subscriptions are still syncing ('syncing') or the last sync failed
@@ -33,13 +28,11 @@ interface SearchPageLayoutProps {
   onRetrySources?: () => void;
   /** Shown below results when not searching (e.g. PopularFeatures / PremiumContent) */
   featured?: ReactNode;
-  /** Extra sidebars (e.g. WatchHistorySidebar) */
-  sidebars?: ReactNode;
 }
 
 /**
  * Shared layout for search pages (home & premium):
- * navbar + search form + result/loading/empty states + favorites sidebar.
+ * navbar (with inline pill search) + result/loading/empty states + favorites sidebar.
  */
 export function SearchPageLayout({
   query,
@@ -47,42 +40,24 @@ export function SearchPageLayout({
   loading,
   results,
   availableSources,
-  completedSources,
-  totalSources,
   isPremium = false,
   latencies,
   placeholder,
   onSearch,
   onReset,
-  onCancelSearch,
-  onOpenHistory,
   sourceIssue,
   onRetrySources,
   featured,
-  sidebars,
 }: SearchPageLayoutProps) {
   return (
-    <AppShell isPremium={isPremium} onReset={onReset} onOpenHistory={onOpenHistory}>
-      {/* Search Form - Separate from navbar */}
-      <div
-        className="max-w-content mx-auto px-4 mt-6 mb-8 relative transform-gpu z-page-nav"
-      >
-        <SearchForm
-          onSearch={onSearch}
-          onClear={onReset}
-          onCancelSearch={onCancelSearch}
-          isLoading={loading}
-          initialQuery={query}
-          currentSource=""
-          checkedSources={completedSources}
-          totalSources={totalSources}
-          placeholder={placeholder}
-          isPremium={isPremium}
-        />
-      </div>
-
+    <AppShell
+      isPremium={isPremium}
+      onReset={onReset}
+      search={{ query, placeholder, onSearch, onClear: onReset }}
+      className="bg-bg bg-page bg-fixed"
+    >
       {/* Main Content */}
-      <PageContainer className="pb-20">
+      <PageContainer className="pb-20 pt-4">
         {/* Results Section */}
         {(results.length >= 1 || (!loading && results.length > 0)) && (
           <SearchResults
@@ -150,9 +125,6 @@ export function SearchPageLayout({
 
       {/* Favorites Sidebar - Left */}
       <FavoritesSidebar isPremium={isPremium} />
-
-      {/* Extra sidebars (e.g. Watch History) */}
-      {sidebars}
     </AppShell>
   );
 }

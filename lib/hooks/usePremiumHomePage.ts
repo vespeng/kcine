@@ -17,13 +17,17 @@ export function usePremiumHomePage() {
     const [query, setQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false);
     const [currentSortBy, setCurrentSortBy] = useState('default');
+    // 记录上次 URL 中的 q，用于识别浏览器前进/后退触发的 URL 变化
+    const prevUrlQueryRef = useRef<string | null>(null);
 
     // Use state for sources to trigger re-renders when they update
     const [enabledPremiumSources, setEnabledPremiumSources] = useState<VideoSource[]>([]);
 
     const onUrlUpdate = useCallback((q: string) => {
-        router.replace(`/premium?q=${encodeURIComponent(q)}`, { scroll: false });
-    }, [router]);
+        // 同一 q 已在 URL 中时跳过，避免初始恢复搜索时重复入栈
+        if (searchParams.get('q') === q) return;
+        router.push(`/premium?q=${encodeURIComponent(q)}`, { scroll: false });
+    }, [router, searchParams]);
 
     // Search stream hook
     const {
@@ -119,6 +123,31 @@ export function usePremiumHomePage() {
         }
     }, [searchParams]);
 
+    // 浏览器前进/后退时同步页面状态：回到首页清空搜索，切回旧搜索重新拉取
+    useEffect(() => {
+        const urlQuery = searchParams.get('q') || '';
+        // 首次运行由挂载恢复逻辑处理，仅记录初始 URL
+        if (prevUrlQueryRef.current === null) {
+            prevUrlQueryRef.current = urlQuery;
+            return;
+        }
+        if (urlQuery === prevUrlQueryRef.current) return;
+        prevUrlQueryRef.current = urlQuery;
+
+        if (!urlQuery) {
+            if (hasSearched) {
+                hasSearchedWithSourcesRef.current = false;
+                setQuery('');
+                setHasSearched(false);
+                resetSearch();
+            }
+            return;
+        }
+
+        if (urlQuery === query) return;
+        handleSearch(urlQuery);
+    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+
     const handleSearch = (searchQuery: string) => {
         setQuery(searchQuery);
         setHasSearched(true);
@@ -131,7 +160,7 @@ export function usePremiumHomePage() {
         setQuery('');
         hasSearchedWithSourcesRef.current = false;
         resetSearch();
-        router.replace('/premium', { scroll: false });
+        router.push('/premium', { scroll: false });
     };
 
     return {

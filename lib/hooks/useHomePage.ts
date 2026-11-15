@@ -20,10 +20,14 @@ export function useHomePage() {
     const [query, setQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false);
     const [currentSortBy, setCurrentSortBy] = useState<SortOption>('default');
+    // 记录上次 URL 中的 q，用于识别浏览器前进/后退触发的 URL 变化
+    const prevUrlQueryRef = useRef<string | null>(null);
 
     const onUrlUpdate = useCallback((q: string) => {
-        router.replace(`/?q=${encodeURIComponent(q)}`, { scroll: false });
-    }, [router]);
+        // 同一 q 已在 URL 中时跳过，避免初始恢复搜索时重复入栈
+        if (searchParams.get('q') === q) return;
+        router.push(`/?q=${encodeURIComponent(q)}`, { scroll: false });
+    }, [router, searchParams]);
 
     // Search stream hook
     const {
@@ -177,7 +181,40 @@ export function useHomePage() {
         }
     }, [searchParams, loadFromCache, loadCachedResults, handleSearch]);
 
+    // 浏览器前进/后退时同步页面状态：回到首页清空搜索，切回旧搜索按缓存恢复
+    useEffect(() => {
+        const urlQuery = searchParams.get('q') || '';
+        // 首次运行由挂载恢复逻辑处理，仅记录初始 URL
+        if (prevUrlQueryRef.current === null) {
+            prevUrlQueryRef.current = urlQuery;
+            return;
+        }
+        if (urlQuery === prevUrlQueryRef.current) return;
+        prevUrlQueryRef.current = urlQuery;
 
+        if (!urlQuery) {
+            if (hasSearched) {
+                hasSearchedWithSourcesRef.current = false;
+                isInitialCacheLoad.current = false;
+                setQuery('');
+                setHasSearched(false);
+                resetSearch();
+            }
+            return;
+        }
+
+        if (urlQuery === query) return;
+        setQuery(urlQuery);
+        const cached = loadFromCache();
+        if (cached && cached.query === urlQuery && cached.results.length > 0) {
+            isInitialCacheLoad.current = true;
+            setHasSearched(true);
+            loadCachedResults(cached.results, cached.availableSources);
+            hasSearchedWithSourcesRef.current = true;
+        } else {
+            handleSearch(urlQuery);
+        }
+    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleCancelSearch = useCallback(() => {
         cancelSearch();
@@ -188,7 +225,7 @@ export function useHomePage() {
         setQuery('');
         hasSearchedWithSourcesRef.current = false;
         resetSearch();
-        router.replace('/', { scroll: false });
+        router.push('/', { scroll: false });
     }, [resetSearch, router]);
 
     return {

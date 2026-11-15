@@ -10,11 +10,11 @@ interface HistoryListProps {
 
 export function HistoryList({ history, onRemove, isPremium = false }: HistoryListProps) {
     return (
-        <div className="flex-1 overflow-y-auto -mx-2 px-2 transform-gpu">
+        <div className="transform-gpu">
             {history.length === 0 ? (
                 <HistoryEmptyState />
             ) : (
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {history.map((item) => (
                         <HistoryItem
                             key={item.showIdentifier}

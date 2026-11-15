@@ -10,10 +10,11 @@ interface Category {
     type_name: string;
 }
 
-interface SourceCategories {
+// 按订阅源分组的分类列表，供高级页「源 → 标签」两级筛选
+interface SourceGroup {
     sourceId: string;
     sourceName: string;
-    categories: Category[];
+    categories: { id: string; name: string }[];
 }
 
 // Shared handler
@@ -57,104 +58,26 @@ async function handleTypesRequest(sourceList: any[]) {
             })
         );
 
-        const allTags = [];
+        const sources: SourceGroup[] = [];
 
-        // Add "Recommend" tag first
-        allTags.push({
-            id: 'recommend',
-            label: '今日推荐',
-            value: ''
-        });
-
-        // Map to store merged categories: type_name -> Array of "sourceId:typeId"
-        // Using a more complex structure to support fuzzy matching
-        interface MergedCategory {
-            label: string;
-            values: string[];
-        }
-        const mergedCategories: MergedCategory[] = [];
-
-        // Helper to clean label for comparison (remove common noise words)
-        const cleanLabel = (label: string) => {
-            return label.replace(/[视频片区专]/g, '');
-        };
-
-        // Helper to check if two labels match fuzzily (>= 4 chars overlap)
-        const isFuzzyMatch = (label1: string, label2: string) => {
-            const clean1 = cleanLabel(label1);
-            const clean2 = cleanLabel(label2);
-
-            // If either is too short after cleaning, require exact match
-            if (clean1.length < 4 || clean2.length < 4) {
-                return clean1 === clean2;
-            }
-
-            // Check for 4+ char overlap
-            let overlapCount = 0;
-            const set1 = new Set(clean1.split(''));
-            for (const char of clean2) {
-                if (set1.has(char)) {
-                    overlapCount++;
-                }
-            }
-            return overlapCount >= 4;
-        };
-
-        // Process results
         results.forEach((result) => {
             if (result.status === 'fulfilled' && result.value) {
-                const { sourceId, categories } = result.value;
+                const { sourceId, sourceName, categories } = result.value;
+                const mapped = (categories as Category[])
+                    .filter(cat => cat.type_name?.trim())
+                    .map(cat => ({ id: String(cat.type_id), name: cat.type_name.trim() }));
 
-                categories.forEach((cat: Category) => {
-                    const typeName = cat.type_name.trim();
-                    // Skip empty type names
-                    if (!typeName) return;
-
-                    const value = `${sourceId}:${cat.type_id}`;
-
-                    // Try to find a fuzzy match in existing categories
-                    let matched = false;
-                    for (const existing of mergedCategories) {
-                        if (isFuzzyMatch(existing.label, typeName)) {
-                            existing.values.push(value);
-                            // Update label to the longer one if the new one is longer (usually more descriptive)
-                            // Or keep the shorter one? Let's keep the one that is "cleaner" or just the first one.
-                            // Let's stick to the first one for stability.
-                            matched = true;
-                            break;
-                        }
-                    }
-
-                    if (!matched) {
-                        mergedCategories.push({
-                            label: typeName,
-                            values: [value]
-                        });
-                    }
-                });
+                if (mapped.length > 0) {
+                    sources.push({ sourceId, sourceName, categories: mapped });
+                }
             }
         });
 
-        // Convert merged categories to tags
-        mergedCategories.forEach((cat) => {
-            // Skip categories with no values (shouldn't happen with current logic but good for safety)
-            if (cat.values.length === 0) return;
-
-            // Create a unique ID based on the label (using base64 to be safe)
-            const id = Buffer.from(cat.label).toString('base64');
-
-            allTags.push({
-                id,
-                label: cat.label,
-                value: cat.values.join(',') // Join multiple sources with comma
-            });
-        });
-
-        return NextResponse.json({ tags: allTags });
+        return NextResponse.json({ sources });
     } catch (error) {
         console.error('Failed to aggregate categories:', error);
         return NextResponse.json(
-            { tags: [], error: 'Failed to fetch categories' },
+            { sources: [], error: 'Failed to fetch categories' },
             { status: 500 }
         );
     }

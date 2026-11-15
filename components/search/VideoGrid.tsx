@@ -48,11 +48,11 @@ export const VideoGrid = memo(function VideoGrid({
         // If scroll is deep, we force a larger initial visible count.
         // 24, 48, 72, 96...
         const estimatedRowsNeeded = Math.ceil(position / 300) + 2;
-        // Match CSS breakpoints: sm: 3, md: 4, lg: 5, xl: 6
-        const itemsPerRow = window.innerWidth >= 1280 ? 6 :
-          (window.innerWidth >= 1024 ? 5 :
-            (window.innerWidth >= 768 ? 4 :
-              (window.innerWidth >= 640 ? 3 : 2)));
+        // Match CSS breakpoints: base 3, sm: 5, md: 6, lg: 7, xl: 8
+        const itemsPerRow = window.innerWidth >= 1280 ? 8 :
+          (window.innerWidth >= 1024 ? 7 :
+            (window.innerWidth >= 768 ? 6 :
+              (window.innerWidth >= 640 ? 5 : 3)));
         const neededCount = Math.min(videos.length, estimatedRowsNeeded * itemsPerRow);
 
         if (neededCount > 24) {
@@ -171,7 +171,7 @@ export const VideoGrid = memo(function VideoGrid({
     <>
       <div
         ref={gridRef}
-        className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 md:gap-3 lg:gap-4 max-w-page mx-auto ${className}`}
+        className={`grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-8 gap-2 md:gap-4 lg:gap-6 max-w-page mx-auto ${className}`}
         role="list"
         aria-label="视频搜索结果"
       >

@@ -19,6 +19,8 @@ interface SearchHistoryDropdownProps {
   onSelectItem: (query: string) => void;
   onRemoveItem: (query: string) => void;
   onClearAll: () => void;
+  /** 覆盖默认撑满触发器的定位（默认 left-0 right-0），如导航栏药丸内右对齐 */
+  positionClassName?: string;
 }
 
 export function SearchHistoryDropdown({
@@ -29,6 +31,7 @@ export function SearchHistoryDropdown({
   onSelectItem,
   onRemoveItem,
   onClearAll,
+  positionClassName = 'left-0 right-0',
 }: SearchHistoryDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +58,7 @@ export function SearchHistoryDropdown({
   return (
     <div
       ref={dropdownRef}
-      className="search-history-dropdown absolute top-full left-0 right-0 mt-2 z-modal max-h-panel overflow-y-auto overscroll-contain bg-bg/95 backdrop-blur-glass backdrop-saturate-glass rounded-2xl shadow-card border border-border p-4 origin-top select-none will-change-transform animate-dropdown-in"
+      className={`search-history-dropdown absolute top-full ${positionClassName} mt-2 z-modal max-h-panel overflow-y-auto overscroll-contain bg-bg/95 backdrop-blur-glass backdrop-saturate-glass rounded-2xl shadow-card border border-border p-4 origin-top select-none will-change-transform animate-dropdown-in`}
       role="listbox"
       aria-label="搜索历史"
       onMouseDown={(e) => {

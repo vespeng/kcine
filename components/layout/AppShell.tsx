@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { Navbar } from './Navbar';
+import type { NavbarSearchConfig } from './NavbarSearch';
 
 interface AppShellProps {
   /** Page content rendered below the navbar */
@@ -9,7 +10,8 @@ interface AppShellProps {
   isPremium?: boolean;
   /** Called when the site logo is clicked (resets the page) */
   onReset: () => void;
-  onOpenHistory?: () => void;
+  /** Navbar inline search config; omit to hide the search button */
+  search?: NavbarSearchConfig;
   /** Extra classes for the page wrapper, e.g. background modifiers */
   className?: string;
 }
@@ -23,12 +25,12 @@ export function AppShell({
   children,
   isPremium = false,
   onReset,
-  onOpenHistory,
+  search,
   className = '',
 }: AppShellProps) {
   return (
     <div className={['min-h-screen', className].filter(Boolean).join(' ')}>
-      <Navbar onReset={onReset} isPremiumMode={isPremium} onOpenHistory={onOpenHistory} />
+      <Navbar onReset={onReset} isPremiumMode={isPremium} search={search} />
       {children}
     </div>
   );

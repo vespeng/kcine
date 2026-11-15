@@ -56,7 +56,7 @@ const savePopularCache = (cache: PopularCache): void => {
     }
 };
 
-export function usePopularMovies(selectedTag: string, tags: any[], contentType: 'movie' | 'tv' = 'movie') {
+export function usePopularMovies(selectedTags: string[], contentType: 'movie' | 'tv' = 'movie') {
     const [movies, setMovies] = useState<DoubanMovie[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -66,32 +66,51 @@ export function usePopularMovies(selectedTag: string, tags: any[], contentType: 
     // Tracks the latest request so stale fetches can be discarded during rapid tag switching
     const requestIdRef = useRef(0);
 
-    const loadMovies = useCallback(async (tag: string, pageStart: number, append = false) => {
+    // 空选中清回默认标签；缓存键基于标签名拼接
+    const tagList = selectedTags.filter(Boolean);
+    const effectiveTags = tagList.length > 0 ? tagList : ['热门'];
+    const tagKey = effectiveTags.join('|');
+
+    const loadMovies = useCallback(async (tags: string[], pageStart: number, append = false) => {
         const requestId = ++requestIdRef.current;
         setLoading(true);
         try {
-            const tagValue = tags.find(t => t.id === tag)?.value || '热门';
-            const response = await fetch(
-                `/api/douban/recommend?type=${contentType}&tag=${encodeURIComponent(tagValue)}&page_limit=${PAGE_LIMIT}&page_start=${pageStart}`
+            // 豆瓣接口单次只接受一个标签，多选时并行请求后在合并阶段交错去重
+            const pages = await Promise.all(
+                tags.map(tag =>
+                    fetch(
+                        `/api/douban/recommend?type=${contentType}&tag=${encodeURIComponent(tag)}&page_limit=${PAGE_LIMIT}&page_start=${pageStart}`
+                    )
+                        .then(res => {
+                            if (!res.ok) throw new Error('Failed to fetch');
+                            return res.json();
+                        })
+                        .then(data => (data.subjects || []) as DoubanMovie[])
+                )
             );
-
-            if (!response.ok) throw new Error('Failed to fetch');
-
-            const data = await response.json();
-            const newMovies: DoubanMovie[] = data.subjects || [];
 
             // Drop stale results if the user switched tags during the fetch
             if (requestIdRef.current !== requestId) return;
 
-            setMovies(prev => {
-                if (!append) return newMovies;
-                // Dedupe by id: douban pages may overlap across fetches
-                const seen = new Set(prev.map(m => m.id));
-                return [...prev, ...newMovies.filter(m => !seen.has(m.id))];
-            });
-            setHasMore(newMovies.length === PAGE_LIMIT);
+            setHasMore(pages.some(p => p.length === PAGE_LIMIT));
             // Update page after a successful fetch so a stale request can't corrupt pagination
             setPage(Math.floor(pageStart / PAGE_LIMIT));
+            setMovies(prev => {
+                // Round-robin interleave of each tag's page, deduped by id
+                const seen = new Set(append ? prev.map(m => m.id) : []);
+                const merged: DoubanMovie[] = append ? [...prev] : [];
+                const maxLen = Math.max(...pages.map(p => p.length));
+                for (let i = 0; i < maxLen; i++) {
+                    for (const pageItems of pages) {
+                        const movie = pageItems[i];
+                        if (movie && !seen.has(movie.id)) {
+                            seen.add(movie.id);
+                            merged.push(movie);
+                        }
+                    }
+                }
+                return merged;
+            });
         } catch (error) {
             if (requestIdRef.current !== requestId) return;
             console.error('Failed to load movies:', error);
@@ -101,52 +120,50 @@ export function usePopularMovies(selectedTag: string, tags: any[], contentType: 
                 setLoading(false);
             }
         }
-    }, [tags, contentType]);
+    }, [contentType]);
 
     useEffect(() => {
         // Invalidate any in-flight fetch from a previous tag/type so it can't overwrite current results
         requestIdRef.current++;
 
         // Try cache first to avoid redundant fetches when switching back to a visited tag
-        if (selectedTag) {
-            const cache = loadPopularCache();
-            const cacheKey = `${contentType}:${selectedTag}`;
-            const cachedEntry = cache[cacheKey];
-            if (cachedEntry && cachedEntry.movies.length > 0) {
-                isRestoringRef.current = true;
-                // Dedupe by id: cache entries saved before the append fix may contain duplicates
-                const seenIds = new Set<string>();
-                const dedupedMovies = cachedEntry.movies.filter(m => {
-                    if (seenIds.has(m.id)) return false;
-                    seenIds.add(m.id);
-                    return true;
-                });
-                setMovies(dedupedMovies);
-                setHasMore(cachedEntry.hasMore);
-                setPage(cachedEntry.page);
-                // Reset loading in case a previous tag's fetch is still in-flight
-                setLoading(false);
-                return;
-            }
+        const cache = loadPopularCache();
+        const cacheKey = `${contentType}:${tagKey}`;
+        const cachedEntry = cache[cacheKey];
+        if (cachedEntry && cachedEntry.movies.length > 0) {
+            isRestoringRef.current = true;
+            // Dedupe by id: cache entries saved before the append fix may contain duplicates
+            const seenIds = new Set<string>();
+            const dedupedMovies = cachedEntry.movies.filter(m => {
+                if (seenIds.has(m.id)) return false;
+                seenIds.add(m.id);
+                return true;
+            });
+            setMovies(dedupedMovies);
+            setHasMore(cachedEntry.hasMore);
+            setPage(cachedEntry.page);
+            // Reset loading in case a previous tag's fetch is still in-flight
+            setLoading(false);
+            return;
         }
 
         // Cache miss — fetch fresh
         setPage(0);
         setMovies([]);
         setHasMore(true);
-        loadMovies(selectedTag, 0, false);
-    }, [selectedTag, contentType]); // eslint-disable-line react-hooks/exhaustive-deps
+        loadMovies(effectiveTags, 0, false);
+    }, [tagKey, contentType]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Persist to cache whenever results change (covers initial fetch + infinite scroll appends)
     useEffect(() => {
-        if (!selectedTag || movies.length === 0) return;
+        if (movies.length === 0) return;
         // Skip the write right after a cache restore (data is identical)
         if (isRestoringRef.current) {
             isRestoringRef.current = false;
             return;
         }
         const cache = loadPopularCache();
-        const cacheKey = `${contentType}:${selectedTag}`;
+        const cacheKey = `${contentType}:${tagKey}`;
         cache[cacheKey] = {
             movies,
             hasMore,
@@ -154,7 +171,7 @@ export function usePopularMovies(selectedTag: string, tags: any[], contentType: 
             dateKey: getTodayKey(),
         };
         savePopularCache(cache);
-    }, [movies, hasMore, page, selectedTag, contentType]);
+    }, [movies, hasMore, page, tagKey, contentType]);
 
     const { prefetchRef, loadMoreRef } = useInfiniteScroll({
         hasMore,
@@ -163,25 +180,9 @@ export function usePopularMovies(selectedTag: string, tags: any[], contentType: 
         onLoadMore: (nextPage) => {
             // page is updated inside loadMovies after a successful fetch,
             // so a stale loadMore can't advance the pagination state
-            loadMovies(selectedTag, nextPage * PAGE_LIMIT, true);
+            loadMovies(effectiveTags, nextPage * PAGE_LIMIT, true);
         },
     });
-
-    // Force a cache-bypassing refresh of the current tag (e.g. re-clicking the active tag)
-    const refresh = useCallback(() => {
-        // Drop the cache entry for the current tag/type so the refresh actually re-fetches
-        const cache = loadPopularCache();
-        const cacheKey = `${contentType}:${selectedTag}`;
-        delete cache[cacheKey];
-        savePopularCache(cache);
-        // Invalidate any in-flight fetch
-        requestIdRef.current++;
-        // Reset and refetch
-        setPage(0);
-        setMovies([]);
-        setHasMore(true);
-        loadMovies(selectedTag, 0, false);
-    }, [selectedTag, contentType, loadMovies]);
 
     return {
         movies,
@@ -189,6 +190,5 @@ export function usePopularMovies(selectedTag: string, tags: any[], contentType: 
         hasMore,
         prefetchRef,
         loadMoreRef,
-        refresh,
     };
 }

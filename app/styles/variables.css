@@ -62,6 +62,8 @@ body {
 
     background-color: var(--bg-color);
     background-image: var(--bg-image);
+    /* 与页面外壳的 bg-fixed 渐变对齐，避免滚动条左侧出现背景色差细线 */
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: var(--font-family-system);
 

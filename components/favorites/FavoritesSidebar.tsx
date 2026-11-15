@@ -1,13 +1,12 @@
 /**
  * FavoritesSidebar - Main favorites sidebar component
- * Positioned on the left side of the screen (opposite to WatchHistorySidebar)
+ * Positioned on the left side of the screen
  */
 
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useFavorites } from '@/lib/store/favorites-store';
-import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
 import { Icons } from '@/components/ui/Icon';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { FavoritesHeader } from './FavoritesHeader';
@@ -97,7 +96,7 @@ export function FavoritesSidebar({ isPremium = false }: { isPremium?: boolean })
                 role="complementary"
                 aria-labelledby="favorites-sidebar-title"
                 aria-hidden={!isOpen}
-                className={`fixed top-0 left-0 bottom-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} will-change-transform w-drawer sm:w-drawer-sm max-w-sidebar z-nav bg-surface backdrop-blur-glass backdrop-saturate-glass border-r border-border rounded-tr-2xl rounded-br-2xl p-6 flex flex-col shadow-card transition-transform duration-250 ease-out`}
+                className={`fixed top-0 left-0 bottom-0 ${isOpen ? 'translate-x-0 visible' : '-translate-x-full invisible'} will-change-transform w-drawer sm:w-drawer-sm max-w-sidebar z-nav bg-surface backdrop-blur-glass backdrop-saturate-glass border-r border-border rounded-tr-2xl rounded-br-2xl p-6 flex flex-col shadow-card transition-[transform,visibility] duration-250 ease-out`}
             >
                 <FavoritesHeader onClose={() => setIsOpen(false)} />
 
@@ -112,9 +111,6 @@ export function FavoritesSidebar({ isPremium = false }: { isPremium?: boolean })
                     onClearAll={handleClearAll}
                 />
             </aside>
-
-            {/* Watch History Sidebar - Right side */}
-            <WatchHistorySidebar isPremium={isPremium} />
 
             {/* Confirm Dialog */}
             <ConfirmDialog

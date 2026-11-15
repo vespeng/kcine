@@ -7,7 +7,6 @@ import { PageContainer } from '@/components/layout/PageContainer';
 import { FavoritesPageHeader } from '@/components/favorites/FavoritesPageHeader';
 import { FavoritesGrid } from '@/components/favorites/FavoritesGrid';
 import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
-import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useFavorites } from '@/lib/store/favorites-store';
 
@@ -22,7 +21,6 @@ export function FavoritesPageContent({
   const { favorites, clearFavorites } = useFavorites(isPremium);
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const sortedFavorites = useMemo(() => {
     if (sortBy === 'title') {
@@ -36,7 +34,6 @@ export function FavoritesPageContent({
     <AppShell
       isPremium={isPremium}
       onReset={() => router.push(isPremium ? '/premium' : '/')}
-      onOpenHistory={() => setIsHistoryOpen(true)}
       className="bg-bg bg-page bg-fixed"
     >
       <PageContainer className="py-8 space-y-8">
@@ -51,12 +48,6 @@ export function FavoritesPageContent({
       </PageContainer>
 
       <FavoritesSidebar isPremium={isPremium} />
-      <WatchHistorySidebar
-        isPremium={isPremium}
-        isOpen={isHistoryOpen}
-        onOpen={() => setIsHistoryOpen(true)}
-        onClose={() => setIsHistoryOpen(false)}
-      />
 
       <ConfirmDialog
         isOpen={isClearDialogOpen}

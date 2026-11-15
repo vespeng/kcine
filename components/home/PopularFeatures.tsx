@@ -1,19 +1,21 @@
 /**
  * PopularFeatures - Main component for popular movies section
- * Displays Douban movie recommendations with tag filtering and infinite scroll.
- * Includes personalized "推荐" tag when user has 2+ watched items.
+ * Displays Douban movie recommendations with category dropdown filtering
+ * and infinite scroll. Includes personalized "推荐" category when user
+ * has 2+ watched items.
  */
 
 'use client';
 
-import { useState } from 'react';
-import { TagManager } from './TagManager';
+import { useEffect, useState } from 'react';
+import { CategoryFilter } from './CategoryFilter';
 import { MovieGrid } from './MovieGrid';
 import { NoResults } from '@/components/search/NoResults';
-import { useTagManager } from './hooks/useTagManager';
 import { usePopularMovies } from './hooks/usePopularMovies';
 import { usePersonalizedRecommendations } from './hooks/usePersonalizedRecommendations';
 import type { DirectPlayStatus } from '@/lib/hooks/useDirectPlay';
+
+const DEFAULT_TAG = '热门';
 
 interface DoubanMovie {
   id: string;
@@ -34,24 +36,17 @@ export function PopularFeatures({
   directPlayStatus = 'idle',
   onResetDirectPlay,
 }: PopularFeaturesProps) {
-  const {
-    tags,
-    selectedTag,
-    contentType,
-    newTagInput,
-    showTagManager,
-    justAddedTag,
-    setContentType,
-    setSelectedTag,
-    setNewTagInput,
-    setShowTagManager,
-    setJustAddedTag,
-    handleAddTag,
-    handleDeleteTag,
-    handleRestoreDefaults,
-    handleDragEnd,
-    isLoadingTags,
-  } = useTagManager();
+  const [contentType, setContentType] = useState<'movie' | 'tv'>(() => {
+    if (typeof window === 'undefined') return 'movie';
+    return localStorage.getItem('kcine_default_content_type') === 'tv' ? 'tv' : 'movie';
+  });
+  const [selectedTags, setSelectedTags] = useState<string[]>([DEFAULT_TAG]);
+  const [isRecommendSelected, setIsRecommendSelected] = useState(false);
+
+  // Persist content type preference
+  useEffect(() => {
+    localStorage.setItem('kcine_default_content_type', contentType);
+  }, [contentType]);
 
   const {
     movies: recommendMovies,
@@ -62,10 +57,7 @@ export function PopularFeatures({
     loadMoreRef: recommendLoadMoreRef,
   } = usePersonalizedRecommendations(false);
 
-  const [isRecommendSelected, setIsRecommendSelected] = useState(false);
-
   const effectiveRecommendSelected = hasHistory && isRecommendSelected;
-  const isTagManagementMode = showTagManager;
 
   const {
     movies,
@@ -73,10 +65,8 @@ export function PopularFeatures({
     hasMore,
     prefetchRef,
     loadMoreRef,
-    refresh,
   } = usePopularMovies(
-    effectiveRecommendSelected ? '' : selectedTag,
-    tags,
+    effectiveRecommendSelected ? [''] : selectedTags,
     contentType
   );
 
@@ -90,23 +80,23 @@ export function PopularFeatures({
     setIsRecommendSelected(true);
   };
 
-  const handleRegularTagSelect = (tagId: string) => {
-    if (tagId === 'custom_高级' || tags.find(t => t.id === tagId)?.label === '高级') {
-      window.location.href = '/premium';
-      return;
-    }
-    // Re-clicking the active tag forces a cache-bypassing refresh
-    if (tagId === selectedTag && !effectiveRecommendSelected) {
-      refresh();
-      return;
-    }
-    setIsRecommendSelected(false);
-    setSelectedTag(tagId);
-  };
-
   const handleContentTypeChange = (type: 'movie' | 'tv') => {
     setIsRecommendSelected(false);
     setContentType(type);
+    setSelectedTags([DEFAULT_TAG]);
+  };
+
+  const handleTagSelect = (tag: string) => {
+    setIsRecommendSelected(false);
+    setSelectedTags(prev => {
+      // 「全部」清空其它标签；再次点击已选标签则取消
+      if (tag === DEFAULT_TAG) return [DEFAULT_TAG];
+      const next = prev.filter(t => t !== DEFAULT_TAG);
+      if (next.includes(tag)) {
+        return next.length > 0 ? next : [DEFAULT_TAG];
+      }
+      return [...next, tag];
+    });
   };
 
   if (directPlayStatus === 'loading') {
@@ -126,50 +116,34 @@ export function PopularFeatures({
 
   return (
     <div className="animate-fade-in">
-      <TagManager
-        tags={tags}
-        selectedTag={effectiveRecommendSelected ? '' : selectedTag}
-        showTagManager={showTagManager}
-        newTagInput={newTagInput}
-        justAddedTag={justAddedTag}
-        onTagSelect={handleRegularTagSelect}
-        onTagDelete={handleDeleteTag}
-        onToggleManager={() => setShowTagManager(!showTagManager)}
-        onRestoreDefaults={handleRestoreDefaults}
-        onNewTagInputChange={setNewTagInput}
-        onAddTag={handleAddTag}
-        onDragEnd={handleDragEnd}
-        onJustAddedTagHandled={() => setJustAddedTag(false)}
-        isLoadingTags={isLoadingTags}
+      <CategoryFilter
         contentType={contentType}
+        selectedTags={selectedTags}
+        isRecommendActive={effectiveRecommendSelected}
+        recommendAvailable={hasHistory}
+        onRecommendSelect={handleRecommendSelect}
         onContentTypeChange={handleContentTypeChange}
-        recommendTag={hasHistory ? {
-          label: '推荐',
-          isSelected: effectiveRecommendSelected,
-          onSelect: handleRecommendSelect,
-        } : undefined}
+        onTagSelect={handleTagSelect}
       />
 
-      {!isTagManagementMode && (
-        effectiveRecommendSelected ? (
-          <MovieGrid
-            movies={recommendMovies}
-            loading={recommendLoading}
-            hasMore={recommendHasMore}
-            onMovieClick={handleMovieClick}
-            prefetchRef={recommendPrefetchRef}
-            loadMoreRef={recommendLoadMoreRef}
-          />
-        ) : (
-          <MovieGrid
-            movies={movies}
-            loading={loading}
-            hasMore={hasMore}
-            onMovieClick={handleMovieClick}
-            prefetchRef={prefetchRef}
-            loadMoreRef={loadMoreRef}
-          />
-        )
+      {effectiveRecommendSelected ? (
+        <MovieGrid
+          movies={recommendMovies}
+          loading={recommendLoading}
+          hasMore={recommendHasMore}
+          onMovieClick={handleMovieClick}
+          prefetchRef={recommendPrefetchRef}
+          loadMoreRef={recommendLoadMoreRef}
+        />
+      ) : (
+        <MovieGrid
+          movies={movies}
+          loading={loading}
+          hasMore={hasMore}
+          onMovieClick={handleMovieClick}
+          prefetchRef={prefetchRef}
+          loadMoreRef={loadMoreRef}
+        />
       )}
     </div>
   );

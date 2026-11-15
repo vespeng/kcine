@@ -13,7 +13,7 @@ interface PremiumVideo {
 
 const PAGE_LIMIT = 20;
 
-export function usePremiumContent(categoryValue: string) {
+export function usePremiumContent(categoryValues: string[]) {
     const [videos, setVideos] = useState<PremiumVideo[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -21,16 +21,21 @@ export function usePremiumContent(categoryValue: string) {
 
     // Track source count to detect meaningful updates
     const sourceCountRef = useRef(0);
+    // Tracks the latest request so stale fetches can be discarded during rapid category switching
+    const requestIdRef = useRef(0);
 
-    const loadVideos = useCallback(async (pageNum: number, append = false) => {
-        if (loading) return;
+    // 空选中回退为推荐（无分类过滤的单次请求）；缓存键基于分类值拼接
+    const effectiveValues = categoryValues.filter(Boolean);
+    const requestValues = effectiveValues.length > 0 ? effectiveValues : [''];
+    const categoryKey = effectiveValues.join('|');
 
+    const loadVideos = useCallback(async (values: string[], pageNum: number, append = false) => {
+        const requestId = ++requestIdRef.current;
         setLoading(true);
         try {
             // Get sources from settings
             const settings = settingsStore.getSettings();
             // Resolve all relevant sources (premium sources + subscriptions that might be premium)
-            // For simplicity, we send all enabled premium sources.
             const premiumSources = [
                 ...settings.premiumSources,
                 // Check if any subscription sources are marked as premium
@@ -42,38 +47,69 @@ export function usePremiumContent(categoryValue: string) {
                 return;
             }
 
-            // Should we include normal subscriptions too if categoryValue requests them?
-            // The API handles filtering by categoryValue map.
-            // If categoryValue is empty (Recommend), we use all enabled premium sources.
+            // 每个分类值独立请求，多选时在合并阶段交错去重
+            const pages = await Promise.all(
+                values.map(value =>
+                    fetch('/api/premium/category', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sources: premiumSources,
+                            category: value,
+                            page: pageNum.toString(),
+                            limit: PAGE_LIMIT.toString()
+                        })
+                    })
+                        .then(res => {
+                            if (!res.ok) throw new Error('Failed to fetch');
+                            return res.json();
+                        })
+                        .then(data => (data.videos || []) as PremiumVideo[])
+                )
+            );
 
-            const response = await fetch('/api/premium/category', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sources: premiumSources,
-                    category: categoryValue,
-                    page: pageNum.toString(),
-                    limit: PAGE_LIMIT.toString()
-                })
+            // Drop stale results if the user switched categories during the fetch
+            if (requestIdRef.current !== requestId) return;
+
+            setHasMore(pages.some(p => p.length === PAGE_LIMIT));
+            setPage(pageNum);
+            setVideos(prev => {
+                // Round-robin interleave of each category's page, deduped by source + id
+                const seen = new Set(
+                    append ? prev.map(v => `${v.source}:${v.vod_id}`) : []
+                );
+                const merged: PremiumVideo[] = append ? [...prev] : [];
+                const maxLen = Math.max(...pages.map(p => p.length));
+                for (let i = 0; i < maxLen; i++) {
+                    for (const pageItems of pages) {
+                        const video = pageItems[i];
+                        if (video) {
+                            const key = `${video.source}:${video.vod_id}`;
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                merged.push(video);
+                            }
+                        }
+                    }
+                }
+                return merged;
             });
-
-            if (!response.ok) throw new Error('Failed to fetch');
-
-            const data = await response.json();
-            const newVideos = data.videos || [];
-
-            setVideos(prev => append ? [...prev, ...newVideos] : newVideos);
-            setHasMore(newVideos.length === PAGE_LIMIT);
         } catch (error) {
+            if (requestIdRef.current !== requestId) return;
             console.error('Failed to load videos:', error);
             setHasMore(false);
         } finally {
-            setLoading(false);
+            if (requestIdRef.current === requestId) {
+                setLoading(false);
+            }
         }
-    }, [loading, categoryValue]);
+    }, []);
 
     // Initial load and category change
     useEffect(() => {
+        // Invalidate any in-flight fetch from a previous category so it can't overwrite current results
+        requestIdRef.current++;
+
         setPage(1);
         setVideos([]);
         setHasMore(true);
@@ -83,8 +119,8 @@ export function usePremiumContent(categoryValue: string) {
         const sourcesCount = settings.premiumSources.length + settings.subscriptions.length;
         sourceCountRef.current = sourcesCount;
 
-        loadVideos(1, false);
-    }, [categoryValue]); // eslint-disable-line react-hooks/exhaustive-deps
+        loadVideos(requestValues, 1, false);
+    }, [categoryKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Subscribe to settings changes to handle async source loading
     useEffect(() => {
@@ -100,23 +136,22 @@ export function usePremiumContent(categoryValue: string) {
             // If we have 0 videos and suddenly gain sources, we should retry loading
             // OR if the number of sources significantly changed (e.g. from 0 to N)
             if (videos.length === 0 && currentSourceCount > 0 && !loading) {
-                // Determine if we should reload. 
+                // Determine if we should reload.
                 // Mostly needed when initial load failed due to no sources.
-                loadVideos(1, false);
+                loadVideos(requestValues, 1, false);
             }
         };
 
         const unsubscribe = settingsStore.subscribe(handleSettingsUpdate);
         return () => unsubscribe();
-    }, [loadVideos, videos.length, loading]);
+    }, [loadVideos, videos.length, loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const { prefetchRef, loadMoreRef } = useInfiniteScroll({
         hasMore,
         loading,
         page,
         onLoadMore: (nextPage) => {
-            setPage(nextPage);
-            loadVideos(nextPage, true);
+            loadVideos(requestValues, nextPage, true);
         },
     });
 

@@ -1,40 +1,27 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { SiteLogo } from '@/components/SiteLogo';
 import { Icons } from '@/components/ui/Icon';
 import { useSiteInfo } from '@/components/SiteInfoProvider';
-import { getSession, clearSession, hasPermission, type AuthSession } from '@/lib/store/auth-store';
+import { hasPermission } from '@/lib/store/auth-store';
 import { useRuntimeFeatures } from '@/components/RuntimeFeaturesProvider';
-import { PREMIUM_UNLOCK_KEY } from '@/components/PremiumPasswordGate';
-import { LogOut } from 'lucide-react';
+import { NavbarSearch, type NavbarSearchConfig } from './NavbarSearch';
 
 interface NavbarProps {
     onReset: () => void;
     isPremiumMode?: boolean;
-    onOpenHistory?: () => void;
+    /** 传入后显示导航栏内联搜索（药丸输入框） */
+    search?: NavbarSearchConfig;
 }
 
-export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: NavbarProps) {
+export function Navbar({ onReset, isPremiumMode = false, search }: NavbarProps) {
     const settingsHref = isPremiumMode ? '/premium/settings' : '/settings';
     const favoritesHref = isPremiumMode ? '/premium/favorites' : '/favorites';
-    const [session] = useState<AuthSession | null>(() => getSession());
+    const historyHref = isPremiumMode ? '/premium/history' : '/history';
     const { iptvEnabled } = useRuntimeFeatures();
     const siteInfo = useSiteInfo();
-
-    const handleLogout = () => {
-        sessionStorage.removeItem(PREMIUM_UNLOCK_KEY);
-        fetch('/api/auth/session', { method: 'DELETE' })
-            .catch(() => {
-                // Best effort only.
-            })
-            .finally(() => {
-                clearSession();
-                window.location.href = '/';
-            });
-    };
 
     return (
         <nav className="sticky top-0 z-nav pt-3 pb-1.5 transform-gpu will-change-transform">
@@ -70,32 +57,6 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             </Link>
                             )}
 
-                            {/* User Info */}
-                            {(session || isPremiumMode) && (
-                                <div className="flex items-center gap-1 sm:gap-2">
-                                    {session && (
-                                    <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-surface border border-border rounded-full text-xs">
-                                        <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-2xs border border-border">
-                                            {session.name.charAt(0)}
-                                        </div>
-                                        <span className="text-text max-w-15 truncate">{session.name}</span>
-                                        {(session.role === 'admin' || session.role === 'super_admin') && (
-                                            <span className="px-1 py-0.5 bg-primary/10 text-primary rounded text-2xs font-medium">
-                                                {session.role === 'super_admin' ? '超管' : '管理'}
-                                            </span>
-                                        )}
-                                    </div>
-                                    )}
-                                    <button
-                                        onClick={handleLogout}
-                                        className="w-8 h-8 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-surface border border-border text-text-secondary hover:text-danger hover:border-danger/30 transition-all duration-200 cursor-pointer"
-                                        aria-label="退出登录"
-                                        title="退出登录"
-                                    >
-                                        <LogOut size={14} />
-                                    </button>
-                                </div>
-                            )}
                             <Link
                                 href={favoritesHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
@@ -104,17 +65,15 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             >
                                 <Icons.Heart size={20} />
                             </Link>
-                            {onOpenHistory && (
-                            <button
-                                onClick={onOpenHistory}
+                            <Link
+                                href={historyHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
                                 aria-label="观看历史"
                                 title="观看历史"
                                 data-focusable
                             >
                                 <Icons.History size={20} />
-                            </button>
-                            )}
+                            </Link>
                             <Link
                                 href={settingsHref}
                                 className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-surface border border-border text-text hover:bg-primary/10 transition-all duration-200 cursor-pointer"
@@ -127,6 +86,8 @@ export function Navbar({ onReset, isPremiumMode = false, onOpenHistory }: Navbar
                             </Link>
                             {/* Theme switcher is hidden in premium mode (theme is forced to dark) */}
                             {!isPremiumMode && <ThemeSwitcher />}
+                            {/* Inline search: icon expands into a pill input, other icons shift along */}
+                            {search && <NavbarSearch {...search} isPremium={isPremiumMode} />}
                         </div>
                     </div>
                 </div>
