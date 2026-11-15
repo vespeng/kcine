@@ -5,6 +5,8 @@ export const runtime = 'edge';
 const API_BASE = 'https://api.themoviedb.org/3';
 const POSTER_BASE = 'https://image.tmdb.org/t/p/w780';
 const BACKDROP_BASE = 'https://image.tmdb.org/t/p/w1280';
+// 封面统一走服务端图片代理，避免客户端直连 TMDB 图片域名失败
+const IMAGE_PROXY = '/api/douban/image?url=';
 
 const YEAR_TAG_PATTERN = /^\d{4}$/;
 
@@ -193,8 +195,10 @@ export async function GET(request: Request) {
             .map((item) => ({
                 id: `${type}-${item.id}`,
                 title: item.title || item.name || '',
-                cover: `${POSTER_BASE}${item.poster_path}`,
-                backdrop: item.backdrop_path ? `${BACKDROP_BASE}${item.backdrop_path}` : null,
+                cover: `${IMAGE_PROXY}${encodeURIComponent(`${POSTER_BASE}${item.poster_path}`)}`,
+                backdrop: item.backdrop_path
+                    ? `${IMAGE_PROXY}${encodeURIComponent(`${BACKDROP_BASE}${item.backdrop_path}`)}`
+                    : null,
                 rate: item.vote_average > 0 ? item.vote_average.toFixed(1) : '',
                 url: `https://www.themoviedb.org/${type}/${item.id}`,
             }));
