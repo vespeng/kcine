@@ -177,7 +177,9 @@ export async function GET(request: Request) {
     }
 
     try {
-        const url = appendApiKey(`${API_BASE}${path}&language=zh-CN&include_adult=false&page=${page}`, apiKey);
+        // 热门路径不含查询串，需按是否已有参数选择分隔符
+        const separator = path.includes('?') ? '&' : '?';
+        const url = appendApiKey(`${API_BASE}${path}${separator}language=zh-CN&include_adult=false&page=${page}`, apiKey);
         const response = await fetchWithTimeout(url, buildFetchInit(apiKey), TMDB_TIMEOUT_MS);
 
         // 上游不可达标记为 unavailable（区别于标签无映射），前端据此熔断跳过 TMDB

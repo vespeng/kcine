@@ -56,7 +56,7 @@ export default function PremiumSettingsPage() {
 
     return (
         <AdminGate>
-        <AppShell isPremium className="bg-bg bg-page bg-fixed" showSearch={false}>
+        <AppShell isPremium className="bg-bg bg-page bg-fixed">
             <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
                 {/* Custom Header for Premium Settings */}
                 <div className="flex items-center gap-3 sm:gap-4">

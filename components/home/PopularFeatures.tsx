@@ -109,13 +109,12 @@ export function PopularFeatures({
   const handleTagSelect = (tag: string) => {
     setIsRecommendSelected(false);
     setSelectedTags(prev => {
-      // 「全部」清空其它标签；再次点击已选标签则取消
+      // 「全部」重置为默认标签；已选标签再次点击取消，取消后为空则回退「全部」
       if (tag === DEFAULT_TAG) return [DEFAULT_TAG];
-      const next = prev.filter(t => t !== DEFAULT_TAG);
-      if (next.includes(tag)) {
-        return next.length > 0 ? next : [DEFAULT_TAG];
-      }
-      return [...next, tag];
+      const rest = prev.filter(t => t !== DEFAULT_TAG);
+      if (!rest.includes(tag)) return [...rest, tag];
+      const next = rest.filter(t => t !== tag);
+      return next.length > 0 ? next : [DEFAULT_TAG];
     });
   };
 

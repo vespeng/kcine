@@ -171,7 +171,7 @@ export function CategoryFilter({
                 }`}
             >
                 <div className="overflow-hidden">
-                    <div className="mt-3 rounded-2xl bg-surface backdrop-blur-xl border border-border shadow-overlay p-6 flex flex-col gap-4">
+                    <div className="mt-3 rounded-2xl bg-surface backdrop-blur-xl border border-border p-6 flex flex-col gap-4">
                         {groups.map((group) => (
                             <div key={group.label} className="flex items-start gap-4">
                                 <span className="w-16 pt-1.5 text-sm text-text-secondary select-none shrink-0">

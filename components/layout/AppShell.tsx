@@ -15,7 +15,7 @@ interface AppShellProps {
   onReset?: () => void;
   /** 顶栏搜索配置；缺省时提交搜索后跳转对应首页 */
   search?: NavbarSearchConfig;
-  /** 是否显示顶栏搜索框；设置页等非浏览页可关闭 */
+  /** 是否显示顶栏搜索框，默认常驻显示 */
   showSearch?: boolean;
   /** 页面外壳附加类名，如背景修饰 */
   className?: string;

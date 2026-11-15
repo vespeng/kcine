@@ -74,10 +74,7 @@ export default function SettingsPage() {
   } = useSettingsPage();
 
   return (
-    <AppShell
-      className="bg-bg bg-page bg-fixed"
-      showSearch={false}
-    >
+    <AppShell className="bg-bg bg-page bg-fixed">
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
         {/* Header */}
         <SettingsHeader />

@@ -16,7 +16,7 @@ interface NavbarProps {
     isPremiumMode?: boolean;
     /** 顶栏搜索配置；缺省时提交搜索后跳转对应首页 */
     search?: NavbarSearchConfig;
-    /** 是否显示顶栏搜索框；设置页等非浏览页可关闭 */
+    /** 是否显示顶栏搜索框，默认常驻显示 */
     showSearch?: boolean;
     /** 汉堡按钮点击回调（移动端打开导航抽屉） */
     onMenuClick?: () => void;
